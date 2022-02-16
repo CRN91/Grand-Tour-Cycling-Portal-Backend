@@ -1,4 +1,4 @@
-package cycling;
+package src.cycling;
 
 /**
  * Each race result should contains the times for each segment (mountain and

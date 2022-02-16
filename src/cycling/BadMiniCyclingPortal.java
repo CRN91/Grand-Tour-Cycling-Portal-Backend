@@ -1,4 +1,4 @@
-package cycling;
+package src.cycling;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -35,7 +35,6 @@ public class BadMiniCyclingPortal implements MiniCyclingPortalInterface {
 	@Override
 	public void removeRaceById(int raceId) throws IDNotRecognisedException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -67,7 +66,6 @@ public class BadMiniCyclingPortal implements MiniCyclingPortalInterface {
 	@Override
 	public void removeStageById(int stageId) throws IDNotRecognisedException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -88,13 +86,11 @@ public class BadMiniCyclingPortal implements MiniCyclingPortalInterface {
 	@Override
 	public void removeSegment(int segmentId) throws IDNotRecognisedException, InvalidStageStateException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void concludeStagePreparation(int stageId) throws IDNotRecognisedException, InvalidStageStateException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -112,7 +108,6 @@ public class BadMiniCyclingPortal implements MiniCyclingPortalInterface {
 	@Override
 	public void removeTeam(int teamId) throws IDNotRecognisedException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -137,7 +132,6 @@ public class BadMiniCyclingPortal implements MiniCyclingPortalInterface {
 	@Override
 	public void removeRider(int riderId) throws IDNotRecognisedException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -145,7 +139,6 @@ public class BadMiniCyclingPortal implements MiniCyclingPortalInterface {
 			throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
 			InvalidStageStateException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -163,7 +156,6 @@ public class BadMiniCyclingPortal implements MiniCyclingPortalInterface {
 	@Override
 	public void deleteRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -193,19 +185,16 @@ public class BadMiniCyclingPortal implements MiniCyclingPortalInterface {
 	@Override
 	public void eraseCyclingPortal() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void saveCyclingPortal(String filename) throws IOException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void loadCyclingPortal(String filename) throws IOException, ClassNotFoundException {
 		// TODO Auto-generated method stub
-
 	}
 
 }

@@ -1,4 +1,4 @@
-package cycling;
+package src.cycling;
 
 /**
  * Thrown when attempting to assign a location outside the bounds of the stage,
