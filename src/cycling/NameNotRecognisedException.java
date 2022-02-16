@@ -1,4 +1,4 @@
-package cycling;
+package src.cycling;
 
 /**
  * Thrown when attempting to use a name that does not exit in the

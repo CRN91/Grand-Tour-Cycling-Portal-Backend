@@ -1,7 +1,9 @@
-import cycling.BadCyclingPortal;
-import cycling.BadMiniCyclingPortal;
-import cycling.CyclingPortalInterface;
-import cycling.MiniCyclingPortalInterface;
+package src;
+
+import src.cycling.BadCyclingPortal;
+import src.cycling.BadMiniCyclingPortal;
+import src.cycling.CyclingPortalInterface;
+import src.cycling.MiniCyclingPortalInterface;
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a

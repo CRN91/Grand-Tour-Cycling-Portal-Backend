@@ -1,4 +1,4 @@
-package cycling;
+package src.cycling;
 
 /**
  * Thrown when attempting to assign a race name null, empty or having more than
