@@ -4,15 +4,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-
-/**
- * CyclingPortal is a minimally compiling, but non-functioning implementor
- * of the CyclingPortalInterface interface.
- *
- * @author Diogo Pacheco
- * @version 1.0
- *
- */
 public class CyclingPortal implements CyclingPortalInterface {
 
     @Override
