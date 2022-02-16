@@ -52,6 +52,14 @@ public class Rider {
     }
 
     /**
+     * Set riderTeamId.
+     * @param riderTeamId The ID of the team the rider belongs to.
+     */
+    public void setRiderTeamId(int riderTeamId) {
+        this.riderTeamId = riderTeamId;
+    }
+
+    /**
      * Set riderYearOfBirth.
      * @param riderYearOfBirth The rider's new year of birth
      */
