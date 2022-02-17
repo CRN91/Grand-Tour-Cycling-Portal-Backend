@@ -4,7 +4,7 @@ package src.cycling;
  * Thrown when attempting to assign a race name null, empty or having more than
  * the system limit of characters. A name must be a single word, i.e., no
  * white spaces allowed.
- * 
+ *
  * @author Diogo Pacheco
  * @version 1.0
  *

@@ -7,7 +7,7 @@ import java.time.LocalTime;
  * implementing this interface should initialise the CyclingPortalInterface as
  * an empty platform with no initial racing teams nor races within it. For pair
  * submissions ONLY.
- * 
+ *
  * @author Diogo Pacheco
  * @version 1.1
  *
