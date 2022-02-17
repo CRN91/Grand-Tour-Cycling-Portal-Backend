@@ -111,6 +111,10 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   }
 
+  /**
+   * Get the list of teams' numerical IDs.
+   * @return teamIds The array of teams' numerical IDs.
+   */
   @Override
   public int[] getTeams() {
     Set<Integer> teamIdsSet = teamIdsToTeams.keySet();
