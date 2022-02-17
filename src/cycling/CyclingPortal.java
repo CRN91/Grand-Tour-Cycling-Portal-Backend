@@ -13,7 +13,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   @Override
-  public int createRace(String name, String description) throws IllegalNameException, InvalidNameException {
+  public int createRace(String name, String description)
+      throws IllegalNameException, InvalidNameException {
     // TODO Auto-generated method stub
     return 0;
   }
@@ -37,9 +38,10 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   @Override
-  public int addStageToRace(int raceId, String stageName, String description, double length, LocalDateTime startTime,
-                StageType type)
-      throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException {
+  public int addStageToRace(int raceId, String stageName, String description, double length,
+                            LocalDateTime startTime, StageType type)
+      throws IDNotRecognisedException, IllegalNameException, InvalidNameException,
+      InvalidLengthException {
     // TODO Auto-generated method stub
     return 0;
   }
@@ -63,28 +65,32 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   @Override
-  public int addCategorizedClimbToStage(int stageId, Double location, SegmentType type, Double averageGradient,
-                      Double length) throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
+  public int addCategorizedClimbToStage(int stageId, Double location, SegmentType type,
+                                        Double averageGradient, Double length)
+      throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
       InvalidStageTypeException {
     // TODO Auto-generated method stub
     return 0;
   }
 
   @Override
-  public int addIntermediateSprintToStage(int stageId, double location) throws IDNotRecognisedException,
-      InvalidLocationException, InvalidStageStateException, InvalidStageTypeException {
+  public int addIntermediateSprintToStage(int stageId, double location)
+      throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
+      InvalidStageTypeException {
     // TODO Auto-generated method stub
     return 0;
   }
 
   @Override
-  public void removeSegment(int segmentId) throws IDNotRecognisedException, InvalidStageStateException {
+  public void removeSegment(int segmentId) throws IDNotRecognisedException,
+      InvalidStageStateException {
     // TODO Auto-generated method stub
 
   }
 
   @Override
-  public void concludeStagePreparation(int stageId) throws IDNotRecognisedException, InvalidStageStateException {
+  public void concludeStagePreparation(int stageId) throws IDNotRecognisedException,
+      InvalidStageStateException {
     // TODO Auto-generated method stub
 
   }
@@ -96,7 +102,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   @Override
-  public int createTeam(String name, String description) throws IllegalNameException, InvalidNameException {
+  public int createTeam(String name, String description) throws IllegalNameException,
+      InvalidNameException {
     // TODO Auto-generated method stub
     return 0;
   }
@@ -141,13 +148,15 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   @Override
-  public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
+  public LocalTime[] getRiderResultsInStage(int stageId, int riderId)
+      throws IDNotRecognisedException {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) throws IDNotRecognisedException {
+  public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId)
+      throws IDNotRecognisedException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -165,7 +174,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   @Override
-  public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId) throws IDNotRecognisedException {
+  public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId)
+      throws IDNotRecognisedException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -207,7 +217,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   @Override
-  public LocalTime[] getGeneralClassificationTimesInRace(int raceId) throws IDNotRecognisedException {
+  public LocalTime[] getGeneralClassificationTimesInRace(int raceId)
+      throws IDNotRecognisedException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -237,7 +248,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   @Override
-  public int[] getRidersMountainPointClassificationRank(int raceId) throws IDNotRecognisedException {
+  public int[] getRidersMountainPointClassificationRank(int raceId)
+      throws IDNotRecognisedException {
     // TODO Auto-generated method stub
     return null;
   }

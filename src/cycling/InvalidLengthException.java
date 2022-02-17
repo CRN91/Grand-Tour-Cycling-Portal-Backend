@@ -2,7 +2,7 @@ package src.cycling;
 
 /**
  * Thrown when attempting to assign a race length null or less than 5 (kilometres).
- * 
+ *
  * @author Diogo Pacheco
  * @version 1.0
  *

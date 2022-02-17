@@ -3,7 +3,7 @@ package src.cycling;
 /**
  * Thrown when attempting to assign a race name already in use in the
  * system.
- * 
+ *
  * @author Diogo Pacheco
  * @version 1.0
  *

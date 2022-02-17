@@ -9,7 +9,7 @@ import java.time.LocalTime;
  * MiniCyclingPortalInterface interface. The no-argument constructor of a class
  * implementing this interface should initialise the MiniCyclingPortalInterface as
  * an empty platform with no initial racing teams nor races within it.
- * 
+ *
  * @author Diogo Pacheco
  * @version 1.1
  *
@@ -103,9 +103,10 @@ public interface MiniCyclingPortalInterface extends Serializable {
    *                  than 30.
    * @throws InvalidLengthException   If the length is less than 5km.
    */
-  int addStageToRace(int raceId, String stageName, String description, double length, LocalDateTime startTime,
-      StageType type)
-      throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException;
+  int addStageToRace(int raceId, String stageName, String description, double length,
+                     LocalDateTime startTime, StageType type)
+      throws IDNotRecognisedException, IllegalNameException, InvalidNameException,
+      InvalidLengthException;
 
   /**
    * Retrieves the list of stage IDs of a race.
@@ -170,8 +171,9 @@ public interface MiniCyclingPortalInterface extends Serializable {
    * @throws InvalidStageTypeException  Time-trial stages cannot contain any
    *                  segment.
    */
-  int addCategorizedClimbToStage(int stageId, Double location, SegmentType type, Double averageGradient,
-      Double length) throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
+  int addCategorizedClimbToStage(int stageId, Double location, SegmentType type,
+                                 Double averageGradient, Double length)
+      throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
       InvalidStageTypeException;
 
   /**
@@ -221,7 +223,8 @@ public interface MiniCyclingPortalInterface extends Serializable {
    *                  the system.
    * @throws InvalidStageStateException If the stage is "waiting for results".
    */
-  void concludeStagePreparation(int stageId) throws IDNotRecognisedException, InvalidStageStateException;
+  void concludeStagePreparation(int stageId) throws IDNotRecognisedException,
+      InvalidStageStateException;
 
   /**
    * Retrieves the list of segment (mountains and sprints) IDs of a stage.
@@ -344,8 +347,9 @@ public interface MiniCyclingPortalInterface extends Serializable {
    *                   results". Results can only be added to a
    *                   stage while it is "waiting for results".
    */
-  void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints) throws IDNotRecognisedException,
-      DuplicatedResultException, InvalidCheckpointsException, InvalidStageStateException;
+  void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
+      throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
+      InvalidStageStateException;
 
   /**
    * Get the times of a rider in a stage.

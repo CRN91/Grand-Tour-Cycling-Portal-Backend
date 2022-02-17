@@ -1,7 +1,7 @@
 package src.cycling;
 
+import java.util.HashMap;
 import src.cycling.Rider;
-import java.util.HashMap; // import the HashMap class
 
 public class Team {
   private String teamName;
@@ -12,7 +12,7 @@ public class Team {
   private static int latestTeamId = 0;
 
   /**
-   * Return teamName.
+   *
    * @return Team.teamName - The name of the team.
    */
   public String getTeamName() {
@@ -20,23 +20,23 @@ public class Team {
   }
 
   /**
-   * Return teamId.
-   * @return teamId The ID of this particular team.
+   *
+   * @return teamId
    */
   public int getTeamId() {
     return this.teamId;
   }
 
   /**
-   * Set teamName.
-   * @param newTeamName The team's new name.
+   *
+   * @param newTeamName
    */
   public void setTeamName(String newTeamName) {
     this.teamName = newTeamName;
   }
 
   /**
-   * Return riderIdsToRiders.
+   *
    * @return riderIdsToRiders The hash map between the team's rider's ID's and their
    * corresponding objects.
    */
@@ -45,7 +45,7 @@ public class Team {
   }
 
   /**
-   * Add a rider to the team.
+   *
    * @param rider A rider object.
    */
   public void addRider(Rider rider) {
@@ -53,7 +53,7 @@ public class Team {
   }
 
   /**
-   * Remove a rider from the team.
+   *
    * @param riderId A rider's Id.
    */
   public void removeRider(Integer riderId) {
@@ -61,7 +61,8 @@ public class Team {
   }
 
   /**
-   * Constructor
+   * Constructor.
+   *
    * @param teamName
    */
   public Team(String teamName) {

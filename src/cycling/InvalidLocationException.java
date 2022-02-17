@@ -3,7 +3,7 @@ package src.cycling;
 /**
  * Thrown when attempting to assign a location outside the bounds of the stage,
  * i.e. 0 {@literal < } location {@literal <=} stage's length.
- * 
+ *
  * @author Diogo Pacheco
  * @version 1.0
  *

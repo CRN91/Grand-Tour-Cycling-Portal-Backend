@@ -2,7 +2,7 @@ package src.cycling;
 
 /**
  * This enum is used to represent the stage types  on road races.
- * 
+ *
  * @author Diogo Pacheco
  * @version 1.0
  *
