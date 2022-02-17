@@ -126,13 +126,22 @@ public class CyclingPortal implements CyclingPortalInterface {
     for (Integer i : teamIdsSet) {
       teamIds[index++] = i;
     }
+
     return teamIds;
   }
 
   @Override
   public int[] getTeamRiders(int teamId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-    return null;
+    Team team = teamIdsToTeams.get(teamId);
+    HashMap<Integer, Rider> riderIdsToRiders = team.getRiderIdsToRiders();
+    Set<Integer> riderIdsSet = riderIdsToRiders.keySet();
+    int[] riderIds = new int[riderIdsSet.size()];
+    int index = 0;
+    for (Integer i: riderIdsSet) {
+      riderIds[index++] = i;
+    }
+
+    return riderIds;
   }
 
   @Override
@@ -264,10 +273,10 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   /*
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IDNotRecognisedException {
     CyclingPortal cyclingPortal = new CyclingPortal();
-    int[] teamIds = cyclingPortal.getTeams();
-    for (int i : teamIds) {
+    int[] riderIds = cyclingPortal.getTeamRiders(1);
+    for (int i : riderIds) {
       System.out.println(Integer.toString(i));
     }
   }
