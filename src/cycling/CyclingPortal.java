@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class CyclingPortal implements CyclingPortalInterface {
 
-  private HashMap<Integer, Team> teamsHashMap = new HashMap<Integer, Team>();
+  private HashMap<Integer, Team> teamIdsToTeams = new HashMap<Integer, Team>();
 
   @Override
   public int[] getRaceIds() {
@@ -113,7 +113,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getTeams() {
-    Set<Integer> teamIdsSet = teamsHashMap.keySet();
+    Set<Integer> teamIdsSet = teamIdsToTeams.keySet();
     int[] teamIds = new int[teamIdsSet.size()];
     int index = 0;
     for (Integer i : teamIdsSet) {
