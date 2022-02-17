@@ -307,7 +307,8 @@ public interface MiniCyclingPortalInterface extends Serializable {
    * @throws IllegalArgumentException If the name of the rider is null or the year
    *                  of birth is less than 1900.
    */
-  int createRider(int teamID, String name, int yearOfBirth) throws IDNotRecognisedException, IllegalArgumentException;
+  int createRider(int teamID, String name, int yearOfBirth) throws IDNotRecognisedException,
+      IllegalArgumentException;
 
   /**
    * Removes a rider from the system. When a rider is removed from the platform,
