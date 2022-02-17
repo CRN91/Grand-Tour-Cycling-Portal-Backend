@@ -132,23 +132,33 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getTeamRiders(int teamId) throws IDNotRecognisedException {
-    Team team = teamIdsToTeams.get(teamId);
-    HashMap<Integer, Rider> riderIdsToRiders = team.getRiderIdsToRiders();
-    Set<Integer> riderIdsSet = riderIdsToRiders.keySet();
-    int[] riderIds = new int[riderIdsSet.size()];
-    int index = 0;
-    for (Integer i: riderIdsSet) {
-      riderIds[index++] = i;
-    }
+    try {
+      Team team = teamIdsToTeams.get(teamId);
+      HashMap<Integer, Rider> riderIdsToRiders = team.getRiderIdsToRiders();
+      Set<Integer> riderIdsSet = riderIdsToRiders.keySet();
+      int[] riderIds = new int[riderIdsSet.size()];
+      int index = 0;
+      for (Integer i : riderIdsSet) {
+        riderIds[index++] = i;
+      }
 
-    return riderIds;
+      return riderIds;
+    } catch (NullPointerException ex) {
+      throw new IDNotRecognisedException("Team ID not recognised!");
+    }
   }
 
   @Override
   public int createRider(int teamID, String name, int yearOfBirth)
       throws IDNotRecognisedException, IllegalArgumentException {
-    // TODO Auto-generated method stub
-    return 0;
+    try {
+      Team team = teamIdsToTeams.get(teamID);
+      Rider newRider = new Rider(name, teamID, yearOfBirth);
+      team.addRider(newRider);
+      return newRider.getRiderId();
+    } catch (NullPointerException ex) {
+      throw new IDNotRecognisedException("Team ID not found!");
+    }
   }
 
   @Override
@@ -272,7 +282,6 @@ public class CyclingPortal implements CyclingPortalInterface {
     return null;
   }
 
-  /*
   public static void main(String[] args) throws IDNotRecognisedException {
     CyclingPortal cyclingPortal = new CyclingPortal();
     int[] riderIds = cyclingPortal.getTeamRiders(1);
@@ -280,5 +289,4 @@ public class CyclingPortal implements CyclingPortalInterface {
       System.out.println(Integer.toString(i));
     }
   }
-  */
 }
