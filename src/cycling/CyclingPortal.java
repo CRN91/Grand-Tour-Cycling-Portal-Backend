@@ -3,8 +3,12 @@ package src.cycling;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Set;
 
 public class CyclingPortal implements CyclingPortalInterface {
+
+  private HashMap<Integer, Team> teamIdsToTeams = new HashMap<Integer, Team>();
 
   @Override
   public int[] getRaceIds() {
@@ -114,10 +118,19 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   }
 
+  /**
+   * Get the list of teams' numerical IDs.
+   * @return teamIds The array of teams' numerical IDs.
+   */
   @Override
   public int[] getTeams() {
-    // TODO Auto-generated method stub
-    return null;
+    Set<Integer> teamIdsSet = teamIdsToTeams.keySet();
+    int[] teamIds = new int[teamIdsSet.size()];
+    int index = 0;
+    for (Integer i : teamIdsSet) {
+      teamIds[index++] = i;
+    }
+    return teamIds;
   }
 
   @Override
@@ -254,4 +267,13 @@ public class CyclingPortal implements CyclingPortalInterface {
     return null;
   }
 
+  /*
+  public static void main(String[] args) {
+    CyclingPortal cyclingPortal = new CyclingPortal();
+    int[] teamIds = cyclingPortal.getTeams();
+    for (int i : teamIds) {
+      System.out.println(Integer.toString(i));
+    }
+  }
+  */
 }
