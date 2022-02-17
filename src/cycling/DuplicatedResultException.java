@@ -11,20 +11,20 @@ package src.cycling;
  */
 public class DuplicatedResultException extends Exception {
 
-	/**
-	 * Constructs an instance of the exception with no message
-	 */
-	public DuplicatedResultException() {
-		// do nothing
-	}
+  /**
+   * Constructs an instance of the exception with no message
+   */
+  public DuplicatedResultException() {
+    // do nothing
+  }
 
-	/**
-	 * Constructs an instance of the exception containing the message argument
-	 * 
-	 * @param message message containing details regarding the exception cause
-	 */
-	public DuplicatedResultException(String message) {
-		super(message);
-	}
+  /**
+   * Constructs an instance of the exception containing the message argument
+   * 
+   * @param message message containing details regarding the exception cause
+   */
+  public DuplicatedResultException(String message) {
+    super(message);
+  }
 
 }

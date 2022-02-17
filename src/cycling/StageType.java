@@ -8,25 +8,25 @@ package src.cycling;
  *
  */
 public enum StageType {
-	
-	/**
-	 * Used for mostly flat stages.
-	 */
-	FLAT,
-	
-	/**
-	 * Used for hilly finish or stages with moderate amounts of mountains.
-	 */
-	MEDIUM_MOUNTAIN,
-	
-	/**
-	 * Used for high mountain finish or stages with multiple categorised climbs.
-	 */
-	HIGH_MOUNTAIN,
-	
-	/**
-	 * Used for time trials. 
-	 */
-	TT;
-	
+  
+  /**
+   * Used for mostly flat stages.
+   */
+  FLAT,
+  
+  /**
+   * Used for hilly finish or stages with moderate amounts of mountains.
+   */
+  MEDIUM_MOUNTAIN,
+  
+  /**
+   * Used for high mountain finish or stages with multiple categorised climbs.
+   */
+  HIGH_MOUNTAIN,
+  
+  /**
+   * Used for time trials. 
+   */
+  TT;
+  
 }

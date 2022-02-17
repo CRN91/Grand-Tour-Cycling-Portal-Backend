@@ -11,20 +11,20 @@ package src.cycling;
  */
 public class InvalidNameException extends Exception {
 
-	/**
-	 * Constructs an instance of the exception with no message
-	 */
-	public InvalidNameException() {
-		// do nothing
-	}
+  /**
+   * Constructs an instance of the exception with no message
+   */
+  public InvalidNameException() {
+    // do nothing
+  }
 
-	/**
-	 * Constructs an instance of the exception containing the message argument
-	 * 
-	 * @param message message containing details regarding the exception cause
-	 */
-	public InvalidNameException(String message) {
-		super(message);
-	}
+  /**
+   * Constructs an instance of the exception containing the message argument
+   * 
+   * @param message message containing details regarding the exception cause
+   */
+  public InvalidNameException(String message) {
+    super(message);
+  }
 
 }
