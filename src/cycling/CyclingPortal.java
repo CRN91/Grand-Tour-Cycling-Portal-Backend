@@ -163,8 +163,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeRider(int riderId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-
+    // Get teams the rider is in then remove the rider from all of those teams.
   }
 
   @Override
