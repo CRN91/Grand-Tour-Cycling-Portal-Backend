@@ -5,6 +5,9 @@ import java.util.HashMap;
 
 /**
  * Represents a grand tour staged race.
+ *
+ * @author Sam Barker, Adam Kaizra
+ * @version 1.0
  */
 public class StagedRace {
   private String nameOfRace;
