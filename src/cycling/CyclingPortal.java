@@ -1,6 +1,6 @@
 package src.cycling;
 
-import java.io.*;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -114,6 +114,14 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int createTeam(String name, String description) throws IllegalNameException,
       InvalidNameException {
+    if (name == null || name == "" || name.trim() == "") {
+      throw new InvalidNameException("Invalid name of a team!");
+    }
+    for (Team team : teamIdsToTeams.values()) {
+      if (team.getTeamName() == name) {
+        throw new IllegalNameException("Team name already in use!");
+      }
+    }
     Team newTeam = new Team(name, description);
     teamIdsToTeams.put(newTeam.getTeamId(), newTeam);
     return newTeam.getTeamId();
@@ -121,11 +129,8 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeTeam(int teamId) throws IDNotRecognisedException {
-    try {
-      teamIdsToTeams.remove(teamId);
-    } catch (NullPointerException ex) {
-      throw new IDNotRecognisedException("Team ID not found!");
-    }
+    // TODO Auto-generated method stub
+
   }
 
   @Override
@@ -177,12 +182,12 @@ public class CyclingPortal implements CyclingPortalInterface {
     for (Team team : teamIdsToTeams.values()) {
       HashMap<Integer, Rider> riders = team.getRiderIdsToRiders();
       try {
-        riders.get(riderId);
-        hasBeenFound = true;
+        if (riders.get(riderId) != null) {
+          hasBeenFound = true;
+        }
         riders.remove(riderId);
         break;
-      } catch (NullPointerException ex) {
-      }
+      } catch (NullPointerException ex) {}
     }
     if (!hasBeenFound) {
       throw new IDNotRecognisedException("Rider ID not found!");
@@ -250,20 +255,14 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void saveCyclingPortal(String filename) throws IOException {
-    FileOutputStream fileOutputStream = new FileOutputStream(filename);
-    ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-    objectOutputStream.writeObject(this);
-    objectOutputStream.flush();
-    objectOutputStream.close();
+    // TODO Auto-generated method stub
+
   }
 
   @Override
   public void loadCyclingPortal(String filename) throws IOException, ClassNotFoundException {
-    FileInputStream fileInputStream = new FileInputStream(filename);
-    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-    CyclingPortal cyclingPortal = (CyclingPortal) objectInputStream.readObject();
-    objectInputStream.close();
-    // TODO Replacing all the contents of the current object with the loaded one, wait until end
+    // TODO Auto-generated method stub
+
   }
 
   @Override
@@ -310,7 +309,21 @@ public class CyclingPortal implements CyclingPortalInterface {
     return null;
   }
 
-
-  public static void main(String[] args) throws IDNotRecognisedException, IOException, ClassNotFoundException {
+  public static void main(String[] args) throws IDNotRecognisedException {
+    CyclingPortal cycPort = new CyclingPortal();
+    try {
+      System.out.println(cycPort.createTeam("Britain", "Best Team"));
+    } catch( InvalidNameException | IllegalNameException ex){
+     System.out.println("Exception");
+    }
+    Rider tempRider = new Rider("John",0, 1021);
+    cycPort.teamIdsToTeams.get(0).addRider(tempRider);
+    for (Rider r: cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
+      System.out.println(r.getRiderName());
+    }
+    cycPort.removeRider(0);
+    for (Rider r: cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
+      System.out.println(r.getRiderName());
+    }
   }
 }
