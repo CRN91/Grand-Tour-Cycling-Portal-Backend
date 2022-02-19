@@ -56,9 +56,9 @@ public class Team {
   /**
    * @param riderId
    */
-  public void removeRider(Integer riderId) {
-    this.riderIdsToRiders.remove(riderId);
-  }
+  //public void removeRider(Integer riderId) {
+   // this.riderIdsToRiders.remove(riderId);
+ // }
 
   /**
    * Constructor.
