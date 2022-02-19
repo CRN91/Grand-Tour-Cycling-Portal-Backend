@@ -3,17 +3,22 @@ package src.cycling;
 import java.util.HashMap;
 import src.cycling.Rider;
 
+/**
+ * Teams are made up of riders and can be placed into races.
+ *
+ * @author Adam Kaizra, Sam Barker
+ * @version 1.0
+ */
 public class Team {
   private String teamName;
   private int teamId;
-  //Creates a hash map between the rider's team's Ids and the rider objects
+  // Creates a hash map between the team's rider's Ids and the rider objects.
   HashMap<Integer, Rider> riderIdsToRiders = new HashMap<Integer, Rider>();
 
-  private static int latestTeamId = 0;
+  private static int latestTeamId = 0; // enumerates to get unique id, with 2^32 possible ids.
 
   /**
-   *
-   * @return Team.teamName - The name of the team.
+   * @return The name of the team.
    */
   public String getTeamName() {
     return this.teamName;
@@ -21,14 +26,13 @@ public class Team {
 
   /**
    *
-   * @return teamId
+   * @return The ID of the team.
    */
   public int getTeamId() {
     return this.teamId;
   }
 
   /**
-   *
    * @param newTeamName
    */
   public void setTeamName(String newTeamName) {
@@ -36,25 +40,21 @@ public class Team {
   }
 
   /**
-   *
-   * @return riderIdsToRiders The hash map between the team's rider's ID's and their
-   * corresponding objects.
+   * @return A hash map between the team's rider's IDs and their corresponding rider objects.
    */
   public HashMap<Integer, Rider> getRiderIdsToRiders() {
     return riderIdsToRiders;
   }
 
   /**
-   *
-   * @param rider A rider object.
+   * @param rider
    */
   public void addRider(Rider rider) {
     this.riderIdsToRiders.put(rider.getRiderId(), rider);
   }
 
   /**
-   *
-   * @param riderId A rider's Id.
+   * @param riderId
    */
   public void removeRider(Integer riderId) {
     this.riderIdsToRiders.remove(riderId);
@@ -74,7 +74,7 @@ public class Team {
    * For back of the napkin testing purposes, comment out when not testing
    * @param args Command line args.
    */
-   /**public static void main(String[] args) {
+   /*public static void main(String[] args) {
     Team testTeam1 = new Team("PricklyPenguins");
     System.out.println(testTeam1.getTeamName());
     System.out.println(testTeam1.getTeamId());
