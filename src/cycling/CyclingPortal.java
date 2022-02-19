@@ -6,6 +6,12 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Set;
 
+/**
+ * Implementor of the CyclingPortalInterface interface.
+ *
+ * @author Adam Kaizra, Sam Barker
+ * @version 1.0
+ */
 public class CyclingPortal implements CyclingPortalInterface {
 
   private HashMap<Integer, Team> teamIdsToTeams = new HashMap<Integer, Team>();
