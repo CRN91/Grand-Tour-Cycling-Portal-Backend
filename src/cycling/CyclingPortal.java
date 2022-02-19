@@ -163,9 +163,22 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeRider(int riderId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-
-  }
+    boolean hasBeenFound = False;
+    for (Team team : teamIdsToTeams.values()) {
+      HashMap<Integer,Rider> riders = team.getRiderIdsToRiders();
+      try {
+        riders.get(riderId);
+        hasBeenFound = True;
+        break;
+      }
+      catch(NullPointerException ex){}
+    }
+    if (hasBeenFound) {
+      riders.remove(riderId);
+    }
+    else{
+      throw new IDNotRecognisedException("Rider ID not found!");
+    }
 
   @Override
   public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
