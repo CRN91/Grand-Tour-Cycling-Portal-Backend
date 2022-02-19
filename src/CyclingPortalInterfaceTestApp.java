@@ -1,9 +1,8 @@
 package src;
 
-import src.cycling.BadCyclingPortal;
-import src.cycling.BadMiniCyclingPortal;
-import src.cycling.CyclingPortalInterface;
-import src.cycling.MiniCyclingPortalInterface;
+import src.cycling.*;
+
+import java.io.*;
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a
@@ -17,20 +16,27 @@ import src.cycling.MiniCyclingPortalInterface;
  */
 public class CyclingPortalInterfaceTestApp {
 
+  public void whenSerializingCyclingPortal_FileIsSaved(CyclingPortal cyclingPortal,
+                                                       String fileName) {
+    try {
+      cyclingPortal.saveCyclingPortal(fileName);
+    } catch (IOException ex) {
+      System.out.println("File failed to write!");
+    }
+
+    File f = new File(fileName);
+    assert(f.exists() && !f.isDirectory()) : "File failed to save!";
+  }
+
   /**
    * Test method.
-   * 
    * @param args not used
    */
   public static void main(String[] args) {
     System.out.println("The system compiled and started the execution...");
+    CyclingPortalInterfaceTestApp testApp = new CyclingPortalInterfaceTestApp();
 
-    MiniCyclingPortalInterface portal = new BadMiniCyclingPortal();
-//    CyclingPortalInterface portal = new BadCyclingPortal();
-
-    assert (portal.getRaceIds().length == 0)
-        : "Innitial SocialMediaPlatform not empty as required or not returning an empty array.";
-
+    CyclingPortal cyclingPortal = new CyclingPortal();
+    testApp.whenSerializingCyclingPortal_FileIsSaved(cyclingPortal, "Test.txt");
   }
-
 }

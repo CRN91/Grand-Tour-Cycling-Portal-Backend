@@ -1,6 +1,6 @@
 package src.cycling;
 
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -121,8 +121,11 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeTeam(int teamId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-
+    try {
+      teamIdsToTeams.remove(teamId);
+    } catch (NullPointerException ex) {
+      throw new IDNotRecognisedException("Team ID not found!");
+    }
   }
 
   @Override
@@ -172,18 +175,19 @@ public class CyclingPortal implements CyclingPortalInterface {
   public void removeRider(int riderId) throws IDNotRecognisedException {
     boolean hasBeenFound = false;
     for (Team team : teamIdsToTeams.values()) {
-      HashMap<Integer,Rider> riders = team.getRiderIdsToRiders();
+      HashMap<Integer, Rider> riders = team.getRiderIdsToRiders();
       try {
         riders.get(riderId);
         hasBeenFound = true;
         riders.remove(riderId);
         break;
+      } catch (NullPointerException ex) {
       }
-      catch(NullPointerException ex){}
     }
     if (!hasBeenFound) {
       throw new IDNotRecognisedException("Rider ID not found!");
     }
+  }
 
   @Override
   public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
@@ -246,14 +250,20 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void saveCyclingPortal(String filename) throws IOException {
-    // TODO Auto-generated method stub
-
+    FileOutputStream fileOutputStream = new FileOutputStream(filename);
+    ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+    objectOutputStream.writeObject(this);
+    objectOutputStream.flush();
+    objectOutputStream.close();
   }
 
   @Override
   public void loadCyclingPortal(String filename) throws IOException, ClassNotFoundException {
-    // TODO Auto-generated method stub
-
+    FileInputStream fileInputStream = new FileInputStream(filename);
+    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+    CyclingPortal cyclingPortal = (CyclingPortal) objectInputStream.readObject();
+    objectInputStream.close();
+    // TODO Replacing all the contents of the current object with the loaded one, wait until end
   }
 
   @Override
@@ -300,11 +310,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     return null;
   }
 
-  public static void main(String[] args) throws IDNotRecognisedException {
-    CyclingPortal cyclingPortal = new CyclingPortal();
-    int[] riderIds = cyclingPortal.getTeamRiders(1);
-    for (int i : riderIds) {
-      System.out.println(Integer.toString(i));
-    }
+
+  public static void main(String[] args) throws IDNotRecognisedException, IOException, ClassNotFoundException {
   }
 }
