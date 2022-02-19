@@ -114,8 +114,9 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int createTeam(String name, String description) throws IllegalNameException,
       InvalidNameException {
-    // TODO Auto-generated method stub
-    return 0;
+    Team newTeam = new Team(name, description);
+    teamIdsToTeams.put(newTeam.getTeamId(), newTeam);
+    return newTeam.getTeamId();
   }
 
   @Override
@@ -169,20 +170,18 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeRider(int riderId) throws IDNotRecognisedException {
-    boolean hasBeenFound = False;
+    boolean hasBeenFound = false;
     for (Team team : teamIdsToTeams.values()) {
       HashMap<Integer,Rider> riders = team.getRiderIdsToRiders();
       try {
         riders.get(riderId);
-        hasBeenFound = True;
+        hasBeenFound = true;
+        riders.remove(riderId);
         break;
       }
       catch(NullPointerException ex){}
     }
-    if (hasBeenFound) {
-      riders.remove(riderId);
-    }
-    else{
+    if (!hasBeenFound) {
       throw new IDNotRecognisedException("Rider ID not found!");
     }
 

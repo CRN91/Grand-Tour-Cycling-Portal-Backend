@@ -10,7 +10,7 @@ import src.cycling.Rider;
  * @version 1.0
  */
 public class Team {
-  private String teamName;
+  private String teamName, description;
   private int teamId;
   // Creates a hash map between the team's rider's Ids and the rider objects.
   HashMap<Integer, Rider> riderIdsToRiders = new HashMap<Integer, Rider>();
@@ -65,8 +65,9 @@ public class Team {
    *
    * @param teamName
    */
-  public Team(String teamName) {
+  public Team(String teamName, String description) {
     this.teamName = teamName;
+    this.description = description;
     this.teamId = latestTeamId++;
   }
 
