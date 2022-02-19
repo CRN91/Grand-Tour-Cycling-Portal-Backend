@@ -114,6 +114,14 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int createTeam(String name, String description) throws IllegalNameException,
       InvalidNameException {
+    if (name == null || name == "" || name.trim() == "") {
+      throw new InvalidNameException("Invalid name of a team!");
+    }
+    for (Team team : teamIdsToTeams.values()) {
+      if (team.getTeamName() == name) {
+        throw new IllegalNameException("Team name already in use!");
+      }
+    }
     Team newTeam = new Team(name, description);
     teamIdsToTeams.put(newTeam.getTeamId(), newTeam);
     return newTeam.getTeamId();
@@ -172,18 +180,19 @@ public class CyclingPortal implements CyclingPortalInterface {
   public void removeRider(int riderId) throws IDNotRecognisedException {
     boolean hasBeenFound = false;
     for (Team team : teamIdsToTeams.values()) {
-      HashMap<Integer,Rider> riders = team.getRiderIdsToRiders();
+      HashMap<Integer, Rider> riders = team.getRiderIdsToRiders();
       try {
         riders.get(riderId);
         hasBeenFound = true;
         riders.remove(riderId);
         break;
+      } catch (NullPointerException ex) {
       }
-      catch(NullPointerException ex){}
     }
     if (!hasBeenFound) {
       throw new IDNotRecognisedException("Rider ID not found!");
     }
+  }
 
   @Override
   public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
@@ -301,10 +310,14 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   public static void main(String[] args) throws IDNotRecognisedException {
-    CyclingPortal cyclingPortal = new CyclingPortal();
-    int[] riderIds = cyclingPortal.getTeamRiders(1);
-    for (int i : riderIds) {
-      System.out.println(Integer.toString(i));
+    CyclingPortal cycPort = new CyclingPortal();
+    try {
+      System.out.println(cycPort.createTeam("Britain", "Best Team"));
+    } catch( InvalidNameException | IllegalNameException ex){
+     System.out.println("Exception");
+    }
+    for (int i: cycPort.getTeams()) {
+      System.out.println(cycPort.teamIdsToTeams.get(i).getTeamName());
     }
   }
 }
