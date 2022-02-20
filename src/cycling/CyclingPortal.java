@@ -32,14 +32,46 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int createRace(String name, String description)
       throws IllegalNameException, InvalidNameException {
-    // TODO Auto-generated method stub
-    return 0;
+    if (name.trim().equals("")) {
+      throw new InvalidNameException("Race name is invalid!");
+    }
+    // Search hashmap of races for one with the given name and throw exception if found
+    for (StagedRace stagedRace : raceIdsToRaces.values()) {
+      String stagedRaceName = stagedRace.getName();
+      if (stagedRaceName.equals(name)) {
+        throw new IllegalNameException("There is already a race with this name!");
+      }
+    }
+
+    // Race doesn't already exist
+    StagedRace raceToAdd = new StagedRace(name, description);
+    raceIdsToRaces.put(raceToAdd.getId(), raceToAdd);
+
+    return raceToAdd.getId();
   }
 
   @Override
   public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-    return null;
+    String raceDetails = "";
+
+    StagedRace stagedRace;
+    try {
+      stagedRace = raceIdsToRaces.get(raceId);
+    } catch (NullPointerException ex) {
+      throw new IDNotRecognisedException("Race not found!");
+    }
+
+    // Add immediately accessible details to status output string
+    raceDetails = raceDetails
+        + "Race name: " + stagedRace.getName() + "\n"
+        + "Description: " + stagedRace.getDescription() + "\n"
+        + "Race ID: " + stagedRace.getId() + "\n"
+        + "Dates: " + "\n";
+
+    // TODO Add stage details to output
+    // TODO Add results details to output
+
+    return raceDetails;
   }
 
   @Override

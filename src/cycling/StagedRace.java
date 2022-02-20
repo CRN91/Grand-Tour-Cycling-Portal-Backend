@@ -10,28 +10,32 @@ import java.util.HashMap;
  * @version 1.0
  */
 public class StagedRace {
-  private String nameOfRace;
+  private String name;
+  private String description;
+  private int raceId;
   private LocalTime[] datesOfCompetitions;
-  private HashMap<Integer, Team> teamIdsToTeamsCompeting;
-  private Stage[] stagedRaceStages;
 
-  public String getNameOfRace() {
-    return nameOfRace;
+  private Competition[] competitions = new Competition[3];
+  private Stage[] raceStages;
+
+  private static int latestRaceId = 0;
+
+  public String getName() {
+    return this.name;
   }
 
-  public LocalTime[] getDatesOfCompetitions() {
-    return datesOfCompetitions;
+  public String getDescription() {
+    return this.description;
   }
 
-  public HashMap<Integer, Team> getTeamIdsToTeamsCompeting() {
-    return teamIdsToTeamsCompeting;
+  public int getId() {
+    return this.raceId;
   }
 
-  public Stage[] getStagedRaceStages() {
-    return stagedRaceStages;
-  }
 
-  public void setNameOfRace(String nameOfRace) {
-    this.nameOfRace = nameOfRace;
+  public StagedRace(String name, String description) {
+    this.name = name;
+    this.description = description;
+    this.raceId = latestRaceId++;
   }
 }
