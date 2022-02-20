@@ -56,7 +56,7 @@ public class Team {
    * @param rider
    */
   public void addRider(Rider rider) {
-    this.riderIdsToRiders.put(rider.getRiderId(), rider);
+    this.riderIdsToRiders.put(rider.getId(), rider);
   }
 
   /**
