@@ -361,11 +361,11 @@ public class CyclingPortal implements CyclingPortalInterface {
     Rider tempRider = new Rider("John",0, 1021);
     cycPort.teamIdsToTeams.get(0).addRider(tempRider);
     for (Rider r: cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
-      System.out.println(r.getRiderName());
+      System.out.println(r.getName());
     }
     cycPort.removeRider(0);
     for (Rider r: cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
-      System.out.println(r.getRiderName());
+      System.out.println(r.getName());
     }
   }
 }

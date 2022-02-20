@@ -21,49 +21,49 @@ public class Rider {
   /**
    * @return The rider's name.
    */
-  public String getRiderName() {
+  public String getName() {
     return this.name;
   }
 
   /**
    * @return The rider's ID.
    */
-  public int getRiderId() {
+  public int getId() {
     return this.id;
   }
 
   /**
    * @return The ID of the team the rider is in.
    */
-  public int getRiderTeamId() {
+  public int getTeamId() {
     return this.teamId;
   }
 
   /**
    * @return The rider's year of birth.
    */
-  public int getRiderYearOfBirth() {
+  public int getYearOfBirth() {
     return yearOfBirth;
   }
 
   /**
    * @param newRiderName
    */
-  public void setRiderName(String newRiderName) {
+  public void setName(String newRiderName) {
     this.name = newRiderName;
   }
 
   /**
    * @param teamId
    */
-  public void setRiderTeamId(int teamId) {
+  public void setTeamId(int teamId) {
     this.teamId = teamId;
   }
 
   /**
    * @param yearOfBirth
    */
-  public void setRiderYearOfBirth(int yearOfBirth) {
+  public void setYearOfBirth(int yearOfBirth) {
     this.yearOfBirth = yearOfBirth;
   }
 
