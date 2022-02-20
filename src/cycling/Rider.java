@@ -11,73 +11,73 @@ import java.util.UUID;
  *
  */
 public class Rider {
-  private String riderName;
-  private int riderId;
-  private int riderTeamId;
-  private int riderYearOfBirth;
+  private String name;
+  private int id;
+  private int teamId;
+  private int yearOfBirth;
 
-  private static int latestRiderId = 0; // enumerates to get unique id, with 2^32 possible ids
+  private static int latestId = 0; // enumerates to get unique id, with 2^32 possible ids
 
   /**
    * @return The rider's name.
    */
   public String getRiderName() {
-    return this.riderName;
+    return this.name;
   }
 
   /**
    * @return The rider's ID.
    */
   public int getRiderId() {
-    return this.riderId;
+    return this.id;
   }
 
   /**
    * @return The ID of the team the rider is in.
    */
   public int getRiderTeamId() {
-    return this.riderTeamId;
+    return this.teamId;
   }
 
   /**
    * @return The rider's year of birth.
    */
   public int getRiderYearOfBirth() {
-    return riderYearOfBirth;
+    return yearOfBirth;
   }
 
   /**
    * @param newRiderName
    */
   public void setRiderName(String newRiderName) {
-    this.riderName = newRiderName;
+    this.name = newRiderName;
   }
 
   /**
-   * @param riderTeamId
+   * @param teamId
    */
-  public void setRiderTeamId(int riderTeamId) {
-    this.riderTeamId = riderTeamId;
+  public void setRiderTeamId(int teamId) {
+    this.teamId = teamId;
   }
 
   /**
-   * @param riderYearOfBirth
+   * @param yearOfBirth
    */
-  public void setRiderYearOfBirth(int riderYearOfBirth) {
-    this.riderYearOfBirth = riderYearOfBirth;
+  public void setRiderYearOfBirth(int yearOfBirth) {
+    this.yearOfBirth = yearOfBirth;
   }
 
   /**
    * Constructor
-   * @param riderName Rider's name
-   * @param riderTeamId The ID of the team the rider belongs to
-   * @param riderYearOfBirth The rider's year of birth
+   * @param name Rider's name
+   * @param teamId The ID of the team the rider belongs to
+   * @param yearOfBirth The rider's year of birth
    */
-  public Rider(String riderName, int riderTeamId, int riderYearOfBirth) {
-    this.riderName = riderName;
-    this.riderTeamId = riderTeamId;
-    this.riderYearOfBirth = riderYearOfBirth;
-    this.riderId = latestRiderId++;
+  public Rider(String name, int teamId, int yearOfBirth) {
+    this.name = name;
+    this.teamId = teamId;
+    this.yearOfBirth = yearOfBirth;
+    this.id = latestId++;
   }
 
   /**
