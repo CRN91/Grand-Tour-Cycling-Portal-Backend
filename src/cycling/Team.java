@@ -10,33 +10,39 @@ import src.cycling.Rider;
  * @version 1.0
  */
 public class Team {
-  private String teamName, description;
-  private int teamId;
+  private String name, description;
+  private int id;
   // Creates a hash map between the team's rider's Ids and the rider objects.
-  HashMap<Integer, Rider> riderIdsToRiders = new HashMap<Integer, Rider>();
+  private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<Integer, Rider>();
 
   private static int latestTeamId = 0; // enumerates to get unique id, with 2^32 possible ids.
 
   /**
    * @return The name of the team.
    */
-  public String getTeamName() {
-    return this.teamName;
+  public String getName() {
+    return this.name;
   }
 
   /**
-   *
+   * @return The description of the team.
+   */
+  public String getDescription() {
+    return this.description;
+  }
+
+  /**
    * @return The ID of the team.
    */
-  public int getTeamId() {
-    return this.teamId;
+  public int getId() {
+    return this.id;
   }
 
   /**
    * @param newTeamName
    */
-  public void setTeamName(String newTeamName) {
-    this.teamName = newTeamName;
+  public void setName(String newTeamName) {
+    this.name = newTeamName;
   }
 
   /**
@@ -63,12 +69,12 @@ public class Team {
   /**
    * Constructor.
    *
-   * @param teamName
+   * @param name
    */
-  public Team(String teamName, String description) {
-    this.teamName = teamName;
+  public Team(String name, String description) {
+    this.name = name;
     this.description = description;
-    this.teamId = latestTeamId++;
+    this.id = latestTeamId++;
   }
 
   /**
