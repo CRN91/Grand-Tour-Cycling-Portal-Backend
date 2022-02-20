@@ -212,7 +212,7 @@ public class CyclingPortal implements CyclingPortalInterface {
       Team team = teamIdsToTeams.get(teamID);
       Rider newRider = new Rider(name, teamID, yearOfBirth);
       team.addRider(newRider);
-      return newRider.getRiderId();
+      return newRider.getId();
     } catch (NullPointerException ex) {
       throw new IDNotRecognisedException("Team ID not found!");
     }
