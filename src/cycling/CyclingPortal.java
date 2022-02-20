@@ -157,13 +157,13 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new InvalidNameException("Invalid name of a team!");
     }
     for (Team team : teamIdsToTeams.values()) {
-      if (team.getTeamName() == name) {
+      if (team.getName() == name) {
         throw new IllegalNameException("Team name already in use!");
       }
     }
     Team newTeam = new Team(name, description);
-    teamIdsToTeams.put(newTeam.getTeamId(), newTeam);
-    return newTeam.getTeamId();
+    teamIdsToTeams.put(newTeam.getId(), newTeam);
+    return newTeam.getId();
   }
 
   @Override
