@@ -10,7 +10,8 @@ import src.cycling.Rider;
  * @version 1.0
  */
 public class Team {
-  private String name, description;
+  private String name;
+  private String description;
   private int id;
   // Creates a hash map between the team's rider's Ids and the rider objects.
   private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<Integer, Rider>();
@@ -32,6 +33,7 @@ public class Team {
   }
 
   /**
+   *
    * @return The ID of the team.
    */
   public int getId() {
@@ -39,6 +41,7 @@ public class Team {
   }
 
   /**
+   *
    * @param newTeamName
    */
   public void setName(String newTeamName) {
@@ -46,6 +49,7 @@ public class Team {
   }
 
   /**
+   *
    * @return A hash map between the team's rider's IDs and their corresponding rider objects.
    */
   public HashMap<Integer, Rider> getRiderIdsToRiders() {
@@ -53,6 +57,7 @@ public class Team {
   }
 
   /**
+   *
    * @param rider
    */
   public void addRider(Rider rider) {

@@ -19,6 +19,7 @@ public class Rider {
   private static int latestId = 0; // enumerates to get unique id, with 2^32 possible ids
 
   /**
+   *
    * @return The rider's name.
    */
   public String getName() {
@@ -26,6 +27,7 @@ public class Rider {
   }
 
   /**
+   *
    * @return The rider's ID.
    */
   public int getId() {
@@ -33,6 +35,7 @@ public class Rider {
   }
 
   /**
+   *
    * @return The ID of the team the rider is in.
    */
   public int getTeamId() {
@@ -40,6 +43,7 @@ public class Rider {
   }
 
   /**
+   *
    * @return The rider's year of birth.
    */
   public int getYearOfBirth() {
@@ -47,6 +51,7 @@ public class Rider {
   }
 
   /**
+   *
    * @param newRiderName
    */
   public void setName(String newRiderName) {
@@ -54,6 +59,7 @@ public class Rider {
   }
 
   /**
+   *
    * @param teamId
    */
   public void setTeamId(int teamId) {
@@ -61,6 +67,7 @@ public class Rider {
   }
 
   /**
+   *
    * @param yearOfBirth
    */
   public void setYearOfBirth(int yearOfBirth) {

@@ -1,8 +1,7 @@
 package src;
 
-import src.cycling.*;
-
 import java.io.*;
+import src.cycling.*;
 
 /**
  * A short program to illustrate an app testing some minimal functionality of a
@@ -25,7 +24,7 @@ public class CyclingPortalInterfaceTestApp {
     }
 
     File f = new File(fileName);
-    assert(f.exists() && !f.isDirectory()) : "File failed to save!";
+    assert (f.exists() && !f.isDirectory()) : "File failed to save!";
   }
 
   /**

@@ -10,13 +10,15 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class Stage {
-  protected Integer raceId, id;
-  protected String name, description;
+  protected Integer raceId;
+  protected String name;
+  protected String description;
   protected Double length;
   protected LocalDateTime startTime;
   protected StageType stageType;
+  protected Integer id;
   private ArrayList<Segment> segmentsInStage;
-  protected Boolean underDevelopment = true; // State is either under development or waiting results.
+  protected Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
 
   private static int latestId = 0; // enumerates to get unique id, with 2^32 possible ids.
 

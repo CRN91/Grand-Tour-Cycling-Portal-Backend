@@ -32,11 +32,10 @@ public interface MiniCyclingPortalInterface extends Serializable {
    * 
    * @param name    Race's name.
    * @param description Race's description (can be null).
+   * @return the unique ID of the created race.
    * @throws IllegalNameException If the name already exists in the platform.
    * @throws InvalidNameException If the name is null, empty, has more than 30
    *                characters, or has white spaces.
-   * @return the unique ID of the created race.
-   * 
    */
   int createRace(String name, String description) throws IllegalNameException, InvalidNameException;
 

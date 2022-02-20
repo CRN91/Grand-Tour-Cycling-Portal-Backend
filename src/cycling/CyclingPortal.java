@@ -229,7 +229,7 @@ public class CyclingPortal implements CyclingPortalInterface {
         }
         riders.remove(riderId);
         break;
-      } catch (NullPointerException ex) {}
+      } catch (NullPointerException ex) { } // Errors thrown for each team until ID is found
     }
     if (!hasBeenFound) {
       throw new IDNotRecognisedException("Rider ID not found!");
@@ -355,16 +355,16 @@ public class CyclingPortal implements CyclingPortalInterface {
     CyclingPortal cycPort = new CyclingPortal();
     try {
       System.out.println(cycPort.createTeam("Britain", "Best Team"));
-    } catch( InvalidNameException | IllegalNameException ex){
-     System.out.println("Exception");
+    } catch(InvalidNameException | IllegalNameException ex) {
+      System.out.println("Exception");
     }
-    Rider tempRider = new Rider("John",0, 1021);
+    Rider tempRider = new Rider("John", 0, 1021);
     cycPort.teamIdsToTeams.get(0).addRider(tempRider);
-    for (Rider r: cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
+    for (Rider r : cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
       System.out.println(r.getName());
     }
     cycPort.removeRider(0);
-    for (Rider r: cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
+    for (Rider r : cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
       System.out.println(r.getName());
     }
   }

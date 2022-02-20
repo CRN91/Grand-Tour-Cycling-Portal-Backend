@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * @author Sam Barker, Adam Kaizra
  * @version 1.0
  */
-public class TimeTrial extends Stage{
+public class TimeTrial extends Stage {
    StageType stageType = StageType.TT;
 
   /**
@@ -21,7 +21,8 @@ public class TimeTrial extends Stage{
    * @param startTime
    * @param stageType
    */
-  public TimeTrial(Integer raceId, String name, String description, Double length, LocalDateTime startTime, StageType stageType) {
+  public TimeTrial(Integer raceId, String name, String description, Double length,
+                   LocalDateTime startTime, StageType stageType) {
     super(raceId, name, description, length, startTime, stageType);
   }
 }
