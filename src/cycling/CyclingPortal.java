@@ -1,5 +1,6 @@
 package src.cycling;
 
+import javax.naming.Name;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -342,8 +343,21 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeRaceByName(String name) throws NameNotRecognisedException {
-    // TODO Auto-generated method stub
-
+    boolean foundRace = false;
+    // Find the named race's ID
+    for (Map.Entry<Integer, StagedRace> stagedRaceEntry : raceIdsToRaces.entrySet()) {
+      int raceId = stagedRaceEntry.getKey();
+      StagedRace stagedRace = stagedRaceEntry.getValue();
+      if (stagedRace.getName().equals(name)) {
+        // Found it
+        foundRace = true;
+        raceIdsToRaces.remove(raceId);
+      }
+    }
+    // Gone through the whole hashmap and still haven't found it
+    if (!foundRace) {
+      throw new NameNotRecognisedException("No race found with name " + name);
+    }
   }
 
   @Override
