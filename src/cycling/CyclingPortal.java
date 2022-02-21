@@ -127,8 +127,12 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public double getStageLength(int stageId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-    return 0;
+    for (Map.Entry<Integer, Stage> idToStg : stageIdsToStages.entrySet()) {
+      if (idToStg.getKey() == stageId) {
+        return idToStg.getValue().getLength();
+      }
+    }
+    throw new IDNotRecognisedException("Stage ID not recognised!");
   }
 
   @Override
@@ -288,8 +292,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public LocalTime[] getRiderResultsInStage(int stageId, int riderId)
       throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-    return null;
+    for (Map.Entry<Integer, Race> idToRace : raceIdsToStage.entrySet()) {
   }
 
   @Override
