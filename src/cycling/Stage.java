@@ -17,7 +17,7 @@ public class Stage {
   protected LocalDateTime startTime;
   protected StageType stageType;
   protected Integer id;
-  private ArrayList<Segment> segmentsInStage;
+  public ArrayList<Segment> segmentsInStage = new ArrayList<>();
   protected Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
 
   private static int latestId = 0; // enumerates to get unique id, with 2^32 possible ids.
@@ -132,5 +132,7 @@ public class Stage {
     this.startTime = startTime;
     this.stageType = stageType;
     this.id = latestId++;
+    Segment segsy = new Segment(SegmentType.C4);
+    this.segmentsInStage.add(segsy);
   }
 }

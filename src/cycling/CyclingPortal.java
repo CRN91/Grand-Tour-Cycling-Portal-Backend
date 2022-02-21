@@ -3,9 +3,11 @@ package src.cycling;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
-
+import java.time.LocalDateTime;
 /**
  * Implementor of the CyclingPortalInterface interface.
  *
@@ -17,7 +19,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   private HashMap<Integer, StagedRace> raceIdsToRaces = new HashMap<>();
   private HashMap<Integer, Competition> competitionIdsToCompetitions = new HashMap<>();
-  private HashMap<Integer, Stage> stageIdsToStage = new HashMap<>();
+  public HashMap<Integer, Stage> stageIdsToStage = new HashMap<>();
   private HashMap<Integer, Segment> segmentIdsToRaces = new HashMap<>();
   private HashMap<Integer, Team> teamIdsToTeams = new HashMap<>();
   private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<>();
@@ -151,7 +153,20 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getStageSegments(int stageId) throws IDNotRecognisedException {
-    return null;
+    for (Map.Entry<Integer, Stage> idToStg : stageIdsToStage.entrySet()) {
+      if (idToStg.getKey() == stageId) {
+        ArrayList<Segment> segments = idToStg.getValue().getSegmentsInStage();
+        int segmentsLength = segments.size();
+        int i = 0;
+        int[] arrayOfSegmentIds = new int[segmentsLength];
+        for (Segment segment : segments) {
+          arrayOfSegmentIds[i] = segment.getId();
+          i++;
+        }
+        return arrayOfSegmentIds;
+      }
+    }
+    throw new IDNotRecognisedException("Stage ID not recognised!");
   }
 
   @Override
@@ -355,21 +370,11 @@ public class CyclingPortal implements CyclingPortalInterface {
     return null;
   }
 
-  public static void main(String[] args) throws IDNotRecognisedException {
+  public static void main(String[] args) throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException {
     CyclingPortal cycPort = new CyclingPortal();
-    try {
-      System.out.println(cycPort.createTeam("Britain", "Best Team"));
-    } catch(InvalidNameException | IllegalNameException ex) {
-      System.out.println("Exception");
-    }
-    Rider tempRider = new Rider("John", 0, 1021);
-    cycPort.teamIdsToTeams.get(0).addRider(tempRider);
-    for (Rider r : cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
-      System.out.println(r.getName());
-    }
-    cycPort.removeRider(0);
-    for (Rider r : cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
-      System.out.println(r.getName());
-    }
+    LocalDateTime now = LocalDateTime.now();
+    Stage stagey = new Stage(0,"john","cena",0.0, now, StageType.FLAT);
+    cycPort.stageIdsToStage.put(0,stagey);
+    System.out.println(cycPort.getStageSegments(1));
   }
 }
