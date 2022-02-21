@@ -14,8 +14,13 @@ import java.util.Set;
  */
 public class CyclingPortal implements CyclingPortalInterface {
 
-  private HashMap<Integer, Team> teamIdsToTeams = new HashMap<>();
+
   private HashMap<Integer, StagedRace> raceIdsToRaces = new HashMap<>();
+  private HashMap<Integer, Competition> competitionIdsToCompetitions = new HashMap<>();
+  private HashMap<Integer, Stage> stageIdsToStage = new HashMap<>();
+  private HashMap<Integer, Segment> segmentIdsToRaces = new HashMap<>();
+  private HashMap<Integer, Team> teamIdsToTeams = new HashMap<>();
+  private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<>();
 
   @Override
   public int[] getRaceIds() {
@@ -146,7 +151,6 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getStageSegments(int stageId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
     return null;
   }
 
