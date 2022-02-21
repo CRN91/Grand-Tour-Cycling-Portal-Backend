@@ -292,7 +292,6 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public LocalTime[] getRiderResultsInStage(int stageId, int riderId)
       throws IDNotRecognisedException {
-    for (Map.Entry<Integer, Race> idToRace : raceIdsToStage.entrySet()) {
   }
 
   @Override
