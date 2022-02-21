@@ -157,7 +157,20 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getStageSegments(int stageId) throws IDNotRecognisedException {
-    return null;
+    for (Map.Entry<Integer, Stage> idToStg : stageIdsToStage.entrySet()) {
+      if (idToStg.getKey() == stageId) {
+        ArrayList<Segment> segments = idToStg.getValue().getSegmentsInStage();
+        int segmentsLength = segments.size();
+        int i = 0;
+        int[] arrayOfSegmentIds = new int[segmentsLength];
+        for (Segment segment : segments) {
+          arrayOfSegmentIds[i] = segment.getId();
+          i++;
+        }
+        return arrayOfSegmentIds;
+      }
+    }
+    throw new IDNotRecognisedException("Stage ID not recognised!");
   }
 
   @Override
