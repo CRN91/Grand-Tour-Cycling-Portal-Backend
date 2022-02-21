@@ -27,15 +27,24 @@ public class CyclingPortalInterfaceTestApp {
     assert (f.exists() && !f.isDirectory()) : "File failed to save!";
   }
 
+  public void whenCreatingRaceObject_RaceObjectIsCreated(CyclingPortal cyclingPortal,
+                                                         String name,
+                                                         String description,
+                                                         int raceId)
+      throws InvalidNameException, IllegalNameException, IDNotRecognisedException {
+    cyclingPortal.createRace(name, description);
+    System.out.println(cyclingPortal.viewRaceDetails(raceId));
+  }
+
   /**
    * Test method.
    * @param args not used
    */
-  public static void main(String[] args) {
+  public static void main(String[] args)
+      throws InvalidNameException, IDNotRecognisedException, IllegalNameException {
     System.out.println("The system compiled and started the execution...");
     CyclingPortalInterfaceTestApp testApp = new CyclingPortalInterfaceTestApp();
-
     CyclingPortal cyclingPortal = new CyclingPortal();
-    testApp.whenSerializingCyclingPortal_FileIsSaved(cyclingPortal, "Test.txt");
+
   }
 }

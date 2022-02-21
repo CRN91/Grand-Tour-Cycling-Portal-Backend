@@ -3,7 +3,9 @@ package src.cycling;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -81,8 +83,11 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeRaceById(int raceId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-
+    try {
+      raceIdsToRaces.remove(raceId);
+    } catch (NullPointerException ex) {
+      throw new IDNotRecognisedException("Race not found!");
+    }
   }
 
   @Override
@@ -191,7 +196,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     return teamIds;
   }
 
-  @Override
+  /*
   public int[] getTeamRiders(int teamId) throws IDNotRecognisedException {
     try {
       Team team = teamIdsToTeams.get(teamId);
@@ -208,18 +213,42 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new IDNotRecognisedException("Team ID not recognised!");
     }
   }
+   */
+
+  @Override
+  public int[] getTeamRiders(int teamId) throws IDNotRecognisedException {
+    ArrayList<Integer> riderIdArrayList = new ArrayList<>();
+
+    // Check if the team exists
+    if (teamIdsToTeams.get(teamId) == null) {
+      throw new IDNotRecognisedException("Team not found!");
+    }
+
+    // Look for all riders in this team
+    for (Map.Entry<Integer, Rider> idToRider : riderIdsToRiders.entrySet()) {
+      Integer riderId = idToRider.getKey();
+      Rider rider = idToRider.getValue();
+      if (rider.getTeamId() == teamId) {
+        // Found one; add to list
+        riderIdArrayList.add(riderId);
+      }
+    }
+
+    // Convert the ArrayList to int[]
+    return riderIdArrayList.stream().mapToInt(i -> i).toArray();
+  }
 
   @Override
   public int createRider(int teamID, String name, int yearOfBirth)
       throws IDNotRecognisedException, IllegalArgumentException {
-    try {
-      Team team = teamIdsToTeams.get(teamID);
-      Rider newRider = new Rider(name, teamID, yearOfBirth);
-      team.addRider(newRider);
-      return newRider.getId();
-    } catch (NullPointerException ex) {
+    // Check if the team exists
+    if (teamIdsToTeams.get(teamID) == null) {
       throw new IDNotRecognisedException("Team ID not found!");
     }
+    // NullPointerException not thrown so it does
+    Rider newRider = new Rider(name, teamID, yearOfBirth);
+    riderIdsToRiders.put(newRider.getId(), newRider);
+    return newRider.getId();
   }
 
   @Override
@@ -355,21 +384,8 @@ public class CyclingPortal implements CyclingPortalInterface {
     return null;
   }
 
-  public static void main(String[] args) throws IDNotRecognisedException {
+  public static void main(String[] args)
+      throws IDNotRecognisedException, InvalidNameException, IllegalNameException {
     CyclingPortal cycPort = new CyclingPortal();
-    try {
-      System.out.println(cycPort.createTeam("Britain", "Best Team"));
-    } catch(InvalidNameException | IllegalNameException ex) {
-      System.out.println("Exception");
-    }
-    Rider tempRider = new Rider("John", 0, 1021);
-    cycPort.teamIdsToTeams.get(0).addRider(tempRider);
-    for (Rider r : cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
-      System.out.println(r.getName());
-    }
-    cycPort.removeRider(0);
-    for (Rider r : cycPort.teamIdsToTeams.get(0).getRiderIdsToRiders().values()) {
-      System.out.println(r.getName());
-    }
   }
 }

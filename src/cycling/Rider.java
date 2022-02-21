@@ -86,19 +86,4 @@ public class Rider {
     this.yearOfBirth = yearOfBirth;
     this.id = latestId++;
   }
-
-  /**
-   * For back of the napkin testing purposes, comment out when not testing
-   * @param args Command line args.
-   */
-  /*public static void main(String[] args) {
-    Rider testRider1 = new Rider("John Doe", 1997, 1997);
-    System.out.println(testRider1.getRiderName());
-    System.out.println(testRider1.getRiderId());
-    System.out.println(testRider1.getRiderYearOfBirth());
-    Rider testRider2 = new Rider("Jane Doe", 1998, 2001);
-    System.out.println(testRider2.getRiderName());
-    System.out.println(testRider2.getRiderId());
-    System.out.println(testRider2.getRiderYearOfBirth());
-  }*/
 }

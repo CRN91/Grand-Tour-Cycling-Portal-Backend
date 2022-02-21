@@ -81,27 +81,4 @@ public class Team {
     this.description = description;
     this.id = latestTeamId++;
   }
-
-  /**
-   * For back of the napkin testing purposes, comment out when not testing
-   * @param args Command line args.
-   */
-   /*public static void main(String[] args) {
-    Team testTeam1 = new Team("PricklyPenguins");
-    System.out.println(testTeam1.getTeamName());
-    System.out.println(testTeam1.getTeamId());
-    Rider testRider1 = new Rider("Brian", testTeam1.getTeamId(), 1999);
-    testTeam1.addRider(testRider1);
-    System.out.println(testTeam1.getRiderIdsToRiders());
-
-    Team testTeam2 = new Team("AltruisticAlbatrosses");
-    System.out.println(testTeam2.getTeamName());
-    System.out.println(testTeam2.getTeamId());
-     Rider testRider2 = new Rider("Ocean", testTeam2.getTeamId(), 1997);
-     Rider testRider3 = new Rider("Frank", testTeam2.getTeamId(), 1989);
-     testTeam2.addRider(testRider2);
-     testTeam2.addRider(testRider3);
-     System.out.println(testTeam2.getRiderIdsToRiders());
-    }
-    */
 }
