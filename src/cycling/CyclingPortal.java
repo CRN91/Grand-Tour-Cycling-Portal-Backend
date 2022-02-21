@@ -4,6 +4,7 @@ import javax.naming.Name;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   private HashMap<Integer, StagedRace> raceIdsToRaces = new HashMap<>();
   private HashMap<Integer, Competition> competitionIdsToCompetitions = new HashMap<>();
-  private HashMap<Integer, Stage> stageIdsToStage = new HashMap<>();
+  private HashMap<Integer, Stage> stageIdsToStages = new HashMap<>();
   private HashMap<Integer, Segment> segmentIdsToRaces = new HashMap<>();
   private HashMap<Integer, Team> teamIdsToTeams = new HashMap<>();
   private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<>();
@@ -102,14 +103,26 @@ public class CyclingPortal implements CyclingPortalInterface {
                             LocalDateTime startTime, StageType type)
       throws IDNotRecognisedException, IllegalNameException, InvalidNameException,
       InvalidLengthException {
-    // TODO Auto-generated method stub
-    return 0;
+    // Check the race exists
+    if (raceIdsToRaces.get(raceId) == null) {
+      throw new IDNotRecognisedException("Race" + raceId + "not found!");
+    }
+    Stage stage = new Stage(raceId, stageName, description, length, startTime, type);
+    stageIdsToStages.put(stage.getId(), stage);
+
+    return stage.getId();
   }
 
   @Override
   public int[] getRaceStages(int raceId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-    return null;
+    Set<Integer> stageIdsSet = stageIdsToStages.keySet();
+    int[] stageIds = new int[stageIdsSet.size()];
+    int index = 0;
+    for (Integer i : stageIdsSet) {
+      stageIds[index++] = i;
+    }
+
+    return stageIds;
   }
 
   @Override
@@ -157,7 +170,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getStageSegments(int stageId) throws IDNotRecognisedException {
-    for (Map.Entry<Integer, Stage> idToStg : stageIdsToStage.entrySet()) {
+    for (Map.Entry<Integer, Stage> idToStg : stageIdsToStages.entrySet()) {
       if (idToStg.getKey() == stageId) {
         ArrayList<Segment> segments = idToStg.getValue().getSegmentsInStage();
         int segmentsLength = segments.size();
@@ -393,7 +406,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   public static void main(String[] args)
-      throws IDNotRecognisedException, InvalidNameException, IllegalNameException {
+      throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException {
     CyclingPortal cycPort = new CyclingPortal();
   }
 }

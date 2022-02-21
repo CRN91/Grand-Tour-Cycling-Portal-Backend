@@ -124,7 +124,8 @@ public class Stage {
    * @param startTime
    * @param stageType
    */
-  public Stage(Integer raceId, String name, String description, Double length, LocalDateTime startTime, StageType stageType) {
+  public Stage(Integer raceId, String name, String description, Double length,
+               LocalDateTime startTime, StageType stageType) {
     this.raceId = raceId;
     this.name = name;
     this.description = description;
