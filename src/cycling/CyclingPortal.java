@@ -292,6 +292,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public LocalTime[] getRiderResultsInStage(int stageId, int riderId)
       throws IDNotRecognisedException {
+    return null;
   }
 
   @Override
