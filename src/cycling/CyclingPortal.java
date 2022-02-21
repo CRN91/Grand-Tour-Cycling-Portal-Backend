@@ -197,25 +197,6 @@ public class CyclingPortal implements CyclingPortalInterface {
     return teamIds;
   }
 
-  /*
-  public int[] getTeamRiders(int teamId) throws IDNotRecognisedException {
-    try {
-      Team team = teamIdsToTeams.get(teamId);
-      HashMap<Integer, Rider> riderIdsToRiders = team.getRiderIdsToRiders();
-      Set<Integer> riderIdsSet = riderIdsToRiders.keySet();
-      int[] riderIds = new int[riderIdsSet.size()];
-      int index = 0;
-      for (Integer i : riderIdsSet) {
-        riderIds[index++] = i;
-      }
-
-      return riderIds;
-    } catch (NullPointerException ex) {
-      throw new IDNotRecognisedException("Team ID not recognised!");
-    }
-  }
-   */
-
   @Override
   public int[] getTeamRiders(int teamId) throws IDNotRecognisedException {
     ArrayList<Integer> riderIdArrayList = new ArrayList<>();
