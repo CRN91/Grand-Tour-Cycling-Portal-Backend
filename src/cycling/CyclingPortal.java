@@ -175,7 +175,24 @@ public class CyclingPortal implements CyclingPortalInterface {
                                         Double averageGradient, Double length)
       throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
       InvalidStageTypeException {
-    // TODO Auto-generated method stub
+    // Does the stage exist?
+    if (stageIdsToStages.get(stageId) == null) {
+      throw new IDNotRecognisedException("Stage " + stageId + " not found!");
+    }
+    // Is the location valid?
+    Stage stage = stageIdsToStages.get(stageId);
+    if ((location >= stage.getLength()) || (location <= 0)) {
+      throw new InvalidLocationException("Invalid location!");
+    }
+    // Is the stage state "under development?"
+    if (!stage.getUnderDevelopment()) {
+      throw new InvalidStageStateException("Stage is waiting for results!");
+    }
+    // Are you trying to add a sprint using the wrong method?
+    if (type == SegmentType.SPRINT) {
+      throw new InvalidStageTypeException("Cannot add sprint to stage using this method!");
+    }
+
     return 0;
   }
 
