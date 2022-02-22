@@ -94,8 +94,19 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int getNumberOfStages(int raceId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-    return 0;
+    int numberOfStages = 0;
+    // Does the race exist?
+    if (raceIdsToRaces.get(raceId) == null) {
+      throw new IDNotRecognisedException("Race " + raceId + " not found!");
+    }
+    // Yes so count its stages
+    for (Map.Entry<Integer, Stage> idToStage : stageIdsToStages.entrySet()) {
+      Stage stage = idToStage.getValue();
+      if (stage.getRaceId() == raceId) {
+        numberOfStages++;
+      }
+    }
+    return numberOfStages;
   }
 
   @Override
