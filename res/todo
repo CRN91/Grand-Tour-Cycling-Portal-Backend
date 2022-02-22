@@ -1,0 +1,29 @@
+viewRaceDetails
+removeRaceById
+getNumberOfStages
+addStageToRace
+removestageById
+addCategorizedClimbToStage
+addIntermediateSprintToStage
+removeSegment
+concludeStagePreparation
+registerRiderResultsInStage
+getRiderResultsInStage
+getRiderAdjustedElapsedTime...
+delteRiderResultsInStage
+getRidersRankInStage
+getRankedAdjustedElasped...
+getRidersPointsInStage
+getRidersMountainPointsInStage
+eraseCyclingPortal
+saveCyclingPortal
+loadCyclingPortal
+getGeneralClassification
+getRidersPointsInRace
+getRidersMountainPointsInRace
+getRidersGeneralClassificationRank
+getRidersPointsClassifcationRank
+
+SAM                                                                          ADAM
+
+Completed                        WIP                                         Completed                                 / WIP                                 
