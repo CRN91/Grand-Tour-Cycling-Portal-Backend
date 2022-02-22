@@ -198,8 +198,18 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public void concludeStagePreparation(int stageId) throws IDNotRecognisedException,
       InvalidStageStateException {
-    // TODO Auto-generated method stub
-
+    // Does the stage exist?
+    if (stageIdsToStages.get(stageId) == null) {
+      throw new IDNotRecognisedException("Stage " + stageId + " not found!");
+    }
+    // Is it already waiting for results?
+    Stage stage = stageIdsToStages.get(stageId);
+    if (!stage.getUnderDevelopment()) {
+      throw new InvalidStageStateException("Stage " + stageId
+          + " is already waiting for results!");
+    } else {
+      stage.setUnderDevelopment(false);
+    }
   }
 
   @Override
