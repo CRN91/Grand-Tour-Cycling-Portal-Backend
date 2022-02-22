@@ -1,7 +1,6 @@
 viewRaceDetails
 addCategorizedClimbToStage
 addIntermediateSprintToStage
-concludeStagePreparation
 registerRiderResultsInStage
 getRiderResultsInStage
 getRiderAdjustedElapsedTime...
@@ -26,6 +25,7 @@ getNumberOfStages
 removeSegment
 
 WIP
+concludeStagePreparation
 
 ------------------------------------
 ADAM
