@@ -6,10 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Implementor of the CyclingPortalInterface interface.
@@ -193,7 +190,10 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new InvalidStageTypeException("Cannot add sprint to stage using this method!");
     }
 
-    return 0;
+    Segment categorisedClimb = new Segment(stageId, type);
+    segmentIdsToSegments.put(categorisedClimb.getId(), categorisedClimb);
+
+    return categorisedClimb.getId();
   }
 
   @Override
