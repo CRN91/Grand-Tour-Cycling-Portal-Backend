@@ -104,8 +104,12 @@ public class CyclingPortal implements CyclingPortalInterface {
     }
     Stage stage = new Stage(raceId, stageName, description, length, startTime, type);
     stageIdsToStages.put(stage.getId(), stage);
+    for (Integer stg : stageIdsToStages.keySet()) {
+      System.out.println(stg);
+    }
 
     return stage.getId();
+
   }
 
   @Override
@@ -124,6 +128,17 @@ public class CyclingPortal implements CyclingPortalInterface {
   public void removeStageById(int stageId) throws IDNotRecognisedException {
     // TODO Auto-generated method stub
 
+    Boolean foundId = false;
+    for ( Integer stgId : stageIdsToStages.keySet() ) {
+      if (stgId == stageId) {
+        stageIdsToStages.remove(stgId);
+        foundId = true;
+        break;
+      }
+    }
+    if (!foundId) {
+      throw new IDNotRecognisedException("Stage ID not recognised!");
+    }
   }
 
   @Override
@@ -159,7 +174,12 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getStageSegments(int stageId) throws IDNotRecognisedException {
-    for (Map.Entry<Integer, Stage> idToStg : stageIdsToStage.entrySet()) {
+    if (stageIdsToStages.get(0) == null) {
+      throw new IDNotRecognisedException("Stage ID not recognised!");
+    }
+
+
+    for (Map.Entry<Integer, Stage> idToStg : stageIdsToStages.entrySet()) {
       if (idToStg.getKey() == stageId) {
         ArrayList<Segment> segments = idToStg.getValue().getSegmentsInStage();
         int segmentsLength = segments.size();
@@ -379,8 +399,10 @@ public class CyclingPortal implements CyclingPortalInterface {
   public static void main(String[] args) throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException {
     CyclingPortal cycPort = new CyclingPortal();
     LocalDateTime now = LocalDateTime.now();
-    Stage stagey = new Stage(0,"john","cena",0.0, now, StageType.FLAT);
-    cycPort.stageIdsToStage.put(0,stagey);
-    System.out.println(cycPort.getStageSegments(1));
+    cycPort.createRace("cycle race", "race done on bicycles");
+    cycPort.addStageToRace(0,"john","cena",0.0, now, StageType.FLAT);
+    System.out.println(cycPort.getRaceStages(0));
+    cycPort.removeStageById(0);
+    System.out.println(cycPort.getRaceStages(0));
   }
 }
