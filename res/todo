@@ -1,11 +1,10 @@
 viewRaceDetails
-addIntermediateSprintToStage
 registerRiderResultsInStage
 getRiderResultsInStage
 getRiderAdjustedElapsedTime...
-delteRiderResultsInStage
+deleteRiderResultsInStage
 getRidersRankInStage
-getRankedAdjustedElasped...
+getRankedAdjustedElapsed...
 getRidersPointsInStage
 getRidersMountainPointsInStage
 eraseCyclingPortal
@@ -15,7 +14,7 @@ getGeneralClassification
 getRidersPointsInRace
 getRidersMountainPointsInRace
 getRidersGeneralClassificationRank
-getRidersPointsClassifcationRank
+getRidersPointsClassificationRank
 
 SAM
 
@@ -31,6 +30,8 @@ WIP
 ADAM
 
 Completed
+suffer radioactive poisoning
+removeStageById
 
 WIP
-removeStageById
+addIntermediateSprintToStage

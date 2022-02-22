@@ -199,9 +199,25 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int addIntermediateSprintToStage(int stageId, double location)
       throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
-      InvalidStageTypeException {
-    // TODO Auto-generated method stub
-    return 0;
+          InvalidStageTypeException {
+    // Does the stage exist?
+    if (stageIdsToStages.get(stageId) == null) {
+      throw new IDNotRecognisedException("Stage " + stageId + " not found!");
+    }
+    // Is the location valid?
+    Stage stage = stageIdsToStages.get(stageId);
+    if ((location >= stage.getLength()) || (location <= 0)) {
+      throw new InvalidLocationException("Invalid location!");
+    }
+    // Is the stage state "under development"?
+    if (!stage.getUnderDevelopment()) {
+      throw new InvalidStageStateException("Stage is waiting for results!");
+    }
+
+    Segment intermediateSprint = new Segment(stageId, SegmentType.SPRINT);
+    segmentIdsToSegments.put(intermediateSprint.getId(), intermediateSprint);
+
+    return intermediateSprint.getId();
   }
 
   @Override
@@ -264,7 +280,8 @@ public class CyclingPortal implements CyclingPortalInterface {
             i++;
           }
           return arrayOfSegmentIds;
-        } else {
+        }
+        else {
           return null;
         }
       }
