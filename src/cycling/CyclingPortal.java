@@ -127,6 +127,10 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getRaceStages(int raceId) throws IDNotRecognisedException {
+    if ( raceIdsToRaces.get(raceId) == null) {
+      throw new IDNotRecognisedException("Race ID not recognised!");
+    }
+
     Set<Integer> stageIdsSet = stageIdsToStages.keySet();
     int[] stageIds = new int[stageIdsSet.size()];
     int index = 0;
@@ -149,8 +153,21 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeStageById(int stageId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    if ( stageIdsToStages.get(stageId) == null) {
+      throw new IDNotRecognisedException("Stage ID not recognised!");
+    }
 
+    Boolean foundId = false;
+    for ( Integer stgId : stageIdsToStages.keySet() ) {
+      if (stgId == stageId) {
+        stageIdsToStages.remove(stgId);
+        foundId = true;
+        break;
+      }
+    }
+    if (!foundId) {
+      throw new IDNotRecognisedException("Stage ID not recognised!");
+    }
   }
 
   @Override
@@ -214,6 +231,10 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getStageSegments(int stageId) throws IDNotRecognisedException {
+    if ( stageIdsToStages.get(stageId) == null ) {
+      throw new IDNotRecognisedException("Stage ID not recognised!");
+    }
+
     for (Map.Entry<Integer, Stage> idToStg : stageIdsToStages.entrySet()) {
       if (idToStg.getKey() == stageId) {
         ArrayList<Segment> segments = idToStg.getValue().getSegmentsInStage();
