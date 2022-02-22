@@ -10,7 +10,11 @@ import java.util.HashMap;
  */
 public class Segment {
   private SegmentType segmentType;
+  private int stageId;
   private Integer id;
+
+  private static int latestSegmentId = 0;
+
   public SegmentType getSegmentType() {
     return segmentType;
   }
@@ -19,9 +23,19 @@ public class Segment {
     this.segmentType = segmentType;
   }
 
+  public int getStageId() {
+    return this.stageId;
+  }
+
   /**
    *
    * @return stage's ID.
    */
   public Integer getId() { return id; }
+
+  public Segment(int stageId, SegmentType segmentType) {
+    this.stageId = stageId;
+    this.segmentType = segmentType;
+    this.id = latestSegmentId++;
+  }
 }

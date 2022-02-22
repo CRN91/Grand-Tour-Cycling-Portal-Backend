@@ -2,6 +2,7 @@ package src.cycling;
 
 import javax.naming.Name;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +23,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   private HashMap<Integer, StagedRace> raceIdsToRaces = new HashMap<>();
   private HashMap<Integer, Competition> competitionIdsToCompetitions = new HashMap<>();
   private HashMap<Integer, Stage> stageIdsToStages = new HashMap<>();
-  private HashMap<Integer, Segment> segmentIdsToRaces = new HashMap<>();
+  private HashMap<Integer, Segment> segmentIdsToSegments = new HashMap<>();
   private HashMap<Integer, Team> teamIdsToTeams = new HashMap<>();
   private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<>();
 
@@ -172,8 +173,26 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public void removeSegment(int segmentId) throws IDNotRecognisedException,
       InvalidStageStateException {
-    // TODO Auto-generated method stub
-
+    // Does the segment exist?
+    if (segmentIdsToSegments.get(segmentId) == null) {
+      throw new IDNotRecognisedException("Segment " + segmentId + " not found!");
+    }
+    Segment segment = segmentIdsToSegments.get(segmentId);
+    int segmentStageId = segment.getStageId();
+    // Can I do this (the stage has to be under development)
+    // Find the stage
+    for (Map.Entry<Integer, Stage> stageEntry : stageIdsToStages.entrySet()) {
+      Stage stage = stageEntry.getValue();
+      if (stage.getId() == segmentStageId) {
+        // This is the right stage now check we can delete segments from it
+        if (stage.getUnderDevelopment()) {
+          segmentIdsToSegments.remove(segmentId);
+        } else {
+          throw new InvalidStageStateException("Stage " + stage.getId()
+              + " is not under development!");
+        }
+      }
+    }
   }
 
   @Override
@@ -188,14 +207,18 @@ public class CyclingPortal implements CyclingPortalInterface {
     for (Map.Entry<Integer, Stage> idToStg : stageIdsToStages.entrySet()) {
       if (idToStg.getKey() == stageId) {
         ArrayList<Segment> segments = idToStg.getValue().getSegmentsInStage();
-        int segmentsLength = segments.size();
-        int i = 0;
-        int[] arrayOfSegmentIds = new int[segmentsLength];
-        for (Segment segment : segments) {
-          arrayOfSegmentIds[i] = segment.getId();
-          i++;
+        if (segments != null) {
+          int segmentsLength = segments.size();
+          int i = 0;
+          int[] arrayOfSegmentIds = new int[segmentsLength];
+          for (Segment segment : segments) {
+            arrayOfSegmentIds[i] = segment.getId();
+            i++;
+          }
+          return arrayOfSegmentIds;
+        } else {
+          return null;
         }
-        return arrayOfSegmentIds;
       }
     }
     throw new IDNotRecognisedException("Stage ID not recognised!");
@@ -420,7 +443,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   public static void main(String[] args)
-      throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException {
+      throws IDNotRecognisedException, InvalidNameException, IllegalNameException,
+      InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException {
     CyclingPortal cycPort = new CyclingPortal();
   }
 }
