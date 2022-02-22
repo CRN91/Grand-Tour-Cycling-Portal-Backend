@@ -104,9 +104,6 @@ public class CyclingPortal implements CyclingPortalInterface {
     }
     Stage stage = new Stage(raceId, stageName, description, length, startTime, type);
     stageIdsToStages.put(stage.getId(), stage);
-    for (Integer stg : stageIdsToStages.keySet()) {
-      System.out.println(stg);
-    }
 
     return stage.getId();
 
@@ -114,8 +111,18 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getRaceStages(int raceId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-    return null;
+    if ( raceIdsToRaces.get(raceId) == null ) {
+      throw new IDNotRecognisedException("Race ID not recognised!");
+    }
+
+    Set<Integer> stageIdsSet = stageIdsToStages.keySet();
+    int[] stageIds = new int[stageIdsSet.size()];
+    int index = 0;
+    for (Integer i : stageIdsSet) {
+      stageIds[index++] = i;
+    }
+
+    return stageIds;
   }
 
   @Override
@@ -126,12 +133,16 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeStageById(int stageId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
-
     Boolean foundId = false;
     for ( Integer stgId : stageIdsToStages.keySet() ) {
       if (stgId == stageId) {
+        for (Integer stId : stageIdsToStages.keySet() ){
+          System.out.println(stgId+"here");
+        }
         stageIdsToStages.remove(stgId);
+        for (Integer stId : stageIdsToStages.keySet() ){
+          System.out.println(stgId+"here");
+        }
         foundId = true;
         break;
       }
@@ -401,8 +412,12 @@ public class CyclingPortal implements CyclingPortalInterface {
     LocalDateTime now = LocalDateTime.now();
     cycPort.createRace("cycle race", "race done on bicycles");
     cycPort.addStageToRace(0,"john","cena",0.0, now, StageType.FLAT);
-    System.out.println(cycPort.getRaceStages(0));
+    for (Integer stgId : cycPort.getRaceStages(0)){
+      System.out.println(stgId+"after add");
+    }
     cycPort.removeStageById(0);
-    System.out.println(cycPort.getRaceStages(0));
+    for (Integer stgId : cycPort.getRaceStages(0)){
+      System.out.println(stgId+"after remove");
+    }
   }
 }
