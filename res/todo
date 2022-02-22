@@ -1,5 +1,4 @@
 viewRaceDetails
-getNumberOfStages
 addCategorizedClimbToStage
 addIntermediateSprintToStage
 removeSegment
@@ -21,7 +20,17 @@ getRidersMountainPointsInRace
 getRidersGeneralClassificationRank
 getRidersPointsClassifcationRank
 
-SAM                                                                          ADAM
+SAM
 
-Completed                        WIP                                         Completed                                 / WIP                                 
-                                 getNumberOfStages                                                                      removeStageById
+Completed
+getNumberOfStages
+
+WIP
+
+------------------------------------
+ADAM
+
+Completed
+
+WIP
+removeStageById
