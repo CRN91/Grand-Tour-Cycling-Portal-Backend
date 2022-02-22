@@ -19,8 +19,8 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   private HashMap<Integer, StagedRace> raceIdsToRaces = new HashMap<>();
   private HashMap<Integer, Competition> competitionIdsToCompetitions = new HashMap<>();
-  public HashMap<Integer, Stage> stageIdsToStage = new HashMap<>();
-  private HashMap<Integer, Segment> segmentIdsToRaces = new HashMap<>();
+  public HashMap<Integer, Stage> stageIdsToStages = new HashMap<>();
+  private HashMap<Integer, Segment> segmentIdsToSegments = new HashMap<>();
   private HashMap<Integer, Team> teamIdsToTeams = new HashMap<>();
   private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<>();
 
@@ -96,10 +96,16 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int addStageToRace(int raceId, String stageName, String description, double length,
                             LocalDateTime startTime, StageType type)
-      throws IDNotRecognisedException, IllegalNameException, InvalidNameException,
-      InvalidLengthException {
-    // TODO Auto-generated method stub
-    return 0;
+          throws IDNotRecognisedException, IllegalNameException, InvalidNameException,
+          InvalidLengthException {
+    // Check the race exists
+    if (raceIdsToRaces.get(raceId) == null) {
+      throw new IDNotRecognisedException("Race" + raceId + "not found!");
+    }
+    Stage stage = new Stage(raceId, stageName, description, length, startTime, type);
+    stageIdsToStages.put(stage.getId(), stage);
+
+    return stage.getId();
   }
 
   @Override
