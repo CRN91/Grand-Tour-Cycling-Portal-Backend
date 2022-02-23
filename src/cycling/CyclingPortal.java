@@ -1,5 +1,7 @@
 package src.cycling;
 
+import jdk.swing.interop.SwingInterOpUtils;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -163,10 +165,26 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int addIntermediateSprintToStage(int stageId, double location)
-      throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
-      InvalidStageTypeException {
-    // TODO Auto-generated method stub
-    return 0;
+          throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
+          InvalidStageTypeException {
+    // Does the stage exist?
+    if (stageIdsToStages.get(stageId) == null) {
+      throw new IDNotRecognisedException("Stage " + stageId + " not found!");
+    }
+    // Is the location valid?
+    Stage stage = stageIdsToStages.get(stageId);
+    if ((location >= stage.getLength()) || (location <= 0)) {
+      throw new InvalidLocationException("Invalid location!");
+    }
+    // Is the stage state "under development"?
+    if (!stage.getUnderDevelopment()) {
+      throw new InvalidStageStateException("Stage is waiting for results!");
+    }
+
+    Segment intermediateSprint = new Segment(stageId, SegmentType.SPRINT);
+    segmentIdsToSegments.put(intermediateSprint.getId(), intermediateSprint);
+
+    return intermediateSprint.getId();
   }
 
   @Override
@@ -189,14 +207,16 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new IDNotRecognisedException("Stage ID not recognised!");
     }
 
-
     for (Map.Entry<Integer, Stage> idToStg : stageIdsToStages.entrySet()) {
       if (idToStg.getKey() == stageId) {
+        System.out.println("found stage");
         ArrayList<Segment> segments = idToStg.getValue().getSegmentsInStage();
+        System.out.println(segments+" segments");
         int segmentsLength = segments.size();
         int i = 0;
         int[] arrayOfSegmentIds = new int[segmentsLength];
         for (Segment segment : segments) {
+          System.out.println("inside for loop "+segment.getId());
           arrayOfSegmentIds[i] = segment.getId();
           i++;
         }
@@ -407,17 +427,21 @@ public class CyclingPortal implements CyclingPortalInterface {
     return null;
   }
 
-  public static void main(String[] args) throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException {
+  public static void main(String[] args) throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException {
     CyclingPortal cycPort = new CyclingPortal();
     LocalDateTime now = LocalDateTime.now();
     cycPort.createRace("cycle race", "race done on bicycles");
-    cycPort.addStageToRace(0,"john","cena",0.0, now, StageType.FLAT);
+    cycPort.addStageToRace(0,"john","cena",5.0, now, StageType.FLAT);
     for (Integer stgId : cycPort.getRaceStages(0)){
-      System.out.println(stgId+"after add");
+      System.out.println(stgId+" stage added");
     }
-    cycPort.removeStageById(0);
-    for (Integer stgId : cycPort.getRaceStages(0)){
-      System.out.println(stgId+"after remove");
+    cycPort.addIntermediateSprintToStage(0,4.0);
+    Segment segsy = cycPort.segmentIdsToSegments.get(0);
+    System.out.println(segsy+" segments forced");
+    System.out.println(cycPort.getStageSegments(0)+"I HATE TESTING JAVA");
+    System.out.println(cycPort.stageIdsToStages.toString());
+    for (Integer stgId : cycPort.getStageSegments(0)){
+      System.out.println(stgId+" add segment");
     }
   }
 }

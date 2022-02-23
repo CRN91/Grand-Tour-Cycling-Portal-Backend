@@ -132,7 +132,7 @@ public class Stage {
     this.startTime = startTime;
     this.stageType = stageType;
     this.id = latestId++;
-    Segment segsy = new Segment(SegmentType.C4);
-    this.segmentsInStage.add(segsy);
+    //Segment segsy = new Segmenget(stageId, SegmentType.C4);
+    //this.segmentsInStage.add(segsy);
   }
 }

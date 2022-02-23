@@ -1,7 +1,5 @@
 package src.cycling;
 
-import java.util.HashMap;
-
 /**
  * Represents a segment of a race.
  *
@@ -26,7 +24,7 @@ public class Segment {
    */
   public Integer getId() { return id; }
 
-  public Segment(SegmentType segmentType) {
+  public Segment(int stageId, SegmentType segmentType) {
     this.segmentType = segmentType;
     this.id = 0;
   }
