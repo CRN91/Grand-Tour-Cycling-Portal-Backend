@@ -189,6 +189,13 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (type == SegmentType.SPRINT) {
       throw new InvalidStageTypeException("Cannot add sprint to stage using this method!");
     }
+    // Is the length valid?
+    if (length <= 0) {
+      throw new InvalidLocationException("Invalid length entered! Enter one >= 0.");
+    }
+    if ((location + length) > stage.getLength()) {
+      throw new InvalidLocationException("Invalid length exceeds length of stage!");
+    }
 
     Segment categorisedClimb = new Segment(stageId, type);
     segmentIdsToSegments.put(categorisedClimb.getId(), categorisedClimb);
@@ -507,9 +514,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     return null;
   }
 
-  public static void main(String[] args)
-      throws IDNotRecognisedException, InvalidNameException, IllegalNameException,
-      InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException {
-    CyclingPortal cycPort = new CyclingPortal();
+  public static void main(String[] args) throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException { CyclingPortal cycPort = new CyclingPortal();
+    cycPort.createRace("Race 1", "race");
   }
 }
