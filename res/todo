@@ -7,7 +7,6 @@ getRidersRankInStage
 getRankedAdjustedElapsed...
 getRidersPointsInStage
 getRidersMountainPointsInStage
-eraseCyclingPortal
 saveCyclingPortal
 loadCyclingPortal
 getGeneralClassification
@@ -23,6 +22,7 @@ getNumberOfStages
 removeSegment
 concludeStagePreparation
 addCategorizedClimbToStage
+eraseCyclingPortal
 
 WIP
 

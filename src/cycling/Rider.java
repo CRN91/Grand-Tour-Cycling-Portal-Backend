@@ -75,6 +75,13 @@ public class Rider {
   }
 
   /**
+   * Reset the internal ID counter
+   */
+  public static void resetIdCounter() {
+    latestId = 0;
+  }
+
+  /**
    * Constructor
    * @param name Rider's name
    * @param teamId The ID of the team the rider belongs to

@@ -18,7 +18,7 @@ public class StagedRace {
   private Competition[] competitions = new Competition[3];
   private Stage[] raceStages;
 
-  private static int latestRaceId = 0;
+  private static int latestId = 0;
 
   public String getName() {
     return this.name;
@@ -32,10 +32,16 @@ public class StagedRace {
     return this.raceId;
   }
 
+  /**
+   * Reset the internal ID counter
+   */
+  public static void resetIdCounter() {
+    latestId = 0;
+  }
 
   public StagedRace(String name, String description) {
     this.name = name;
     this.description = description;
-    this.raceId = latestRaceId++;
+    this.raceId = latestId++;
   }
 }

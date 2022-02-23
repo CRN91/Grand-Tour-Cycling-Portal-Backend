@@ -115,6 +115,13 @@ public class Stage {
   public void setUnderDevelopment(Boolean state) { this.underDevelopment = state; }
 
   /**
+   * Reset the internal ID counter
+   */
+  public static void resetIdCounter() {
+    latestId = 0;
+  }
+
+  /**
    * Constructor
    *
    * @param raceId

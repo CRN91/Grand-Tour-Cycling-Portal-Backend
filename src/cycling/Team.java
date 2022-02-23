@@ -16,7 +16,7 @@ public class Team {
   // Creates a hash map between the team's rider's Ids and the rider objects.
   private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<Integer, Rider>();
 
-  private static int latestTeamId = 0; // enumerates to get unique id, with 2^32 possible ids.
+  private static int latestId = 0; // enumerates to get unique id, with 2^32 possible ids.
 
   /**
    * @return The name of the team.
@@ -72,6 +72,13 @@ public class Team {
  // }
 
   /**
+   * Reset the internal ID counter
+   */
+  public static void resetIdCounter() {
+    latestId = 0;
+  }
+
+  /**
    * Constructor.
    *
    * @param name
@@ -79,6 +86,6 @@ public class Team {
   public Team(String name, String description) {
     this.name = name;
     this.description = description;
-    this.id = latestTeamId++;
+    this.id = latestId++;
   }
 }

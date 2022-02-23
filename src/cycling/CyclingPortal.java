@@ -15,8 +15,6 @@ import java.util.*;
  * @version 1.0
  */
 public class CyclingPortal implements CyclingPortalInterface {
-
-
   private HashMap<Integer, StagedRace> raceIdsToRaces = new HashMap<>();
   private HashMap<Integer, Competition> competitionIdsToCompetitions = new HashMap<>();
   private HashMap<Integer, Stage> stageIdsToStages = new HashMap<>();
@@ -441,8 +439,20 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void eraseCyclingPortal() {
-    // TODO Auto-generated method stub
-
+    // Reset all internal counters
+    Rider.resetIdCounter();
+    Team.resetIdCounter();
+    Stage.resetIdCounter();
+    StagedRace.resetIdCounter();
+    Segment.resetIdCounter();
+    // TODO competitions?
+    // Erase all references and get them garbage collected
+    this.raceIdsToRaces = new HashMap<>();
+    this.competitionIdsToCompetitions = new HashMap<>();
+    this.stageIdsToStages = new HashMap<>();
+    this.segmentIdsToSegments = new HashMap<>();
+    this.teamIdsToTeams = new HashMap<>();
+    this.riderIdsToRiders = new HashMap<>();
   }
 
   @Override

@@ -13,7 +13,7 @@ public class Segment {
   private int stageId;
   private Integer id;
 
-  private static int latestSegmentId = 0;
+  private static int latestId = 0;
 
   public SegmentType getSegmentType() {
     return segmentType;
@@ -33,9 +33,16 @@ public class Segment {
    */
   public Integer getId() { return id; }
 
+  /**
+   * Reset the internal ID counter
+   */
+  public static void resetIdCounter() {
+    latestId = 0;
+  }
+
   public Segment(int stageId, SegmentType segmentType) {
     this.stageId = stageId;
     this.segmentType = segmentType;
-    this.id = latestSegmentId++;
+    this.id = latestId++;
   }
 }
