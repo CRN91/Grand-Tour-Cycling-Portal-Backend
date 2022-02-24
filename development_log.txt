@@ -10,3 +10,4 @@ Development log
 20/02/2022    16:20        1.9           Driver / OO Design   Observer / OO Design
 21/02/2022    18:35        1.969832      Observing            Driver
 22/02/2022    18:40        1.843333      Driver               Observer
+23/02/2022    15:35        1             Observing            Driving
