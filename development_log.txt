@@ -12,3 +12,5 @@ Development log
 22/02/2022    18:40        1.843333      Driver               Observer
 23/02/2022    15:35        1             Observing            Driving
 24/02/2022    12:45        1.5           OO Design            OO Design
+25/02/2022    12:35        0.333333333   Meeting with Prof    Meeting with Prof
+25/02/2022    14:00        1.5           OO Design            OO Design
