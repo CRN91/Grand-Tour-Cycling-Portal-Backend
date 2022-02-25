@@ -13,6 +13,5 @@ public class GeneralClassification extends Competition{
     // TODO sort finalResults or something by ascending order
   }
 
-
 }
 

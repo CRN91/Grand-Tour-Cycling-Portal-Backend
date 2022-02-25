@@ -405,13 +405,14 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId)
       throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO from stageId get raceId from that get race then get competition.getAdjustedTimes
+    // then search for our rider
     return null;
   }
 
   @Override
   public void deleteRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO goto stage, stage.removeRiderResults(riderId)
 
   }
 
@@ -424,19 +425,21 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId)
       throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO from stageId get stage, then get race, then competition.getAdjustedTimes
     return null;
   }
 
   @Override
   public int[] getRidersPointsInStage(int stageId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO stageId to stage to race to competition then loop through all intermediate sprints
+    //  in a stage and do competition.getSegmentResults and also competition.getStageResults
     return null;
   }
 
   @Override
   public int[] getRidersMountainPointsInStage(int stageId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO stageId to stage to race to competition then loop through all categorised climbs in
+    //  a stage and do competition.getSegmentResults
     return null;
   }
 
@@ -499,32 +502,32 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getRidersPointsInRace(int raceId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO from raceId get race then get competition.getFinalResults
     return null;
   }
 
   @Override
   public int[] getRidersMountainPointsInRace(int raceId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO from raceId get race then get competition.getFinalResults
     return null;
   }
 
   @Override
   public int[] getRidersGeneralClassificationRank(int raceId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO from raceId get race then get competition.getFinalResults then return just the riders
     return null;
   }
 
   @Override
   public int[] getRidersPointClassificationRank(int raceId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO from raceId get race then get competition.getFinalResults then return just the riders
     return null;
   }
 
   @Override
   public int[] getRidersMountainPointClassificationRank(int raceId)
       throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO from raceId get race then get competition.getFinalResults then return just the riders
     return null;
   }
 
