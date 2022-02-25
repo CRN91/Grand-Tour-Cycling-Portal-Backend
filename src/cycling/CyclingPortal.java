@@ -114,6 +114,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (raceIdsToRaces.get(raceId) == null) {
       throw new IDNotRecognisedException("Race" + raceId + "not found!");
     }
+    // Check the length is >=5km
     Stage stage = new Stage(raceId, stageName, description, length, startTime, type);
     stageIdsToStages.put(stage.getId(), stage);
 
@@ -195,7 +196,8 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new InvalidLocationException("Invalid length exceeds length of stage!");
     }
 
-    Segment categorisedClimb = new Segment(stageId, type);
+    Segment categorisedClimb = new CategorisedClimb(stageId, type, averageGradient,
+        length);
     segmentIdsToSegments.put(categorisedClimb.getId(), categorisedClimb);
 
     return categorisedClimb.getId();
@@ -383,6 +385,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (!hasBeenFound) {
       throw new IDNotRecognisedException("Rider ID not found!");
     }
+    // TODO REMOVE ALL THIS RIDER'S RESULTS
   }
 
   @Override
@@ -445,7 +448,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     Stage.resetIdCounter();
     StagedRace.resetIdCounter();
     Segment.resetIdCounter();
-    // TODO competitions?
+    // TODO competitions? and other stuff
     // Erase all references and get them garbage collected
     this.raceIdsToRaces = new HashMap<>();
     this.competitionIdsToCompetitions = new HashMap<>();

@@ -3,7 +3,7 @@ package src.cycling;
 import java.util.HashMap;
 
 /**
- * Represents a segment of a race.
+ * Represents an intermediate sprint. CategorisedClimb is a subclass of this for categorised climbs.
  *
  * @author Sam Barker, Adam Kaizrea
  * @version 1.0
@@ -35,7 +35,9 @@ public class Segment {
    *
    * @return stage's ID.
    */
-  public Integer getId() { return id; }
+  public Integer getId() {
+    return id;
+  }
 
   /**
    * Reset the internal ID counter
