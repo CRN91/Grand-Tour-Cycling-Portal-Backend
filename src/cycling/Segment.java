@@ -8,9 +8,13 @@ import java.util.HashMap;
  * @author Sam Barker, Adam Kaizrea
  * @version 1.0
  */
+
+//(int stageId, Double location, SegmentType type,
+//                                        Double averageGradient, Double length)
 public class Segment {
+  private Integer stageId;
+  private Double location;
   private SegmentType segmentType;
-  private int stageId;
   private Integer id;
 
   private static int latestId = 0;
