@@ -489,7 +489,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public LocalTime[] getGeneralClassificationTimesInRace(int raceId)
       throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO from raceId get race then get competition obj then loop through each stage and
+    // TODO competition.getStageResults and sum it to a variable then return ordered list
     return null;
   }
 
