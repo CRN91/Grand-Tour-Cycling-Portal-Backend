@@ -1,7 +1,10 @@
 package src.cycling;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Represents a non-time trial stage.
@@ -17,6 +20,7 @@ public class Stage {
   protected LocalDateTime startTime;
   protected StageType stageType;
   protected Integer id;
+  protected HashMap<Integer, LocalTime[]> riderIdsToResults = new HashMap<>();
   private ArrayList<Segment> segmentsInStage;
   protected Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
 
@@ -113,6 +117,14 @@ public class Stage {
    * @param state
    */
   public void setUnderDevelopment(Boolean state) { this.underDevelopment = state; }
+
+  public HashMap<Integer, LocalTime[]> getRiderIdsToResults() {
+    return riderIdsToResults;
+  }
+
+  public void addRiderIdsToResults(Integer riderId, LocalTime[] times) {
+    riderIdsToResults.put(riderId, times);
+  }
 
   /**
    * Reset the internal ID counter

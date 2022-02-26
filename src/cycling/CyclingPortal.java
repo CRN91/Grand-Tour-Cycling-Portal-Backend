@@ -392,8 +392,43 @@ public class CyclingPortal implements CyclingPortalInterface {
   public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
       throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
       InvalidStageStateException {
-    // TODO Auto-generated method stub
+    Stage stage = stageIdsToStages.get(stageId);
 
+    if (stage == null){
+      throw new IDNotRecognisedException("Stage ID not recognised!");
+    }
+    Rider rider = riderIdsToRiders.get(riderId);
+    if (rider == null){
+      throw new IDNotRecognisedException("Rider ID not recognised!");
+    }
+    HashMap<Integer,LocalTime[]> riderResults = stage.getRiderIdsToResults();
+    if (!(riderResults == null)){
+      LocalTime[] checkDuplicate = riderResults.get(riderId);
+      if (!(checkDuplicate == null)){
+        throw new DuplicatedResultException("Rider's results are already registered!");
+      }
+    }
+    ArrayList<Segment> segments = stage.getSegmentsInStage();
+    int checkpointLength = checkpoints.length;
+    if (!(segments == null)){
+      if (!(checkpointLength == segments.size() + 2)){
+        throw new InvalidCheckpointsException("Incorrect number of checkpoints in stage!");
+      }
+    }else if (checkpointLength != 2){
+      throw new InvalidCheckpointsException("Incorrect number of checkpoints in stage!");
+    }
+
+    LocalTime previousTime = LocalTime.of(0,0,0);
+    for (LocalTime time : checkpoints){
+      if (time.compareTo(previousTime) < 0){
+        throw new InvalidCheckpointsException("Checkpoint times are not in chronological order!");
+      }
+      previousTime = time;
+    }
+    if (stage.getUnderDevelopment() == true){
+      throw new InvalidStageStateException("The stage is under development so can't add rider results!");
+    }
+    stage.addRiderIdsToResults(riderId, checkpoints);
   }
 
   @Override
@@ -419,6 +454,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
     // TODO from stageid get stage get race get competition.getStageResults
+
     return null;
   }
 
@@ -531,7 +567,25 @@ public class CyclingPortal implements CyclingPortalInterface {
     return null;
   }
 
-  public static void main(String[] args) throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException { CyclingPortal cycPort = new CyclingPortal();
-    cycPort.createRace("Race 1", "race");
+  public static void main(String[] args) throws IDNotRecognisedException, InvalidNameException, IllegalNameException,
+      InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, DuplicatedResultException, InvalidCheckpointsException {
+
+    CyclingPortal cycPort = new CyclingPortal();
+    cycPort.createRace("Big boy race", "food fight race");
+    cycPort.addStageToRace(0,"stage uno", "first 1",
+        10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.stageIdsToStages.get(0).setUnderDevelopment(false);
+    cycPort.createTeam("america","wont invade ukraine");
+    cycPort.createRider(0,"Ken",1608);
+    System.out.println("should print");
+    cycPort.registerRiderResultsInStage(0,0,LocalTime.of(0,0,2),
+        LocalTime.of(0,0,2));
+    cycPort.registerRiderResultsInStage(0,0,LocalTime.of(0,0,2),
+        LocalTime.of(0,0,2));
+    System.out.println("near end");
+    System.out.println(cycPort.stageIdsToStages.get(0).getRiderIdsToResults().toString());
+    for (LocalTime time : cycPort.stageIdsToStages.get(0).getRiderIdsToResults().get(0)){
+      System.out.println(time);
+    }
   }
 }
