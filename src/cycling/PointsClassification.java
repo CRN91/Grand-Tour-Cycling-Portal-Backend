@@ -9,7 +9,8 @@ public class PointsClassification extends MountainClassification{
     super(competitionType, riderIdsToRiders);
   }
 
-  protected HashMap<Integer,Integer> rankOrderToPoints(ArrayList<Integer> riderIdsInRankOrder){
+  protected HashMap<Integer,Integer> rankOrderToPoints(ArrayList<Integer> riderIdsInRankOrder) {
     // TODO convert rank order to points with table
     return null;
+  }
 }

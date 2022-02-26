@@ -418,7 +418,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
-    // TODO Auto-generated method stub
+    // TODO from stageid get stage get race get competition.getStageResults
     return null;
   }
 
