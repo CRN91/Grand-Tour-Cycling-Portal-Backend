@@ -434,7 +434,15 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public LocalTime[] getRiderResultsInStage(int stageId, int riderId)
       throws IDNotRecognisedException {
-    return null;
+    Stage stage = stageIdsToStages.get(stageId);
+    if (stage == null){
+      throw new IDNotRecognisedException("Stage ID not recognised!");
+    }
+    LocalTime[] results = stage.getRiderIdsToResults().get(riderId);
+    if (results == null){
+      throw new IDNotRecognisedException("Rider ID not recognised!");
+    }
+    return results;
   }
 
   @Override
@@ -454,7 +462,11 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
     // TODO from stageid get stage get race get competition.getStageResults
+    Stage stage = stageIdsToStages.get(stageId);
+    //stage.getRiderIdsToResults().keySet()
+    //for (Map.Entry<Integer, LocalTime[]> riderToTimes : stage.getRiderIdsToResults().entrySet()){
 
+    //}
     return null;
   }
 
@@ -577,14 +589,12 @@ public class CyclingPortal implements CyclingPortalInterface {
     cycPort.stageIdsToStages.get(0).setUnderDevelopment(false);
     cycPort.createTeam("america","wont invade ukraine");
     cycPort.createRider(0,"Ken",1608);
-    System.out.println("should print");
+    cycPort.createRider(0,"HOG RIDER",2015);
+
     cycPort.registerRiderResultsInStage(0,0,LocalTime.of(0,0,2),
         LocalTime.of(0,0,2));
-    cycPort.registerRiderResultsInStage(0,0,LocalTime.of(0,0,2),
-        LocalTime.of(0,0,2));
-    System.out.println("near end");
-    System.out.println(cycPort.stageIdsToStages.get(0).getRiderIdsToResults().toString());
-    for (LocalTime time : cycPort.stageIdsToStages.get(0).getRiderIdsToResults().get(0)){
+
+    for (LocalTime time : cycPort.getRiderResultsInStage(0,0) ){
       System.out.println(time);
     }
   }

@@ -4,8 +4,8 @@ import java.time.LocalTime;
 import java.util.HashMap;
 
 public class GeneralClassification extends Competition{
-  public GeneralClassification(int competitionType, HashMap<Integer, Rider> riderIdsToRiders) {
-    super(competitionType, riderIdsToRiders);
+  public GeneralClassification() {
+    super();
   }
   protected HashMap<Integer, LocalTime> finalResults;
 

@@ -6,8 +6,8 @@ import java.util.HashMap;
 
 public class MountainClassification extends Competition{
 
-  public MountainClassification(int competitionType, HashMap<Integer, Rider> riderIdsToRiders) {
-    super(competitionType, riderIdsToRiders);
+  public MountainClassification() {
+    super();
   }
 
   protected ArrayList<Integer> sortResultsByRankOrder(HashMap<Integer, LocalTime> riderIdsToTimes){
