@@ -3,7 +3,6 @@ registerRiderResultsInStage
 getRiderResultsInStage
 getRiderAdjustedElapsedTime...
 deleteRiderResultsInStage
-getRidersRankInStage
 getRankedAdjustedElapsed...
 getRidersPointsInStage
 getRidersMountainPointsInStage
@@ -35,4 +34,4 @@ removeStageById
 addIntermediateSprintToStage
 
 WIP
-
+getRidersRankInStage
