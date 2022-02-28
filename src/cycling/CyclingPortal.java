@@ -448,9 +448,21 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId)
       throws IDNotRecognisedException {
-    // TODO from stageId get raceId from that get race then get competition.getAdjustedTimes
-    // then search for our rider
-    return null;
+    if (riderIdsToRiders.get(riderId) == null) {
+      throw new IDNotRecognisedException("Rider ID is not recognised!");
+    }
+    Stage stage = stageIdsToStages.get(stageId);
+    if (stage == null){
+      throw new IDNotRecognisedException("Stage ID is not recognised!");
+    }
+    stage.generateAdjustedTimes();
+
+    for (Map.Entry<LocalTime,Integer> idsToTimes : stage.getRiderAdjustedTimeToId().entrySet()){
+      if (riderId == idsToTimes.getValue()){
+        return idsToTimes.getKey();
+      }
+    }
+
   }
 
   @Override
@@ -596,5 +608,31 @@ public class CyclingPortal implements CyclingPortalInterface {
     cycPort.createTeam("america","wont invade ukraine");
     cycPort.createRider(0,"Ken",1608);
     cycPort.createRider(0,"HOG RIDER",2015);
+    cycPort.createRider(0,"Kenith",1608);
+    cycPort.createRider(0,"HOG RIDER 2",2015);
+    cycPort.createRider(0,"Kenny",1608);
+    cycPort.createRider(0,"HOG RIER",2015);
+    cycPort.concludeStagePreparation(0);
+    LocalTime t0 = LocalTime.of(0,0,0);
+    LocalTime t1 = LocalTime.of(0,0,29);
+    LocalTime t2 = LocalTime.of(0,0,30);
+    LocalTime t3 = LocalTime.of(0,0,40);
+    LocalTime t4 = LocalTime.of(0,0,41);
+    LocalTime t5 = LocalTime.of(0,0,42);
+    LocalTime t6 = LocalTime.of(0,0,50);
+    cycPort.registerRiderResultsInStage(0,0,t0,t1);
+    cycPort.registerRiderResultsInStage(0,1,t0,t2);
+    cycPort.registerRiderResultsInStage(0,2,t0,t3);
+    cycPort.registerRiderResultsInStage(0,3,t0,t4);
+    cycPort.registerRiderResultsInStage(0,4,t0,t5);
+    cycPort.registerRiderResultsInStage(0,5,t0,t6);
+    System.out.println(cycPort.riderIdsToRiders.toString());
+    System.out.println(cycPort.stageIdsToStages.get(0).getRiderAdjustedTimeToId().toString());
+    System.out.println(cycPort.getRiderAdjustedElapsedTimeInStage(0,0));
+    System.out.println(cycPort.getRiderAdjustedElapsedTimeInStage(0,1));
+    System.out.println(cycPort.getRiderAdjustedElapsedTimeInStage(0,2));
+    System.out.println(cycPort.getRiderAdjustedElapsedTimeInStage(0,3));
+    System.out.println(cycPort.getRiderAdjustedElapsedTimeInStage(0,4));
+    System.out.println(cycPort.getRiderAdjustedElapsedTimeInStage(0,5));
   }
 }

@@ -26,6 +26,7 @@ public class Stage {
   protected Integer id;
   protected HashMap<Integer, LocalTime[]> riderIdsToResults = new HashMap<>();
   protected TreeMap<LocalTime, Integer> riderTotalTimeToId = new TreeMap<>();
+  protected TreeMap<LocalTime,Integer> riderAdjustedTimeToId = riderTotalTimeToId;
   private ArrayList<Segment> segmentsInStage;
   protected Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
 
@@ -135,6 +136,28 @@ public class Stage {
     riderIdsToResults.put(riderId, times);
     LocalTime finalTime = times[times.length - 1];
     riderTotalTimeToId.put(finalTime, riderId);
+  }
+
+  public TreeMap<LocalTime, Integer> getRiderAdjustedTimeToId() {
+    return riderAdjustedTimeToId;
+  }
+
+  public void generateAdjustedTimes(){
+    riderAdjustedTimeToId = riderTotalTimeToId;// clone
+    LocalTime previousTime = LocalTime.of(0,0,0, 0);
+    LocalTime pelotonLeader = LocalTime.of(0,0,0);
+
+    for (Map.Entry<LocalTime, Integer> rider : riderTotalTimeToId.entrySet()) {
+      LocalTime currentTime = rider.getKey();
+      double currentTimeSeconds = (currentTime.getHour() * 3600) + (currentTime.getMinute() * 60) + currentTime.getSecond();
+      double previousTimeSeconds = (previousTime.getHour() * 3600) + (previousTime.getMinute() * 60 + previousTime.getSecond());
+      if ((currentTimeSeconds - previousTimeSeconds) <= 1.0) {
+        riderAdjustedTimeToId.replace(pelotonLeader, rider.getValue());
+      }else {
+        pelotonLeader = currentTime;
+      }
+      previousTime = currentTime;
+    }
   }
 
   /**
