@@ -28,8 +28,6 @@ public class Competition {
     return null;
   }
 
-  public A
-
   public HashMap<Integer, LocalTime> getAdjustedTimes(){
     // TODO getRiderResultsInStage for all riders, sort these times and check a rider with the cached time
     // and if time < 1 then cache riders time and then change the riders time to the previous riders time

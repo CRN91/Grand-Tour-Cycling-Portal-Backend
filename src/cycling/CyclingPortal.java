@@ -214,7 +214,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     // Is the location valid?
     Stage stage = stageIdsToStages.get(stageId);
     if ((location >= stage.getLength()) || (location <= 0)) {
-      throw new InvalidLocationException("Invalid location!");
+      throw new InvalidLocationException("Invalid location " + location + "!");
     }
     // Is the stage state "under development"?
     if (!stage.getUnderDevelopment()) {
@@ -455,19 +455,26 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void deleteRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-    // TODO goto stage, stage.removeRiderResults(riderId)
+    // TODO goto stage->race->competition->results map
 
   }
 
   @Override
   public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
-    // TODO from stageid get stage get race get competition.getStageResults
-    Stage stage = stageIdsToStages.get(stageId);
-    //stage.getRiderIdsToResults().keySet()
-    //for (Map.Entry<Integer, LocalTime[]> riderToTimes : stage.getRiderIdsToResults().entrySet()){
+    // Does stage exist?
+    if (stageIdsToStages.get(stageId) == null) {
+      throw new IDNotRecognisedException("Stage " + stageId + " not found!");
+    }
 
-    //}
-    return null;
+    ArrayList<Integer> riderIdsList = new ArrayList<>();
+    Stage stage = stageIdsToStages.get(stageId);
+    TreeMap<LocalTime, Integer> riderFinalTimesToIds = stage.getRiderTotalTimeToId();
+    for (Integer orderedRiderId : riderFinalTimesToIds.values()) {
+      riderIdsList.add(orderedRiderId);
+    }
+
+    // Convert the ArrayList to int[]
+    return riderIdsList.stream().mapToInt(i -> i).toArray();
   }
 
   @Override
@@ -586,16 +593,8 @@ public class CyclingPortal implements CyclingPortalInterface {
     cycPort.createRace("Big boy race", "food fight race");
     cycPort.addStageToRace(0,"stage uno", "first 1",
         10.0, LocalDateTime.now(), StageType.FLAT);
-    cycPort.stageIdsToStages.get(0).setUnderDevelopment(false);
     cycPort.createTeam("america","wont invade ukraine");
     cycPort.createRider(0,"Ken",1608);
     cycPort.createRider(0,"HOG RIDER",2015);
-
-    cycPort.registerRiderResultsInStage(0,0,LocalTime.of(0,0,2),
-        LocalTime.of(0,0,2));
-
-    for (LocalTime time : cycPort.getRiderResultsInStage(0,0) ){
-      System.out.println(time);
-    }
   }
 }

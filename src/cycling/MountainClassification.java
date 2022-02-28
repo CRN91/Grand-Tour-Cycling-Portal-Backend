@@ -11,7 +11,9 @@ public class MountainClassification extends Competition{
   }
 
   protected ArrayList<Integer> sortResultsByRankOrder(HashMap<Integer, LocalTime> riderIdsToTimes){
-    // TODO sort riders by fastest times and return an ordered array list
+    //
+
+
     return null;
   }
 

@@ -1,10 +1,14 @@
 package src.cycling;
 
+import com.sun.source.tree.Tree;
+
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Represents a non-time trial stage.
@@ -21,6 +25,7 @@ public class Stage {
   protected StageType stageType;
   protected Integer id;
   protected HashMap<Integer, LocalTime[]> riderIdsToResults = new HashMap<>();
+  protected TreeMap<LocalTime, Integer> riderTotalTimeToId = new TreeMap<>();
   private ArrayList<Segment> segmentsInStage;
   protected Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
 
@@ -122,8 +127,14 @@ public class Stage {
     return riderIdsToResults;
   }
 
+  public TreeMap<LocalTime, Integer> getRiderTotalTimeToId() {
+    return riderTotalTimeToId;
+  }
+
   public void addRiderIdsToResults(Integer riderId, LocalTime[] times) {
     riderIdsToResults.put(riderId, times);
+    LocalTime finalTime = times[times.length - 1];
+    riderTotalTimeToId.put(finalTime, riderId);
   }
 
   /**

@@ -21,6 +21,7 @@ removeSegment
 concludeStagePreparation
 addCategorizedClimbToStage
 eraseCyclingPortal
+getRidersRankInStage
 
 WIP
 
@@ -33,4 +34,3 @@ removeStageById
 addIntermediateSprintToStage
 
 WIP
-getRidersRankInStage
