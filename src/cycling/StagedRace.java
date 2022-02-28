@@ -15,8 +15,11 @@ public class StagedRace {
   private int raceId;
   private LocalTime[] datesOfCompetitions;
 
-  private Competition[] competitions = new Competition[3];
+  private GeneralClassification generalClassification;
+  private MountainClassification mountainClassification;
+  private PointsClassification pointsClassification;
   private Stage[] raceStages;
+
 
   private static int latestId = 0;
 
@@ -32,6 +35,18 @@ public class StagedRace {
     return this.raceId;
   }
 
+  public GeneralClassification getGeneralClassification() {
+    return generalClassification;
+  }
+
+  public MountainClassification getMountainClassification() {
+    return mountainClassification;
+  }
+
+  public PointsClassification getPointsClassification() {
+    return pointsClassification;
+  }
+
   /**
    * Reset the internal ID counter
    */
@@ -43,5 +58,8 @@ public class StagedRace {
     this.name = name;
     this.description = description;
     this.raceId = latestId++;
+    this.generalClassification = new GeneralClassification();
+    this.mountainClassification = new MountainClassification();
+    this.pointsClassification = new PointsClassification();
   }
 }

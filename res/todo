@@ -1,5 +1,4 @@
 viewRaceDetails
-registerRiderResultsInStage
 getRiderResultsInStage
 getRiderAdjustedElapsedTime...
 deleteRiderResultsInStage
