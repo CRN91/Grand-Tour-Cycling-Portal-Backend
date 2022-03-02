@@ -39,6 +39,7 @@ public class RaceResult implements Comparable<RaceResult> {
     this.riderId = riderId;
     this.times = times;
     this.finishTime = times[times.length -1];
+    this.adjustedFinishTime = this.finishTime;
     this.id = latestId++;
   }
 }

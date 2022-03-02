@@ -30,7 +30,6 @@ public class Stage {
 
   //protected HashMap<Integer, LocalTime[]> riderIdsToResults = new HashMap<>();
   protected ArrayList<RaceResult> results = new ArrayList<>();
-  protected ArrayList<RaceResult> adjustedResults = new ArrayList<>();
 
   private ArrayList<Segment> segmentsInStage;
   protected Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
@@ -138,10 +137,6 @@ public class Stage {
     results.add(result);
   }
 
-  public ArrayList<RaceResult> getAdjustedResults() {
-    return this.adjustedResults;
-  }
-
   public void generateAdjustedResults() {
     LocalTime previousTime = LocalTime.of(0,0,0, 0);
     LocalTime pelotonLeader = LocalTime.of(0,0,0);
@@ -197,13 +192,13 @@ public class Stage {
     stage.addRiderResults(1, times2);
     stage.addRiderResults(2, times3);
     for (RaceResult result : stage.getResults()) {
-      System.out.println(result.getFinishTime());
-      System.out.println(result.getAdjustedFinishTime());
+      System.out.println(result.getFinishTime()+" b4 finish time");
+      System.out.println(result.getAdjustedFinishTime()+" b4 adjusted time");
     }
     stage.generateAdjustedResults();
-    for (RaceResult result : stage.getAdjustedResults()) {
-      System.out.println(result.getFinishTime());
-      System.out.println(result.getAdjustedFinishTime());
+    for (RaceResult result : stage.getResults()) {
+      System.out.println(result.getFinishTime()+" ft");
+      System.out.println(result.getAdjustedFinishTime()+" at");
     }
   }
 }
