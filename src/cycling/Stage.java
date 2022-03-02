@@ -4,6 +4,8 @@ package src.cycling;
 
 import javax.xml.transform.Result;
 import java.lang.reflect.Array;
+import java.security.PrivilegedActionException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -25,9 +27,11 @@ public class Stage {
   protected LocalDateTime startTime;
   protected StageType stageType;
   protected Integer id;
-  protected HashMap<Integer, LocalTime[]> riderIdsToResults = new HashMap<>();
-  protected ArrayList<Result> riderTotalTimeToId = new ArrayList<Result>;
-  protected ArrayList<Result> riderAdjustedTimeToId = riderTotalTimeToId;
+
+  //protected HashMap<Integer, LocalTime[]> riderIdsToResults = new HashMap<>();
+  protected ArrayList<RaceResult> results = new ArrayList<>();
+  protected ArrayList<RaceResult> adjustedResults = new ArrayList<>();
+
   private ArrayList<Segment> segmentsInStage;
   protected Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
 
@@ -125,40 +129,32 @@ public class Stage {
    */
   public void setUnderDevelopment(Boolean state) { this.underDevelopment = state; }
 
-  public HashMap<Integer, LocalTime[]> getRiderIdsToResults() {
-    return riderIdsToResults;
+  public ArrayList<RaceResult> getResults() {
+    return this.results;
   }
 
-  public ArrayList<Result> getRiderTotalTimeToId() {
-    return riderTotalTimeToId;
+  public void addRiderResults(Integer riderId, LocalTime[] times) {
+    RaceResult result = new RaceResult(0, times);
+    results.add(result);
   }
 
-  public void addRiderIdsToResults(Integer riderId, LocalTime[] times) {
-    riderIdsToResults.put(riderId, times);
-    LocalTime finalTime = times[times.length - 1];
-    riderTotalTimeToId.put(finalTime, riderId);
+  public ArrayList<RaceResult> getAdjustedResults() {
+    return this.adjustedResults;
   }
 
-  public ArrayList<Result> getRiderAdjustedTimeToId() {
-    return riderAdjustedTimeToId;
-  }
-
-  public void generateAdjustedTimes(){
-   // riderAdjustedTimeToId = riderTotalTimeToId;// clone
-    //.out.println(riderAdjustedTimeToId.toString()+" adjusted "+riderTotalTimeToId.toString()+" original");
+  public void generateAdjustedResults() {
     LocalTime previousTime = LocalTime.of(0,0,0, 0);
     LocalTime pelotonLeader = LocalTime.of(0,0,0);
 
-    for (Map.Entry<LocalTime, Integer> rider : riderTotalTimeToId.entrySet()) {
-      LocalTime currentTime = rider.getKey();
+    for (RaceResult result : this.results) {
+      LocalTime currentTime = result.getFinishTime();
       double currentTimeSeconds = (currentTime.getHour() * 3600) + (currentTime.getMinute() * 60) + currentTime.getSecond();
       double previousTimeSeconds = (previousTime.getHour() * 3600) + (previousTime.getMinute() * 60 + previousTime.getSecond());
       if ((currentTimeSeconds - previousTimeSeconds) <= 1.0) {
-        riderAdjustedTimeToId.put(pelotonLeader, rider.getValue());
-        System.out.println(riderAdjustedTimeToId.toString()+" after replace");
+        result.setAdjustedFinishTime(pelotonLeader);
       }else {
         pelotonLeader = currentTime;
-        //riderAdjustedTimeToId.put(pelotonLeader, rider.getValue());
+        result.setAdjustedFinishTime(currentTime);
       }
       previousTime = currentTime;
     }
@@ -190,5 +186,24 @@ public class Stage {
     this.startTime = startTime;
     this.stageType = stageType;
     this.id = latestId++;
+  }
+
+  public static void main(String[] args) {
+    Stage stage = new Stage(0, "a", "a", 10.0, LocalDateTime.now(), StageType.FLAT);
+    LocalTime[] times1 = {LocalTime.of(0,0,0), LocalTime.of(0,0,29)};
+    LocalTime[] times2 = {LocalTime.of(0,0,0), LocalTime.of(0,0,30)};
+    LocalTime[] times3 = {LocalTime.of(0,0,0), LocalTime.of(0,0,40)};
+    stage.addRiderResults(0, times1);
+    stage.addRiderResults(1, times2);
+    stage.addRiderResults(2, times3);
+    for (RaceResult result : stage.getResults()) {
+      System.out.println(result.getFinishTime());
+      System.out.println(result.getAdjustedFinishTime());
+    }
+    stage.generateAdjustedResults();
+    for (RaceResult result : stage.getAdjustedResults()) {
+      System.out.println(result.getFinishTime());
+      System.out.println(result.getAdjustedFinishTime());
+    }
   }
 }
