@@ -1,14 +1,15 @@
 package src.cycling;
 
-import com.sun.source.tree.Tree;
+//import com.sun.source.tree.Tree;
 
+import javax.xml.transform.Result;
 import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
+//import java.util.TreeMap;
 
 /**
  * Represents a non-time trial stage.
@@ -25,8 +26,8 @@ public class Stage {
   protected StageType stageType;
   protected Integer id;
   protected HashMap<Integer, LocalTime[]> riderIdsToResults = new HashMap<>();
-  protected TreeMap<LocalTime, Integer> riderTotalTimeToId = new TreeMap<>();
-  protected TreeMap<LocalTime,Integer> riderAdjustedTimeToId = riderTotalTimeToId;
+  protected ArrayList<Result> riderTotalTimeToId = new ArrayList<Result>;
+  protected ArrayList<Result> riderAdjustedTimeToId = riderTotalTimeToId;
   private ArrayList<Segment> segmentsInStage;
   protected Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
 
@@ -128,7 +129,7 @@ public class Stage {
     return riderIdsToResults;
   }
 
-  public TreeMap<LocalTime, Integer> getRiderTotalTimeToId() {
+  public ArrayList<Result> getRiderTotalTimeToId() {
     return riderTotalTimeToId;
   }
 
@@ -138,12 +139,13 @@ public class Stage {
     riderTotalTimeToId.put(finalTime, riderId);
   }
 
-  public TreeMap<LocalTime, Integer> getRiderAdjustedTimeToId() {
+  public ArrayList<Result> getRiderAdjustedTimeToId() {
     return riderAdjustedTimeToId;
   }
 
   public void generateAdjustedTimes(){
-    riderAdjustedTimeToId = riderTotalTimeToId;// clone
+   // riderAdjustedTimeToId = riderTotalTimeToId;// clone
+    //.out.println(riderAdjustedTimeToId.toString()+" adjusted "+riderTotalTimeToId.toString()+" original");
     LocalTime previousTime = LocalTime.of(0,0,0, 0);
     LocalTime pelotonLeader = LocalTime.of(0,0,0);
 
@@ -152,9 +154,11 @@ public class Stage {
       double currentTimeSeconds = (currentTime.getHour() * 3600) + (currentTime.getMinute() * 60) + currentTime.getSecond();
       double previousTimeSeconds = (previousTime.getHour() * 3600) + (previousTime.getMinute() * 60 + previousTime.getSecond());
       if ((currentTimeSeconds - previousTimeSeconds) <= 1.0) {
-        riderAdjustedTimeToId.replace(pelotonLeader, rider.getValue());
+        riderAdjustedTimeToId.put(pelotonLeader, rider.getValue());
+        System.out.println(riderAdjustedTimeToId.toString()+" after replace");
       }else {
         pelotonLeader = currentTime;
+        //riderAdjustedTimeToId.put(pelotonLeader, rider.getValue());
       }
       previousTime = currentTime;
     }
