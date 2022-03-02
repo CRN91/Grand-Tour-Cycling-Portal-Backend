@@ -462,7 +462,7 @@ public class CyclingPortal implements CyclingPortalInterface {
         return idsToTimes.getKey();
       }
     }
-
+    return null;
   }
 
   @Override
