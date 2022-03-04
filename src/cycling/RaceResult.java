@@ -5,6 +5,7 @@ import java.time.LocalTime;
 public class RaceResult implements Comparable<RaceResult> {
   private int id;
   private int riderId;
+  private int stageId;
   private LocalTime[] times;
   private LocalTime finishTime;
   private LocalTime adjustedFinishTime;
@@ -23,6 +24,14 @@ public class RaceResult implements Comparable<RaceResult> {
     return riderId;
   }
 
+  public int getStageId() {
+    return stageId;
+  }
+
+  public LocalTime[] getTimes() {
+    return times;
+  }
+
   public LocalTime getFinishTime() {
     return finishTime;
   }
@@ -35,8 +44,9 @@ public class RaceResult implements Comparable<RaceResult> {
     this.adjustedFinishTime = adjustedFinishTime;
   }
 
-  public RaceResult(int riderId, LocalTime[] times) {
+  public RaceResult(int riderId, int stageId, LocalTime[] times) {
     this.riderId = riderId;
+    this.stageId = stageId;
     this.times = times;
     this.finishTime = times[times.length -1];
     this.adjustedFinishTime = this.finishTime;

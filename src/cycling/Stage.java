@@ -133,8 +133,10 @@ public class Stage {
   }
 
   public void addRiderResults(Integer riderId, LocalTime[] times) {
-    RaceResult result = new RaceResult(0, times);
-    results.add(result);
+    RaceResult result = new RaceResult(riderId, this.id, times);
+    if (!(results.contains(result))) {
+      results.add(result);
+    }
   }
 
   public void generateAdjustedResults() {
@@ -147,7 +149,7 @@ public class Stage {
       double previousTimeSeconds = (previousTime.getHour() * 3600) + (previousTime.getMinute() * 60 + previousTime.getSecond());
       if ((currentTimeSeconds - previousTimeSeconds) <= 1.0) {
         result.setAdjustedFinishTime(pelotonLeader);
-      }else {
+      } else {
         pelotonLeader = currentTime;
         result.setAdjustedFinishTime(currentTime);
       }
