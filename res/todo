@@ -3,7 +3,6 @@ getRidersPointsInStage
 getRidersMountainPointsInStage
 saveCyclingPortal
 loadCyclingPortal
-getGeneralClassification
 getRidersPointsInRace
 getRidersMountainPointsInRace
 getRidersGeneralClassificationRank
@@ -22,6 +21,7 @@ getRiderResultsInStage
 deleteRiderResultsInStage
 
 WIP
+getGeneralClassification
 
 ------------------------------------
 ADAM
