@@ -2,7 +2,6 @@ package src.cycling;
 
 import javax.naming.Name;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -465,23 +464,23 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId)
       throws IDNotRecognisedException {
-    if (riderIdsToRiders.get(riderId) == null) { // checks if riderId exists in cycling portal.
+    if (riderIdsToRiders.get(riderId) == null) {
       throw new IDNotRecognisedException("Rider ID is not recognised!");
     }
     Stage stage = stageIdsToStages.get(stageId);
-    if (stage == null){ // checks if stageId exists in cycling portal.
+    if (stage == null){
       throw new IDNotRecognisedException("Stage ID is not recognised!");
     }
 
     stage.generateAdjustedResults();
 
-    for (RaceResult result : stage.getResults()) { // iterates through stage's rider results.
-      if (result.getRiderId() == riderId) { // if rider is found:
-        return result.getAdjustedFinishTime(); // return their adjusted time.
+    for (RaceResult result : stage.getResults()) {
+      if (result.getRiderId() == riderId) {
+        return result.getAdjustedFinishTime();
       }
     }
 
-    return null; // specification asks to return empty array but not stated by method
+    return null;
   }
 
   @Override
@@ -514,26 +513,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId)
       throws IDNotRecognisedException {
-    Stage stage = stageIdsToStages.get(stageId);
-    if (stageIdsToStages.get(stageId) == null) { // checks stage exists in cycling portal
-      throw new IDNotRecognisedException("Stage " + stageId + " not found!");
-    }
-
-    stage.generateAdjustedResults();
-
-    Collections.sort(stage.getResults());
-
-    ArrayList<RaceResult> results = stage.getResults();
-    LocalTime[] RankAdjustedElapsedTimesInStage = new LocalTime[results.size()];
-    int i = 0;
-    for (RaceResult result : stage.getResults()){
-      RankAdjustedElapsedTimesInStage[i] = result.getAdjustedFinishTime();
-      i++;
-    }
-    return RankAdjustedElapsedTimesInStage;
-
-   // return stage.getResults().toArray(new LocalTime[0]);
-//return riderIdArrayList.stream().mapToInt(i -> i).toArray();
+    // TODO from stageId get stage, then get race, then competition.getAdjustedTimes
+    return null;
   }
 
   @Override
@@ -660,13 +641,13 @@ public class CyclingPortal implements CyclingPortalInterface {
     LocalTime t4 = LocalTime.of(0,0,41);
     LocalTime t5 = LocalTime.of(0,0,42);
     LocalTime t6 = LocalTime.of(0,0,50);
-   // cycPort.registerRiderResultsInStage(0,0, t0, t1);
-   // cycPort.registerRiderResultsInStage(0,1, t0, t2);
-   // cycPort.registerRiderResultsInStage(0,2, t0, t3);
-   // cycPort.registerRiderResultsInStage(0,3, t0, t4);
-    //cycPort.registerRiderResultsInStage(0,4, t0, t5);
-    //cycPort.registerRiderResultsInStage(0,5, t0, t6);
+    cycPort.registerRiderResultsInStage(0,0, t0, t1);
+    cycPort.registerRiderResultsInStage(0,1, t0, t2);
+    cycPort.registerRiderResultsInStage(0,2, t0, t3);
+    cycPort.registerRiderResultsInStage(0,3, t0, t4);
+    cycPort.registerRiderResultsInStage(0,4, t0, t5);
+    cycPort.registerRiderResultsInStage(0,5, t0, t6);
 
-    System.out.println(Arrays.toString(cycPort.getRankedAdjustedElapsedTimesInStage(0)));
+    System.out.println(Arrays.toString(cycPort.getRiderResultsInStage(0, 5)));
   }
 }

@@ -1,10 +1,8 @@
 viewRaceDetails
-deleteRiderResultsInStage
 getRidersPointsInStage
 getRidersMountainPointsInStage
 saveCyclingPortal
 loadCyclingPortal
-getGeneralClassification
 getRidersPointsInRace
 getRidersMountainPointsInRace
 getRidersGeneralClassificationRank
@@ -20,8 +18,10 @@ addCategorizedClimbToStage
 eraseCyclingPortal
 getRidersRankInStage
 getRiderResultsInStage
+deleteRiderResultsInStage
 
 WIP
+getGeneralClassification
 
 ------------------------------------
 ADAM
