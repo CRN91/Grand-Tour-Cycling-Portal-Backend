@@ -132,6 +132,10 @@ public class Stage {
     return this.results;
   }
 
+  public void removeResultByRiderId(int riderId) {
+    results.removeIf(result -> result.getRiderId() == riderId);
+  }
+
   public void addRiderResults(Integer riderId, LocalTime[] times) {
     RaceResult result = new RaceResult(riderId, this.id, times);
     if (!(results.contains(result))) {

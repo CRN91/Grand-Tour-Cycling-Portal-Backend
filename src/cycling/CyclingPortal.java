@@ -485,8 +485,17 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void deleteRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-    // TODO goto stage->race->competition->results map
+    // Does stage exist?
+    if (stageIdsToStages.get(stageId) == null) {
+      throw new IDNotRecognisedException("Stage " + stageId + " not found!");
+    }
+    Stage stage = stageIdsToStages.get(stageId);
+    // Does rider exist?
+    if (riderIdsToRiders.get(riderId) == null) {
+      throw new IDNotRecognisedException("Rider " + riderId + " not found!");
+    }
 
+    stage.removeResultByRiderId(riderId);
   }
 
   @Override
@@ -626,6 +635,8 @@ public class CyclingPortal implements CyclingPortalInterface {
     cycPort.createRace("Big boy race", "food fight race");
     cycPort.addStageToRace(0,"stage uno", "first 1",
         10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addStageToRace(0,"stage dos", "",
+        10.0, LocalDateTime.now(), StageType.HIGH_MOUNTAIN);
     cycPort.createTeam("america","wont invade ukraine");
     cycPort.createRider(0,"Ken",1608);
     cycPort.createRider(0,"HOG RIDER",2015);
@@ -647,7 +658,5 @@ public class CyclingPortal implements CyclingPortalInterface {
     cycPort.registerRiderResultsInStage(0,3, t0, t4);
     cycPort.registerRiderResultsInStage(0,4, t0, t5);
     cycPort.registerRiderResultsInStage(0,5, t0, t6);
-
-    System.out.println(Arrays.toString(cycPort.getRiderResultsInStage(0, 5)));
   }
 }

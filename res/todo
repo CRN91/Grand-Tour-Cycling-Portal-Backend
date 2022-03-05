@@ -1,5 +1,4 @@
 viewRaceDetails
-deleteRiderResultsInStage
 getRidersPointsInStage
 getRidersMountainPointsInStage
 saveCyclingPortal
@@ -20,6 +19,7 @@ addCategorizedClimbToStage
 eraseCyclingPortal
 getRidersRankInStage
 getRiderResultsInStage
+deleteRiderResultsInStage
 
 WIP
 
