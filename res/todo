@@ -1,8 +1,5 @@
 viewRaceDetails
-getRiderResultsInStage
-getRiderAdjustedElapsedTime...
 deleteRiderResultsInStage
-getRankedAdjustedElapsed...
 getRidersPointsInStage
 getRidersMountainPointsInStage
 saveCyclingPortal
@@ -22,6 +19,7 @@ concludeStagePreparation
 addCategorizedClimbToStage
 eraseCyclingPortal
 getRidersRankInStage
+getRiderResultsInStage
 
 WIP
 
@@ -32,5 +30,7 @@ Completed
 suffer radioactive poisoning
 removeStageById
 addIntermediateSprintToStage
+getRiderAdjustedElapsedTime...
 
 WIP
+getRankedAdjustedElapsed...
