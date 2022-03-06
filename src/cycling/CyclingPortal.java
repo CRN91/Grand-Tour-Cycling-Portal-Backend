@@ -1,7 +1,7 @@
 package src.cycling;
 
 import javax.naming.Name;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,7 +14,7 @@ import java.util.*;
  * @author Adam Kaizra, Sam Barker
  * @version 1.0
  */
-public class CyclingPortal implements CyclingPortalInterface {
+public class CyclingPortal implements CyclingPortalInterface, Serializable {
   private HashMap<Integer, StagedRace> raceIdsToRaces = new HashMap<>();
   private HashMap<Integer, Competition> competitionIdsToCompetitions = new HashMap<>();
   private HashMap<Integer, Stage> stageIdsToStages = new HashMap<>();
@@ -539,6 +539,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     Stage.resetIdCounter();
     StagedRace.resetIdCounter();
     Segment.resetIdCounter();
+    RaceResult.resetIdCounter();
     // TODO competitions? and other stuff
     // Erase all references and get them garbage collected
     this.raceIdsToRaces = new HashMap<>();
@@ -551,14 +552,24 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void saveCyclingPortal(String filename) throws IOException {
-    // TODO Auto-generated method stub
-
+    FileOutputStream fileOutputStream = new FileOutputStream(filename);
+    ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+    objectOutputStream.writeObject(this);
+    objectOutputStream.flush();
+    objectOutputStream.close();
   }
 
   @Override
   public void loadCyclingPortal(String filename) throws IOException, ClassNotFoundException {
-    // TODO Auto-generated method stub
-
+    FileInputStream fileInputStream = new FileInputStream(filename);
+    ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+    CyclingPortal tmp = (CyclingPortal) objectInputStream.readObject();
+    this.raceIdsToRaces = tmp.raceIdsToRaces;
+    this.competitionIdsToCompetitions = tmp.competitionIdsToCompetitions;
+    this.stageIdsToStages = tmp.stageIdsToStages;
+    this.segmentIdsToSegments = tmp.segmentIdsToSegments;
+    this.teamIdsToTeams = tmp.teamIdsToTeams;
+    this.riderIdsToRiders = tmp.riderIdsToRiders;
   }
 
   @Override
@@ -620,7 +631,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   public static void main(String[] args) throws IDNotRecognisedException, InvalidNameException, IllegalNameException,
-      InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, DuplicatedResultException, InvalidCheckpointsException {
+      InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, DuplicatedResultException, InvalidCheckpointsException, IOException, ClassNotFoundException {
 
     CyclingPortal cycPort = new CyclingPortal();
     cycPort.createRace("Big boy race", "food fight race");
@@ -647,7 +658,5 @@ public class CyclingPortal implements CyclingPortalInterface {
     cycPort.registerRiderResultsInStage(0,3, t0, t4);
     cycPort.registerRiderResultsInStage(0,4, t0, t5);
     cycPort.registerRiderResultsInStage(0,5, t0, t6);
-
-    System.out.println(Arrays.toString(cycPort.getRiderResultsInStage(0, 5)));
   }
 }

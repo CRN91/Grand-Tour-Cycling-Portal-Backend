@@ -3,6 +3,7 @@ package src.cycling;
 //import com.sun.source.tree.Tree;
 
 import javax.xml.transform.Result;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.security.PrivilegedActionException;
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @author Adam Kaizra, Sam Barker
  * @version 1.0
  */
-public class Stage {
+public class Stage implements Serializable {
   protected Integer raceId;
   protected String name;
   protected String description;

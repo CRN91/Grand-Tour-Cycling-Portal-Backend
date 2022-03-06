@@ -1,8 +1,9 @@
 package src.cycling;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class RaceResult implements Comparable<RaceResult> {
+public class RaceResult implements Comparable<RaceResult>, Serializable {
   private int id;
   private int riderId;
   private int stageId;
@@ -18,6 +19,10 @@ public class RaceResult implements Comparable<RaceResult> {
 
   public int getId() {
     return id;
+  }
+
+  public static void resetIdCounter() {
+    latestId = 0;
   }
 
   public int getRiderId() {

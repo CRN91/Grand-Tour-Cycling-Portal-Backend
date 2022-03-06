@@ -1,8 +1,6 @@
 viewRaceDetails
 getRidersPointsInStage
 getRidersMountainPointsInStage
-saveCyclingPortal
-loadCyclingPortal
 getRidersPointsInRace
 getRidersMountainPointsInRace
 getRidersGeneralClassificationRank
@@ -16,6 +14,8 @@ removeSegment
 concludeStagePreparation
 addCategorizedClimbToStage
 eraseCyclingPortal
+saveCyclingPortal
+loadCyclingPortal
 getRidersRankInStage
 getRiderResultsInStage
 deleteRiderResultsInStage

@@ -1,5 +1,6 @@
 package src.cycling;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.HashMap;
 
@@ -9,7 +10,7 @@ import java.util.HashMap;
  * @author Sam Barker, Adam Kaizra
  * @version 1.0
  */
-public class StagedRace {
+public class StagedRace implements Serializable {
   private String name;
   private String description;
   private int raceId;
@@ -19,7 +20,6 @@ public class StagedRace {
   private MountainClassification mountainClassification;
   private PointsClassification pointsClassification;
   private Stage[] raceStages;
-
 
   private static int latestId = 0;
 

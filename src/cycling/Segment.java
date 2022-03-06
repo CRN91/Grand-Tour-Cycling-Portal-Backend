@@ -1,5 +1,7 @@
 package src.cycling;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -11,7 +13,7 @@ import java.util.HashMap;
 
 //(int stageId, Double location, SegmentType type,
 //                                        Double averageGradient, Double length)
-public class Segment {
+public class Segment implements Serializable {
   private Integer stageId;
   private Double location;
   private SegmentType segmentType;

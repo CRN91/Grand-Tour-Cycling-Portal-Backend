@@ -1,9 +1,10 @@
 package src.cycling;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.HashMap;
 
-public class Competition {
+public class Competition implements Serializable {
   //protected int competitionType;// 0 = General 1 = Mountains 2 = Points
   protected HashMap<Integer, Rider> riderIdsToRiders = new HashMap<>();
   protected int id;

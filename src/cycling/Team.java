@@ -1,5 +1,6 @@
 package src.cycling;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import src.cycling.Rider;
 
@@ -9,7 +10,7 @@ import src.cycling.Rider;
  * @author Adam Kaizra, Sam Barker
  * @version 1.0
  */
-public class Team {
+public class Team implements Serializable {
   private String name;
   private String description;
   private int id;

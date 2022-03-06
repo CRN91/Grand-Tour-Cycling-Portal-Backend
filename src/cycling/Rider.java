@@ -1,5 +1,6 @@
 package src.cycling;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.UUID;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
  * @version 1.0
  *
  */
-public class Rider {
+public class Rider implements Serializable {
   private String name;
   private int id;
   private int teamId;
