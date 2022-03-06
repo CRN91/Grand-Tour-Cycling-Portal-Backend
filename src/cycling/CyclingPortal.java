@@ -2,6 +2,7 @@ package src.cycling;
 
 import javax.naming.Name;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -392,7 +393,9 @@ public class CyclingPortal implements CyclingPortalInterface {
   public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
       throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
       InvalidStageStateException {
-    Stage stage = stageIdsToStages.get(stageId);
+    Stage stage = stageIdsToStages.get(stageId); // Gets the stage.
+
+    // Error checking
     if (stage == null){
       throw new IDNotRecognisedException("Stage ID not recognised!");
     }
@@ -404,7 +407,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (stage.getUnderDevelopment()){
       throw new InvalidStageStateException("The stage is under development so can't add rider results!");
     }
-
+// get the location data for each segment, order it, sync it to times, store it
     // Check whether the result has already been registered for this rider in this stage
     ArrayList<RaceResult> results = stage.getResults();
     if (!results.isEmpty()) {
@@ -437,7 +440,6 @@ public class CyclingPortal implements CyclingPortalInterface {
 
     stage.addRiderResults(riderId, checkpoints);
   }
-
   @Override
   public LocalTime[] getRiderResultsInStage(int stageId, int riderId)
       throws IDNotRecognisedException {
@@ -513,8 +515,18 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId)
       throws IDNotRecognisedException {
-    // TODO from stageId get stage, then get race, then competition.getAdjustedTimes
-    return null;
+    Stage stage = stageIdsToStages.get(stageId);
+
+    stage.generateAdjustedResults();
+
+    ArrayList<RaceResult> results = stage.getResults();
+    LocalTime[] RankAdjustedElapsedTimesInStage = new LocalTime[results.size()];
+    int i = 0;
+    for (RaceResult result : stage.getResults()){
+      RankAdjustedElapsedTimesInStage[i] = result.getAdjustedFinishTime();
+      i++;
+    }
+    return RankAdjustedElapsedTimesInStage;
   }
 
   @Override
@@ -591,7 +603,64 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int[] getRidersPointsInRace(int raceId) throws IDNotRecognisedException {
     // TODO from raceId get race then get competition.getFinalResults
-    return null;
+    StagedRace race = raceIdsToRaces.get(raceId);
+    if (race == null){ // checks race is in cycling portal.
+      throw new IDNotRecognisedException("Race ID not recognised!");
+    }
+
+    // Table of rank to points for each stage type.
+    int[] flatPointsConversion = {50,30,20,18,16,14,12,10,8,7,6,5,4,3,2};
+    int[] hillyPointsConversion = {30,25,22,19,17,15,13,11,9,7,6,5,4,3,2};
+    int[] mountainPointsConversion = {20,17,15,13,11,10,9,8,7,6,5,4,3,2,1};
+    int[] timeTrialPointsConversion = mountainPointsConversion;
+    Map<StageType, int[]> pointsConversion = Map.of(StageType.FLAT,flatPointsConversion,StageType.MEDIUM_MOUNTAIN,hillyPointsConversion,
+        StageType.HIGH_MOUNTAIN,mountainPointsConversion,StageType.TT,timeTrialPointsConversion);
+
+    HashMap<Integer,Integer> riderIdsToPoints = new HashMap<Integer,Integer>();
+    // Sum of points for each rider for the specified race.
+
+    for (Stage stage : race.getStages()){ // iterate through stages.
+      int pointsIndex = 0;
+      stage.generateAdjustedResults(); // Sort times in ascending order.
+
+      for (RaceResult result : stage.getResults()) { // iterate through rider.
+        if (pointsIndex == 15) { // Only first 15 riders are awarded points.
+          break;
+        }
+        int riderId = result.getRiderId();
+        int points = pointsConversion.get(stage.getStageType())[pointsIndex]; // points for stage type
+
+        if (riderIdsToPoints.get(riderId) == null) { // if the rider is not registered with points add them.
+          riderIdsToPoints.put(riderId, points);
+        } else {
+          riderIdsToPoints.merge(riderId, points, Integer::sum);
+        }
+        pointsIndex++;
+      }
+
+      Collections.sort(stage.getSegmentsInStage());
+
+      for (int segmentIndex = 1; segmentIndex <= stage.getSegmentsInStage().size()-2; segmentIndex++){
+
+        if (stage.getSegmentsInStage().get(segmentIndex-1).getSegmentType() == SegmentType.SPRINT){
+          // checks if segment is a sprint.
+          for (RaceResult riderResult : stage.getResults()){
+            int riderId = riderResult.getRiderId();
+            int riderRank = stage.getRidersRankInSegment(segmentIndex,riderId);
+            int points = pointsConversion.get(StageType.HIGH_MOUNTAIN)[riderRank];
+            if (riderRank <= 15){
+              if (riderIdsToPoints.get(riderId) == null) { // if the rider is not registered with points add them.
+                riderIdsToPoints.put(riderId, points);
+              } else {
+                riderIdsToPoints.merge(riderId, points, Integer::sum);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return riderIdsToPoints;
   }
 
   @Override
@@ -648,6 +717,6 @@ public class CyclingPortal implements CyclingPortalInterface {
     cycPort.registerRiderResultsInStage(0,4, t0, t5);
     cycPort.registerRiderResultsInStage(0,5, t0, t6);
 
-    System.out.println(Arrays.toString(cycPort.getRiderResultsInStage(0, 5)));
+    System.out.println(Arrays.toString(cycPort.getRankedAdjustedElapsedTimesInStage(0)));
   }
 }

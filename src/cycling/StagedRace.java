@@ -18,7 +18,7 @@ public class StagedRace {
   private GeneralClassification generalClassification;
   private MountainClassification mountainClassification;
   private PointsClassification pointsClassification;
-  private Stage[] raceStages;
+  private Stage[] stages;
 
 
   private static int latestId = 0;
@@ -33,6 +33,10 @@ public class StagedRace {
 
   public int getId() {
     return this.raceId;
+  }
+
+  public Stage[] getStages() {
+    return stages;
   }
 
   public GeneralClassification getGeneralClassification() {
