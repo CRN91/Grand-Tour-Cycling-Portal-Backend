@@ -1,6 +1,7 @@
 package src.cycling;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -18,7 +19,7 @@ public class StagedRace {
   private GeneralClassification generalClassification;
   private MountainClassification mountainClassification;
   private PointsClassification pointsClassification;
-  private Stage[] stages;
+  private ArrayList<Stage> stages = new ArrayList<>();
 
 
   private static int latestId = 0;
@@ -35,8 +36,12 @@ public class StagedRace {
     return this.raceId;
   }
 
-  public Stage[] getStages() {
+  public ArrayList<Stage> getStages() {
     return stages;
+  }
+
+  public void addStage(Stage stage) {
+    this.stages.add(stage);
   }
 
   public GeneralClassification getGeneralClassification() {

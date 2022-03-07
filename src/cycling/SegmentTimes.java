@@ -8,7 +8,7 @@ public class SegmentTimes implements Comparable<SegmentTimes> {
   private int rank;
 
   public int compareTo(SegmentTimes segmentTime) {
-    return this.time.compareTo(segmentTime.getTime());
+    return this.getTime().compareTo(segmentTime.getTime());
   }
 
   public int getRank() {

@@ -2,6 +2,7 @@ package src.cycling;
 
 import java.lang.reflect.Array;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -18,12 +19,12 @@ public class Segment implements Comparable<Segment> {
   private Double location;
   private SegmentType segmentType;
   private Integer id;
-  private SegmentTimes[] orderedTimesToRiderId;
+  private ArrayList<SegmentTimes> orderedTimesToRiderId = new ArrayList<>();
 
   private static int latestId = 0;
 
   public int compareTo(Segment segment) {
-    return this.location.compareTo(segment.getLocation());
+    return this.getLocation().compareTo(segment.getLocation());
   }
 
   public SegmentType getSegmentType() {
@@ -38,11 +39,11 @@ public class Segment implements Comparable<Segment> {
     return this.stageId;
   }
 
-  public SegmentTimes[] getOrderedTimesToRiderId() {
+  public ArrayList<SegmentTimes> getOrderedTimesToRiderId() {
     return orderedTimesToRiderId;
   }
 
-  public void setOrderedTimesToRiderId(SegmentTimes[] orderedTimesToRiderId) {
+  public void setOrderedTimesToRiderId(ArrayList<SegmentTimes> orderedTimesToRiderId) {
     this.orderedTimesToRiderId = orderedTimesToRiderId;
   }
 

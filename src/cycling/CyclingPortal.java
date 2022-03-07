@@ -118,6 +118,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     // Check the length is >=5km
     Stage stage = new Stage(raceId, stageName, description, length, startTime, type);
     stageIdsToStages.put(stage.getId(), stage);
+    raceIdsToRaces.get(raceId).addStage(stage);
 
     return stage.getId();
   }
@@ -200,6 +201,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     Segment categorisedClimb = new CategorisedClimb(stageId, type, averageGradient,
         length);
     segmentIdsToSegments.put(categorisedClimb.getId(), categorisedClimb);
+    stage.addSegment(categorisedClimb);
 
     return categorisedClimb.getId();
   }
@@ -224,6 +226,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
     Segment intermediateSprint = new Segment(stageId, SegmentType.SPRINT);
     segmentIdsToSegments.put(intermediateSprint.getId(), intermediateSprint);
+    stage.addSegment(intermediateSprint);
 
     return intermediateSprint.getId();
   }
@@ -618,7 +621,6 @@ public class CyclingPortal implements CyclingPortalInterface {
 
     HashMap<Integer,Integer> riderIdsToPoints = new HashMap<Integer,Integer>();
     // Sum of points for each rider for the specified race.
-
     for (Stage stage : race.getStages()){ // iterate through stages.
       int pointsIndex = 0;
       stage.generateAdjustedResults(); // Sort times in ascending order.
@@ -638,13 +640,17 @@ public class CyclingPortal implements CyclingPortalInterface {
         pointsIndex++;
       }
 
-      Collections.sort(stage.getSegmentsInStage());
+      ArrayList<Segment> segmentsInStage = stage.getSegmentsInStage();
+      Collections.sort(segmentsInStage); // Sort segments by location.
 
-      for (int segmentIndex = 1; segmentIndex <= stage.getSegmentsInStage().size()-2; segmentIndex++){
+      for (int segmentIndex = 0; segmentIndex < segmentsInStage.size(); segmentIndex++){
+        System.out.println("inside segment for loop 1");
 
-        if (stage.getSegmentsInStage().get(segmentIndex-1).getSegmentType() == SegmentType.SPRINT){
+        if (segmentsInStage.get(segmentIndex).getSegmentType() == SegmentType.SPRINT){
+          System.out.println("found intermediate sprint");
           // checks if segment is a sprint.
           for (RaceResult riderResult : stage.getResults()){
+            System.out.println("inside segment for 2");
             int riderId = riderResult.getRiderId();
             int riderRank = stage.getRidersRankInSegment(segmentIndex,riderId);
             int points = pointsConversion.get(StageType.HIGH_MOUNTAIN)[riderRank];
@@ -659,8 +665,8 @@ public class CyclingPortal implements CyclingPortalInterface {
         }
       }
     }
-
-    return riderIdsToPoints;
+    System.out.println(riderIdsToPoints.toString()+" CHECK");
+    return null;
   }
 
   @Override
@@ -695,6 +701,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     cycPort.createRace("Big boy race", "food fight race");
     cycPort.addStageToRace(0,"stage uno", "first 1",
         10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addIntermediateSprintToStage(0,6.0);
     cycPort.createTeam("america","wont invade ukraine");
     cycPort.createRider(0,"Ken",1608);
     cycPort.createRider(0,"HOG RIDER",2015);
@@ -710,13 +717,17 @@ public class CyclingPortal implements CyclingPortalInterface {
     LocalTime t4 = LocalTime.of(0,0,41);
     LocalTime t5 = LocalTime.of(0,0,42);
     LocalTime t6 = LocalTime.of(0,0,50);
-    cycPort.registerRiderResultsInStage(0,0, t0, t1);
-    cycPort.registerRiderResultsInStage(0,1, t0, t2);
-    cycPort.registerRiderResultsInStage(0,2, t0, t3);
-    cycPort.registerRiderResultsInStage(0,3, t0, t4);
-    cycPort.registerRiderResultsInStage(0,4, t0, t5);
-    cycPort.registerRiderResultsInStage(0,5, t0, t6);
+    LocalTime t7 = LocalTime.of(0,0,55);
+    LocalTime t8 = LocalTime.of(0,0,58);
+    LocalTime t9 = LocalTime.of(0,1,10);
+    cycPort.registerRiderResultsInStage(0,0, t0, t1, t9);
+    cycPort.registerRiderResultsInStage(0,1, t0, t2, t6);
+    cycPort.registerRiderResultsInStage(0,2, t0, t3, t6);
+    cycPort.registerRiderResultsInStage(0,3, t0, t4, t7);
+    cycPort.registerRiderResultsInStage(0,4, t0, t5, t8);
+    cycPort.registerRiderResultsInStage(0,5, t0, t6, t9);
 
-    System.out.println(Arrays.toString(cycPort.getRankedAdjustedElapsedTimesInStage(0)));
+    //System.out.println(Arrays.toString(cycPort.getRankedAdjustedElapsedTimesInStage(0)));
+    cycPort.getRidersPointsInRace(0);
   }
 }
