@@ -1,7 +1,8 @@
 package src.cycling;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -13,13 +14,18 @@ import java.util.HashMap;
 
 //(int stageId, Double location, SegmentType type,
 //                                        Double averageGradient, Double length)
-public class Segment implements Serializable {
+public class Segment implements Comparable<Segment> {
   private Integer stageId;
   private Double location;
   private SegmentType segmentType;
   private Integer id;
+  private ArrayList<SegmentTimes> orderedTimesToRiderId = new ArrayList<>();
 
   private static int latestId = 0;
+
+  public int compareTo(Segment segment) {
+    return this.getLocation().compareTo(segment.getLocation());
+  }
 
   public SegmentType getSegmentType() {
     return segmentType;
@@ -33,12 +39,28 @@ public class Segment implements Serializable {
     return this.stageId;
   }
 
+  public ArrayList<SegmentTimes> getOrderedTimesToRiderId() {
+    return orderedTimesToRiderId;
+  }
+
+  public void setOrderedTimesToRiderId(ArrayList<SegmentTimes> orderedTimesToRiderId) {
+    this.orderedTimesToRiderId = orderedTimesToRiderId;
+  }
+
   /**
    *
    * @return stage's ID.
    */
   public Integer getId() {
     return id;
+  }
+
+  public Double getLocation() {
+    return location;
+  }
+
+  public void setLocation(Double location) {
+    this.location = location;
   }
 
   /**

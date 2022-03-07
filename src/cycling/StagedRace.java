@@ -2,6 +2,7 @@ package src.cycling;
 
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -19,7 +20,7 @@ public class StagedRace implements Serializable {
   private GeneralClassification generalClassification;
   private MountainClassification mountainClassification;
   private PointsClassification pointsClassification;
-  private Stage[] raceStages;
+  private ArrayList<Stage> stages = new ArrayList<>();
 
   private static int latestId = 0;
 
@@ -33,6 +34,14 @@ public class StagedRace implements Serializable {
 
   public int getId() {
     return this.raceId;
+  }
+
+  public ArrayList<Stage> getStages() {
+    return stages;
+  }
+
+  public void addStage(Stage stage) {
+    this.stages.add(stage);
   }
 
   public GeneralClassification getGeneralClassification() {

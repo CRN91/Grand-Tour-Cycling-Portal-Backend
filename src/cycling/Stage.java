@@ -9,9 +9,7 @@ import java.security.PrivilegedActionException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 //import java.util.TreeMap;
 
 /**
@@ -32,7 +30,7 @@ public class Stage implements Serializable {
   //protected HashMap<Integer, LocalTime[]> riderIdsToResults = new HashMap<>();
   protected ArrayList<RaceResult> results = new ArrayList<>();
 
-  private ArrayList<Segment> segmentsInStage;
+  private ArrayList<Segment> segmentsInStage = new ArrayList<>();
   protected Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
 
   private static int latestId = 0; // enumerates to get unique id, with 2^32 possible ids.
@@ -117,6 +115,10 @@ public class Stage implements Serializable {
     return segmentsInStage;
   }
 
+  public void addSegment(Segment segment){
+    segmentsInStage.add(segment);
+  }
+
   /**
    *
    * @return state of the stage. Either under development (true) or waiting results (false).
@@ -160,6 +162,40 @@ public class Stage implements Serializable {
       }
       previousTime = currentTime;
     }
+    Collections.sort(this.results);
+  }
+
+  public void generateStageRanks() {
+    Collections.sort(this.segmentsInStage); // Order segments by their location.
+    int segmentCounter = 1; // starts from 1 as initial time is start time.
+    for (Segment segment : segmentsInStage){ // iterates through every segment.
+      ArrayList<SegmentTimes> segmentTimes = new ArrayList<>();
+      // store segmentTime and associated rider then sort
+      int riderCounter = 0;
+      for (RaceResult result : results){
+        segmentTimes.add(new SegmentTimes(result.getTimes()[segmentCounter], result.getRiderId()));
+      }
+      Collections.sort(segmentTimes);
+      segment.setOrderedTimesToRiderId(segmentTimes);
+      int rank = 0;
+      for (SegmentTimes segmentTime : segmentTimes){
+        segmentTime.setRank(rank);
+        rank++;
+      }
+    }
+  }
+
+  public int getRidersRankInSegment(int segment, int riderId) throws IDNotRecognisedException {
+    //System.out.println(segmentsInStage.toString()+" segments in stage"+segment);
+    //System.out.println("inside segment for 2");
+    this.generateStageRanks();
+    for (SegmentTimes segmentTime : segmentsInStage.get(segment).getOrderedTimesToRiderId()){
+      if (segmentTime.getRiderId() == riderId){
+        return segmentTime.getRank();
+      }
+    }
+    throw new IDNotRecognisedException("Rider ID not found in segment");
+    // TODO this will break if rider did not finish each segment
   }
 
   /**
