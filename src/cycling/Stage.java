@@ -2,11 +2,7 @@ package src.cycling;
 
 //import com.sun.source.tree.Tree;
 
-import javax.xml.transform.Result;
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.security.PrivilegedActionException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -28,7 +24,7 @@ public class Stage implements Serializable {
   protected Integer id;
 
   //protected HashMap<Integer, LocalTime[]> riderIdsToResults = new HashMap<>();
-  protected ArrayList<RaceResult> results = new ArrayList<>();
+  protected ArrayList<StageResult> results = new ArrayList<>();
 
   private ArrayList<Segment> segmentsInStage = new ArrayList<>();
   protected Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
@@ -131,7 +127,7 @@ public class Stage implements Serializable {
    */
   public void setUnderDevelopment(Boolean state) { this.underDevelopment = state; }
 
-  public ArrayList<RaceResult> getResults() {
+  public ArrayList<StageResult> getResults() {
     return this.results;
   }
 
@@ -140,7 +136,7 @@ public class Stage implements Serializable {
   }
 
   public void addRiderResults(Integer riderId, LocalTime[] times) {
-    RaceResult result = new RaceResult(riderId, this.id, times);
+    StageResult result = new StageResult(riderId, this.id, times);
     if (!(results.contains(result))) {
       results.add(result);
     }
@@ -150,7 +146,7 @@ public class Stage implements Serializable {
     LocalTime previousTime = LocalTime.of(0,0,0, 0);
     LocalTime pelotonLeader = LocalTime.of(0,0,0);
 
-    for (RaceResult result : this.results) {
+    for (StageResult result : this.results) {
       LocalTime currentTime = result.getFinishTime();
       double currentTimeSeconds = (currentTime.getHour() * 3600) + (currentTime.getMinute() * 60) + currentTime.getSecond();
       double previousTimeSeconds = (previousTime.getHour() * 3600) + (previousTime.getMinute() * 60 + previousTime.getSecond());
@@ -172,7 +168,7 @@ public class Stage implements Serializable {
       ArrayList<SegmentTimes> segmentTimes = new ArrayList<>();
       // store segmentTime and associated rider then sort
       int riderCounter = 0;
-      for (RaceResult result : results){
+      for (StageResult result : results){
         segmentTimes.add(new SegmentTimes(result.getTimes()[segmentCounter], result.getRiderId()));
       }
       Collections.sort(segmentTimes);
@@ -234,12 +230,12 @@ public class Stage implements Serializable {
     stage.addRiderResults(0, times1);
     stage.addRiderResults(1, times2);
     stage.addRiderResults(2, times3);
-    for (RaceResult result : stage.getResults()) {
+    for (StageResult result : stage.getResults()) {
       System.out.println(result.getFinishTime()+" b4 finish time");
       System.out.println(result.getAdjustedFinishTime()+" b4 adjusted time");
     }
     stage.generateAdjustedResults();
-    for (RaceResult result : stage.getResults()) {
+    for (StageResult result : stage.getResults()) {
       System.out.println(result.getFinishTime()+" ft");
       System.out.println(result.getAdjustedFinishTime()+" at");
     }

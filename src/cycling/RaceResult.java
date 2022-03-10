@@ -6,55 +6,46 @@ import java.time.LocalTime;
 public class RaceResult implements Comparable<RaceResult>, Serializable {
   private int id;
   private int riderId;
-  private int stageId;
-  private LocalTime[] times;
-  private LocalTime finishTime;
-  private LocalTime adjustedFinishTime;
+  private int raceId;
+  private static int latestId = 0;
 
-  private static int latestId;
+  private LocalTime[] times; // Stage final finish times
+  private LocalTime finishTime; // The sum of all stage finish times (the GC time)
 
-  public int compareTo(RaceResult result) {
-    return this.getFinishTime().compareTo(result.getFinishTime());
+  public int compareTo(RaceResult raceResult) {
+    return this.getFinishTime().compareTo(raceResult.getFinishTime());
   }
 
   public int getId() {
     return id;
   }
 
-  public static void resetIdCounter() {
-    latestId = 0;
-  }
-
   public int getRiderId() {
     return riderId;
   }
 
-  public int getStageId() {
-    return stageId;
-  }
-
-  public LocalTime[] getTimes() {
-    return times;
+  public int getRaceId() {
+    return raceId;
   }
 
   public LocalTime getFinishTime() {
     return finishTime;
   }
 
-  public LocalTime getAdjustedFinishTime() {
-    return adjustedFinishTime;
+  public void setFinishTime(LocalTime time) {
+    this.finishTime = time;
   }
 
-  public void setAdjustedFinishTime(LocalTime adjustedFinishTime) {
-    this.adjustedFinishTime = adjustedFinishTime;
+  public static void resetIdCounter() {
+    latestId = 0;
   }
 
-  public RaceResult(int riderId, int stageId, LocalTime[] times) {
-    this.riderId = riderId;
-    this.stageId = stageId;
-    this.times = times;
-    this.finishTime = times[times.length -1];
-    this.adjustedFinishTime = this.finishTime;
+  public RaceResult(int riderId, int raceId, LocalTime... stageFinalTimes) {
     this.id = latestId++;
+    this.riderId = riderId;
+    this.raceId = raceId;
+    this.times = stageFinalTimes;
+    // Sum final times
+    this.finishTime = sumLocalTimes.addLocalTimes(stageFinalTimes);
   }
 }
