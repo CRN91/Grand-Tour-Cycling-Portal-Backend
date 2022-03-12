@@ -1,14 +1,11 @@
-viewRaceDetails
 getRidersPointsInStage
-getRidersMountainPointsInStage
-getRidersPointsInRace
 getRidersMountainPointsInRace
-getRidersGeneralClassificationRank
 getRidersPointsClassificationRank
 
 SAM
 
 Completed
+viewRaceDetails
 getNumberOfStages
 removeSegment
 concludeStagePreparation
@@ -21,7 +18,7 @@ getRiderResultsInStage
 deleteRiderResultsInStage
 
 WIP
-getGeneralClassification
+getRidersMountainPointsInStage
 
 ------------------------------------
 ADAM
@@ -31,6 +28,8 @@ suffer radioactive poisoning
 removeStageById
 addIntermediateSprintToStage
 getRiderAdjustedElapsedTime...
+getRidersPointsInRace
+getRidersGeneralClassificationRank
 
 WIP
 getRankedAdjustedElapsed...
