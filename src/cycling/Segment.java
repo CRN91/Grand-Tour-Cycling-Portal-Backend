@@ -70,9 +70,10 @@ public class Segment implements Comparable<Segment> {
     latestId = 0;
   }
 
-  public Segment(int stageId, SegmentType segmentType) {
+  public Segment(int stageId, SegmentType segmentType, Double location) {
     this.stageId = stageId;
     this.segmentType = segmentType;
     this.id = latestId++;
+    this.location = location;
   }
 }

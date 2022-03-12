@@ -22,8 +22,8 @@ public class CategorisedClimb extends Segment {
   }
 
   public CategorisedClimb(int stageId, SegmentType segmentType, Double averageGradient,
-              Double length) {
-    super(stageId, segmentType);
+              Double length, Double location) {
+    super(stageId, segmentType, location);
     this.averageGradient = averageGradient;
     this.length = length;
     this.id = latestId++;

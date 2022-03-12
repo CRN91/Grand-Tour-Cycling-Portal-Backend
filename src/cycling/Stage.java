@@ -31,6 +31,8 @@ public class Stage implements Serializable {
 
   private static int latestId = 0; // enumerates to get unique id, with 2^32 possible ids.
 
+
+
   /**
    *
    * @return stage's ID.
