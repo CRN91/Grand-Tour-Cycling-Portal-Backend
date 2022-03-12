@@ -675,18 +675,20 @@ public class CyclingPortal implements CyclingPortalInterface {
       stage.generateAdjustedResults(); // Sort times in ascending order.
 
       for (StageResult result : stage.getResults()) { // iterate through rider.
-        if (pointsIndex == 15) { // Only first 15 riders are awarded points.
-          break;
-        }
         int riderId = result.getRiderId();
-        int points = pointsConversion.get(stage.getStageType())[pointsIndex]; // points for stage type
+        int points;
+        if (pointsIndex < 15) { // Only first 15 riders are awarded points.
+          points = pointsConversion.get(stage.getStageType())[pointsIndex]; // points for stage type
+        }else {
+          points = 0;
+        }
 
         if (riderIdsToPoints.get(riderId) == null) { // if the rider is not registered with points add them.
           riderIdsToPoints.put(riderId, points);
         } else {
           riderIdsToPoints.merge(riderId, points, Integer::sum);
         }
-        System.out.println("riderid: "+riderId+" points tally: "+riderIdsToPoints.get(riderId));
+        System.out.println("riderid: "+riderId+" points tally stg: "+riderIdsToPoints.get(riderId));
         pointsIndex++;
       }
 
@@ -706,16 +708,21 @@ public class CyclingPortal implements CyclingPortalInterface {
           // checks if segment is a sprint.
           for (StageResult riderResult : stage.getResults()){
             int riderId = riderResult.getRiderId();
-            int riderRank = stage.getRidersRankInSegment(segmentIndex,riderId);
-            int points = pointsConversion.get(StageType.HIGH_MOUNTAIN)[riderRank];
-            if (riderRank <= 15){
-              if (riderIdsToPoints.get(riderId) == null) { // if the rider is not registered with points add them.
-                riderIdsToPoints.put(riderId, points);
-              } else {
-                riderIdsToPoints.merge(riderId, points, Integer::sum);
-              }
-              System.out.println("riderid: "+riderId+" points tally: "+riderIdsToPoints.get(riderId));
+            int riderRank = stage.getRidersRankInSegment(segmentIndex,riderId); // rank starts from 0
+            int points;
+            if (riderRank < 15) {
+              points = pointsConversion.get(StageType.HIGH_MOUNTAIN)[riderRank];
+            }else {
+              points = 0;
             }
+
+            if (riderIdsToPoints.get(riderId) == null) { // if the rider is not registered with points add them.
+              riderIdsToPoints.put(riderId, points);
+            } else {
+              riderIdsToPoints.merge(riderId, points, Integer::sum);
+            }
+              System.out.println("riderid: "+riderId+" points tally sgmnt: "+riderIdsToPoints.get(riderId));
+
           }
         }
       }
@@ -729,7 +736,6 @@ public class CyclingPortal implements CyclingPortalInterface {
     }
 
     return pointsOrderedByGenClass;
-    //return null;
   }
 
   @Override
@@ -806,30 +812,84 @@ public class CyclingPortal implements CyclingPortalInterface {
     cycPort.createRider(0,"HOG RIDER 2",2015);
     cycPort.createRider(0,"Kenny",1608);
     cycPort.createRider(0,"HOG RIER",2015);
+    cycPort.createRider(0,"Ken2",1608);
+    cycPort.createRider(0,"HOG 2RIDER",2015);
+    cycPort.createRider(0,"Keni2th",1608);
+    cycPort.createRider(0,"HOG R3IDER 2",2015);
+    cycPort.createRider(0,"Kenn3y",1608);
+    cycPort.createRider(0,"HOG 3RIER",2015);
+    cycPort.createRider(0,"Ke4n",1608);
+    cycPort.createRider(0,"HO4G RIDER",2015);
+    cycPort.createRider(0,"Ken4ith",1608);
+    cycPort.createRider(0,"HOG 5RIDER 2",2015);
+    cycPort.createRider(0,"Kenny5",1608);
+    cycPort.createRider(0,"HOG RI5ER",2015);
     cycPort.concludeStagePreparation(0);
     cycPort.concludeStagePreparation(1);
     LocalTime t0 = LocalTime.of(0,0,0);
-    LocalTime t1 = LocalTime.of(0,0,29);
-    LocalTime t2 = LocalTime.of(0,0,30);
-    LocalTime t3 = LocalTime.of(0,0,40);
-    LocalTime t4 = LocalTime.of(0,0,41);
-    LocalTime t5 = LocalTime.of(0,0,42);
-    LocalTime t6 = LocalTime.of(0,0,50);
-    LocalTime t7 = LocalTime.of(0,0,55);
-    LocalTime t8 = LocalTime.of(0,0,58);
-    LocalTime t9 = LocalTime.of(0,1,10);
-    cycPort.registerRiderResultsInStage(0,0, t0, t1, t9); // 2:05
-    cycPort.registerRiderResultsInStage(0,1, t0, t2, t7); // 1:48
-    cycPort.registerRiderResultsInStage(0,2, t0, t3, t6); // 2:00
- // stage 1: rider 1 ,2 , 0 ,segments 0 , 1, 2
-    cycPort.registerRiderResultsInStage(1,0, t0, t7);
-    cycPort.registerRiderResultsInStage(1,1, t0, t8);
-    cycPort.registerRiderResultsInStage(1,2, t0, t9);
+    LocalTime t1 = LocalTime.of(0,0,10);
+    LocalTime t2 = LocalTime.of(0,0,20);
+    LocalTime t3 = LocalTime.of(0,0,30);
+    LocalTime t4 = LocalTime.of(0,0,40);
+    LocalTime t5 = LocalTime.of(0,0,50);
+    LocalTime t6 = LocalTime.of(0,0,59);
+    LocalTime t7 = LocalTime.of(0,1,0);
+    LocalTime t8 = LocalTime.of(0,1,10);
+    LocalTime t9 = LocalTime.of(0,1,20);
+    LocalTime t10 = LocalTime.of(0,1,30);
+    LocalTime t11 = LocalTime.of(0,1,40);
+    LocalTime t12 = LocalTime.of(0,1,50);
+    LocalTime t13 = LocalTime.of(0,1,59);
+    LocalTime t14 = LocalTime.of(0,2,0);
+    LocalTime t15 = LocalTime.of(0,2,10);
+    LocalTime t16 = LocalTime.of(0,2,20);
+    LocalTime t17 = LocalTime.of(0,2,30);
+    LocalTime t18 = LocalTime.of(0,2,40);
+    LocalTime t19 = LocalTime.of(0,2,50);
+    LocalTime t20 = LocalTime.of(0,3,0);
+    LocalTime t21 = LocalTime.of(0,3,10);
+    cycPort.registerRiderResultsInStage(0,0, t0, t1, t2);
+    cycPort.registerRiderResultsInStage(0,1, t0, t2, t3);
+    cycPort.registerRiderResultsInStage(0,2, t0, t3, t4);
+    cycPort.registerRiderResultsInStage(0,3, t0, t4, t5);
+    cycPort.registerRiderResultsInStage(0,4, t0, t5, t6);
+    cycPort.registerRiderResultsInStage(0,5, t0, t6, t7);
+    cycPort.registerRiderResultsInStage(0,6, t0, t7, t8);
+    cycPort.registerRiderResultsInStage(0,7, t0, t8, t9);
+    cycPort.registerRiderResultsInStage(0,8, t0, t9, t10);
+    cycPort.registerRiderResultsInStage(0,9, t0, t10, t11);
+    cycPort.registerRiderResultsInStage(0,10, t0, t11, t12);
+    cycPort.registerRiderResultsInStage(0,11, t0, t12, t13);
+    cycPort.registerRiderResultsInStage(0,12, t0, t13, t14);
+    cycPort.registerRiderResultsInStage(0,13, t0, t14, t15);
+    cycPort.registerRiderResultsInStage(0,14, t0, t15, t16);
+    cycPort.registerRiderResultsInStage(0,15, t0, t16, t17);
+    cycPort.registerRiderResultsInStage(0,16, t0, t17, t18);
+    cycPort.registerRiderResultsInStage(0,17, t0, t18, t19);
+    // stage 1: rider 1 ,2 , 0 ,segments 0 , 1, 2
+    cycPort.registerRiderResultsInStage(1,0, t0, t1);
+    cycPort.registerRiderResultsInStage(1,1, t0, t2);
+    cycPort.registerRiderResultsInStage(1,2, t0, t3);
+    cycPort.registerRiderResultsInStage(1,3, t0, t4);
+    cycPort.registerRiderResultsInStage(1,4, t0, t5);
+    cycPort.registerRiderResultsInStage(1,5, t0, t6);
+    cycPort.registerRiderResultsInStage(1,6, t0, t7);
+    cycPort.registerRiderResultsInStage(1,7, t0, t8);
+    cycPort.registerRiderResultsInStage(1,8, t0, t9);
+    cycPort.registerRiderResultsInStage(1,9, t0, t10);
+    cycPort.registerRiderResultsInStage(1,10, t0, t11);
+    cycPort.registerRiderResultsInStage(1,11, t0, t12);
+    cycPort.registerRiderResultsInStage(1,12, t0, t13);
+    cycPort.registerRiderResultsInStage(1,13, t0, t14);
+    cycPort.registerRiderResultsInStage(1,14, t0, t15);
+    cycPort.registerRiderResultsInStage(1,15, t0, t16);
+    cycPort.registerRiderResultsInStage(1,16, t0, t17);
+    cycPort.registerRiderResultsInStage(1,17, t0, t1);
     // stage 2:  0, 1 ,2
 
 
-    System.out.println(Arrays.toString(cycPort.getRidersGeneralClassificationRank(0))+" loooking");
-    System.out.println(Arrays.toString(cycPort.getRidersPointsInRace(0))+" points");
+    System.out.println(Arrays.toString(cycPort.getRidersGeneralClassificationRank(0))+" ranks gen class");
+    System.out.println(Arrays.toString(cycPort.getRidersPointsInRace(0))+" points by gen class");
     //System.out.println(Arrays.toString(cycPort.getRankedAdjustedElapsedTimesInStage(0)));
     //cycPort.getRidersPointsInRace(0);
   }
