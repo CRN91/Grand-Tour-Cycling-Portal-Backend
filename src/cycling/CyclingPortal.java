@@ -637,6 +637,7 @@ public class CyclingPortal implements CyclingPortalInterface {
         } else {
           riderIdsToPoints.merge(riderId, points, Integer::sum);
         }
+        System.out.println("riderid: "+riderId+" points tally: "+riderIdsToPoints.get(riderId));
         pointsIndex++;
       }
 
@@ -664,21 +665,22 @@ public class CyclingPortal implements CyclingPortalInterface {
               } else {
                 riderIdsToPoints.merge(riderId, points, Integer::sum);
               }
+              System.out.println("riderid: "+riderId+" points tally: "+riderIdsToPoints.get(riderId));
             }
           }
         }
       }
     }
-    //int[] genClassRanks = getRidersGeneralClassificationRank(raceId); // rider Ids
-    //int[] pointsOrderedByGenClass = new int[genClassRanks.length];
-    //int i = 0;
-    //for (int riderId : genClassRanks){
-     // pointsOrderedByGenClass[i] = riderIdsToPoints.get(riderId);
-      //i++;
-    //}
+    int[] genClassRanks = getRidersGeneralClassificationRank(raceId); // rider Ids sorted by time
+    int[] pointsOrderedByGenClass = new int[genClassRanks.length];
+    int i = 0;
+    for (int riderId : genClassRanks){
+      pointsOrderedByGenClass[i] = riderIdsToPoints.get(riderId);
+      i++;
+    }
 
-    //return pointsOrderedByGenClass;
-    return null;
+    return pointsOrderedByGenClass;
+    //return null;
   }
 
   @Override
@@ -698,20 +700,11 @@ public class CyclingPortal implements CyclingPortalInterface {
         int riderId = stageResult.getRiderId();
         boolean found = false;
         for (RaceResult raceResult : raceResults){
-         if (raceResult.getRiderId() == riderId){
-           System.out.println(raceResult);
-           int i = 0;
-           for (RaceResult raceResult1 : raceResults){
-             if (raceResult1.getRiderId() == riderId){
-               break;
-             }else {
-               i++;
-             }
-           }
-           raceResults.get(i).setFinishTime(sumLocalTimes.addLocalTimes(stageResult.getFinishTime(),
-               stageResult.getFinishTime())); // sums race results finish time with new stages finish time
-           found = true;
-           break;
+          if (raceResult.getRiderId() == riderId){
+            raceResult.setFinishTime(sumLocalTimes.addLocalTimes(raceResult.getFinishTime(),
+                stageResult.getFinishTime())); // sums race results finish time with new stages finish time
+            found = true;
+            break;
           }
         }
         if (!found){ // if no race result for rider one is made.
@@ -726,8 +719,9 @@ public class CyclingPortal implements CyclingPortalInterface {
     for (RaceResult result : raceResults){
       System.out.println(result.getRiderId()+" "+result.getFinishTime().toString());
     }
-    int[] riderIdsOrderedByRank = new int[raceResults.size()];
-    for (int i = 0; i < riderIdsOrderedByRank.length; i++){
+    int raceResultsSize = raceResults.size();
+    int[] riderIdsOrderedByRank = new int[raceResultsSize];
+    for (int i = 0; i < raceResultsSize; i++){
       riderIdsOrderedByRank[i] = raceResults.get(i).getRiderId();
     }
     return riderIdsOrderedByRank;
@@ -776,17 +770,18 @@ public class CyclingPortal implements CyclingPortalInterface {
     LocalTime t8 = LocalTime.of(0,0,58);
     LocalTime t9 = LocalTime.of(0,1,10);
     cycPort.registerRiderResultsInStage(0,0, t0, t1, t9); // 2:05
-    cycPort.registerRiderResultsInStage(0,1, t0, t2, t6); // 1:48
+    cycPort.registerRiderResultsInStage(0,1, t0, t2, t7); // 1:48
     cycPort.registerRiderResultsInStage(0,2, t0, t3, t6); // 2:00
-
+ // stage 1: rider 1 ,2 , 0 ,segments 0 , 1, 2
     cycPort.registerRiderResultsInStage(1,0, t0, t7);
     cycPort.registerRiderResultsInStage(1,1, t0, t8);
     cycPort.registerRiderResultsInStage(1,2, t0, t9);
+    // stage 2:  0, 1 ,2
 
 
     System.out.println(Arrays.toString(cycPort.getRidersGeneralClassificationRank(0))+" loooking");
-
+    System.out.println(Arrays.toString(cycPort.getRidersPointsInRace(0))+" points");
     //System.out.println(Arrays.toString(cycPort.getRankedAdjustedElapsedTimesInStage(0)));
-    cycPort.getRidersPointsInRace(0);
+    //cycPort.getRidersPointsInRace(0);
   }
 }
