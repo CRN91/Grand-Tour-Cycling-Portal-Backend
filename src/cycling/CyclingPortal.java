@@ -541,8 +541,57 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getRidersMountainPointsInStage(int stageId) throws IDNotRecognisedException {
-    // TODO stageId to stage to race to competition then loop through all categorised climbs in
-    //  a stage and do competition.getSegmentResults
+    Stage stage = stageIdsToStages.get(stageId);
+    if (stage == null) {
+      throw new IDNotRecognisedException("Stage " + stageId + " not found!");
+    }
+    ArrayList<StageResult> results = stage.getResults();
+    Collections.sort(results);
+
+    // Rider id <-> the running total of their mountain points
+    HashMap<Integer, Integer> riderIdsToMountainPoints = new HashMap<>();
+
+    // Sort mountain points by this if you are absolutely unhinged
+    int[] riderIdsSortedByFinishTime = getRidersGeneralClassificationRank(stage.getRaceId());
+
+    // Rank-to-point conversions
+    int[] pointsHC = {20, 15, 12, 10, 8, 6, 4, 2}; // TOP 8 ONLY
+    int[] pointsC1 = {10, 8, 6, 4, 2, 1, 0, 0}; // TOP 6 ONLY
+    int[] pointsC2 = {5, 3, 2, 1, 0, 0, 0, 0}; // TOP 4 ONLY
+    int[] pointsC3 = {2, 1, 0, 0, 0, 0, 0, 0}; // TOP 2 ONLY
+    int[] pointsC4 = {1, 0, 0, 0, 0, 0, 0, 0}; // TOP 1 ONLY
+    Map<SegmentType, int[]> pointsConversion = Map.of(
+        SegmentType.HC, pointsHC,
+        SegmentType.C1, pointsC1,
+        SegmentType.C2, pointsC2,
+        SegmentType.C3, pointsC3,
+        SegmentType.C4, pointsC4);
+
+    HashMap<Integer,Integer> riderIdsToPoints = new HashMap<Integer,Integer>();
+    // Sum of points for each rider for the specified race.
+    for (Segment segment : stage.getSegmentsInStage()) { // iterate through stages.
+      int pointsIndex = 8;
+      stage.generateAdjustedResults(); // Sort times in ascending order.
+
+      for (StageResult result : stage.getResults()) { // Iterate through riders' results in stage
+        if (pointsIndex >= 8) { // Only first 15 riders are awarded points.
+          break;
+        }
+        int riderId = result.getRiderId();
+        int points = pointsConversion.get(segment.getSegmentType())[pointsIndex];
+
+        if (riderIdsToPoints.get(riderId) == null) { // if the rider is not registered with points add them.
+          riderIdsToPoints.put(riderId, points);
+        } else {
+          riderIdsToPoints.merge(riderId, points, Integer::sum);
+        }
+        pointsIndex++;
+      }
+    }
+
+
+
+
     return null;
   }
 

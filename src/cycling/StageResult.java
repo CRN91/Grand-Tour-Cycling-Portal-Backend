@@ -14,7 +14,7 @@ public class StageResult implements Comparable<StageResult>, Serializable {
   private int id;
   private int riderId;
   private int stageId;
-  private LocalTime[] times;
+  private LocalTime[] times; // Times for start, segments, finish
   private LocalTime finishTime;
   private LocalTime adjustedFinishTime;
 
