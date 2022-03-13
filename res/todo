@@ -1,7 +1,3 @@
-getRidersPointsInStage
-getRidersMountainPointsInRace
-getRidersPointsClassificationRank
-
 SAM
 
 Completed
@@ -16,9 +12,10 @@ loadCyclingPortal
 getRidersRankInStage
 getRiderResultsInStage
 deleteRiderResultsInStage
+getRidersMountainPointsInStage
 
 WIP
-getRidersMountainPointsInStage
+
 
 ------------------------------------
 ADAM
@@ -30,6 +27,11 @@ addIntermediateSprintToStage
 getRiderAdjustedElapsedTime...
 getRidersPointsInRace
 getRidersGeneralClassificationRank
+getRidersPointsInStage
+getRidersMountainPointsInRace
+getRankedAdjustedElapsed...
+getRidersPointsClassificationRank
+getGeneralClassificationTimesInRace
 
 WIP
-getRankedAdjustedElapsed...
+
