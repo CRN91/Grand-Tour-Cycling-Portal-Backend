@@ -548,8 +548,6 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getRidersPointsInStage(int stageId) throws IDNotRecognisedException {
-    // TODO stageId to stage to race to competition then loop through all intermediate sprints
-    //  in a stage and do competition.getSegmentResults and also competition.getStageResults
     Stage stage = stageIdsToStages.get(stageId);
     if (stage == null){ // checks race is in cycling portal.
       throw new IDNotRecognisedException("Stage ID not recognised!");
@@ -560,75 +558,17 @@ public class CyclingPortal implements CyclingPortalInterface {
     int[] hillyPointsConversion = {30,25,22,19,17,15,13,11,9,7,6,5,4,3,2};
     int[] mountainPointsConversion = {20,17,15,13,11,10,9,8,7,6,5,4,3,2,1};
     int[] timeTrialPointsConversion = mountainPointsConversion;
-    Map<StageType, int[]> pointsConversion = Map.of(StageType.FLAT,flatPointsConversion,StageType.MEDIUM_MOUNTAIN,hillyPointsConversion,
-        StageType.HIGH_MOUNTAIN,mountainPointsConversion,StageType.TT,timeTrialPointsConversion);
+    Map<Enum, int[]> pointsConversion = Map.of(
+        StageType.FLAT,flatPointsConversion,
+        StageType.MEDIUM_MOUNTAIN,hillyPointsConversion,
+        StageType.HIGH_MOUNTAIN,mountainPointsConversion,
+        StageType.TT,timeTrialPointsConversion
+    );
 
-    HashMap<Integer,Integer> riderIdsToPoints = new HashMap<Integer,Integer>();
-    // Sum of points for each rider for the specified race.
-    //for (Stage stage : race.getStages()){ // iterate through stages.
-    int pointsIndex = 0;
-    stage.generateAdjustedResults(); // Sort times in ascending order.
-
-    for (StageResult result : stage.getResults()) { // iterate through rider.
-      int riderId = result.getRiderId();
-      int points;
-      if (pointsIndex < 15) { // Only first 15 riders are awarded points.
-        points = pointsConversion.get(stage.getStageType())[pointsIndex]; // points for stage type
-      }else {
-        points = 0;
-      }
-      riderIdsToPoints.put(riderId, points);
-      pointsIndex++;
-    }
-
-    ArrayList<Segment> segmentsInStage = stage.getSegmentsInStage();
-    Collections.sort(segmentsInStage); // Sort segments by location.
-    System.out.println("segments in stage "+segmentsInStage.toString());
-
-    for (int segmentIndex = 0; segmentIndex < segmentsInStage.size(); segmentIndex++){
-      if (segmentsInStage.get(segmentIndex).getSegmentType() == SegmentType.SPRINT){
-        // checks if segment is a sprint.
-        for (StageResult riderResult : stage.getResults()){
-          int riderId = riderResult.getRiderId();
-          int riderRank = stage.getRidersRankInSegment(segmentIndex,riderId); // rank starts from 0
-          int points;
-          if (riderRank < 15) {
-            points = pointsConversion.get(StageType.HIGH_MOUNTAIN)[riderRank];
-          }else {
-            points = 0;
-          }
-
-          if (riderIdsToPoints.get(riderId) == null) { // if the rider is not registered with points add them.
-            riderIdsToPoints.put(riderId, points);
-          } else {
-            riderIdsToPoints.merge(riderId, points, Integer::sum);
-          }
-          System.out.println("riderid: "+riderId+" points tally sgmnt: "+riderIdsToPoints.get(riderId));
-
-        }
-      }
-    }
-    //rideridstopoints
-    ArrayList<StageResult> stageResults = stage.getResults();
-    Collections.sort(stageResults);
-    int stageResultsSize = stageResults.size();
-    int[] riderIdsOrderedByRank = new int[stageResultsSize];
-    for (int i = 0; i < stageResultsSize; i++){
-      riderIdsOrderedByRank[i] = stageResults.get(i).getRiderId();
-    }
-
-    int[] pointsOrderedByStageTime = new int[riderIdsOrderedByRank.length];
-    int i = 0;
-    for (int riderId : riderIdsOrderedByRank){
-      pointsOrderedByStageTime[i] = riderIdsToPoints.get(riderId);
-      i++;
-    }
-    stageIdsToRidersToPoints.put(stageId, riderIdsToPoints);
-
-    return pointsOrderedByStageTime;
+    return calculatePointsInStage(pointsConversion, false, stageId);
   }
 
-  public int[] calculatePointsInStage(HashMap<Enum, int[]> pointsConversion, boolean isMountain, int stageId)
+  public int[] calculatePointsInStage(Map<Enum, int[]> pointsConversion, boolean isMountain, int stageId)
       throws IDNotRecognisedException {
     Stage stage = stageIdsToStages.get(stageId);
     if (stage == null){ // checks race is in cycling portal.
@@ -763,68 +703,14 @@ public class CyclingPortal implements CyclingPortalInterface {
     int[] pointsC2 = {5, 3, 2, 1, 0, 0, 0, 0}; // TOP 4 ONLY
     int[] pointsC3 = {2, 1, 0, 0, 0, 0, 0, 0}; // TOP 2 ONLY
     int[] pointsC4 = {1, 0, 0, 0, 0, 0, 0, 0}; // TOP 1 ONLY
-    Map<SegmentType, int[]> pointsConversion = Map.of(
+    Map<Enum, int[]> pointsConversion = Map.of(
         SegmentType.HC, pointsHC,
         SegmentType.C1, pointsC1,
         SegmentType.C2, pointsC2,
         SegmentType.C3, pointsC3,
         SegmentType.C4, pointsC4);
 
-    HashMap<Integer,Integer> riderIdsToPoints = new HashMap<Integer,Integer>();
-    // Sum of points for each rider for the specified race.
-    //for (Stage stage : race.getStages()){ // iterate through stages.
-
-    ArrayList<Segment> segmentsInStage = stage.getSegmentsInStage();
-    Collections.sort(segmentsInStage); // Sort segments by location.
-    System.out.println(segmentsInStage.toString()+" segments");
-
-    for (int segmentIndex = 0; segmentIndex < segmentsInStage.size(); segmentIndex++){
-      if (!(segmentsInStage.get(segmentIndex).getSegmentType() == SegmentType.SPRINT)){
-        System.out.println("checl");
-        // checks if segment is a categorised climb.
-        for (StageResult riderResult : stage.getResults()){
-          int riderId = riderResult.getRiderId();
-          int riderRank = stage.getRidersRankInSegment(segmentIndex,riderId); // rank starts from 0
-          int points;
-          if (riderRank < 8) {
-            points = pointsConversion.get(segmentsInStage.get(segmentIndex).getSegmentType())[riderRank];
-          }else {
-            points = 0;
-          }
-
-          if (riderIdsToPoints.get(riderId) == null) { // if the rider is not registered with points add them.
-            riderIdsToPoints.put(riderId, points);
-          } else {
-            System.out.println(riderIdsToPoints.get(riderId)+"checl");
-            riderIdsToPoints.merge(riderId, points, Integer::sum);
-          }
-          System.out.println("riderid: "+riderId+" points tally sgmnt: "+riderIdsToPoints.get(riderId));
-
-        }
-      }
-    }
-    ArrayList<StageResult> stageResults = stage.getResults();
-    Collections.sort(stageResults); // Sorts stage results by time.
-    int stageResultsSize = stageResults.size();
-    int[] riderIdsOrderedByRank = new int[stageResultsSize];
-    for (int i = 0; i < stageResultsSize; i++){
-      riderIdsOrderedByRank[i] = stageResults.get(i).getRiderId();
-    }
-
-    int[] pointsOrderedByStageTime = new int[riderIdsOrderedByRank.length];
-    if (!(riderIdsToPoints.isEmpty())){
-      int i = 0;
-      System.out.println(riderIdsToPoints.toString());
-      for (int riderId : riderIdsOrderedByRank){
-        System.out.println(riderId+" rider id");
-        pointsOrderedByStageTime[i] = riderIdsToPoints.get(riderId);
-        i++;
-      }
-    }
-
-    stageIdsToRidersToMountainPoints.put(stageId, riderIdsToPoints);
-
-    return pointsOrderedByStageTime;
+    return calculatePointsInStage(pointsConversion, true, stageId);
   }
 
   @Override
@@ -1100,10 +986,10 @@ public class CyclingPortal implements CyclingPortalInterface {
         20.0, LocalDateTime.now(), StageType.FLAT);
     cycPort.addStageToRace(0,"stage duo", "2",
         12.0, LocalDateTime.now(), StageType.HIGH_MOUNTAIN);
-    //cycPort.addIntermediateSprintToStage(0, 1.0);
-    //cycPort.addIntermediateSprintToStage(0, 2.0);
-    cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.C1,7.0,10.0);
-    cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.HC, 8.0, 10.0);
+    cycPort.addIntermediateSprintToStage(0, 1.0);
+    cycPort.addIntermediateSprintToStage(0, 2.0);
+    //cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.C1,7.0,10.0);
+    //cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.HC, 8.0, 10.0);
     cycPort.createTeam("america","wont invade ukraine");
     cycPort.createRider(0,"Ken",1608);
     cycPort.createRider(0,"HOG RIDER",2015);
