@@ -115,6 +115,7 @@ public class Stage implements Serializable {
 
   public void addSegment(Segment segment){
     segmentsInStage.add(segment);
+    Collections.sort(segmentsInStage);
   }
 
   /**
@@ -142,6 +143,7 @@ public class Stage implements Serializable {
     if (!(results.contains(result))) {
       results.add(result);
     }
+    Collections.sort(results);
   }
 
   public void generateAdjustedResults() {
