@@ -1,5 +1,10 @@
 package src.cycling;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class CategorisedClimb extends Segment {
   private int id;
   private int stageId;

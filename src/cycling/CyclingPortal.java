@@ -628,6 +628,112 @@ public class CyclingPortal implements CyclingPortalInterface {
     return pointsOrderedByStageTime;
   }
 
+  public int[] calculatePointsInStage(HashMap<Enum, int[]> pointsConversion, boolean isMountain, int stageId)
+      throws IDNotRecognisedException {
+    Stage stage = stageIdsToStages.get(stageId);
+    if (stage == null){ // checks race is in cycling portal.
+      throw new IDNotRecognisedException("Stage ID not recognised!");
+    }
+    if (isMountain) {
+      // Do mountain checks
+      if ((stage.getStageType() == StageType.TT) || (stage.getSegmentsInStage().size() == 0)) {
+        // No mountain points (no segments)
+        return new int[0];
+      }
+
+      // Check if there even are any climbs
+      boolean climbFound = false;
+      for (Segment segment : stage.getSegmentsInStage()) {
+        if (segment.getSegmentType() != SegmentType.SPRINT) {
+          climbFound = true;
+        }
+      }
+      // No climbs so there will be no results
+      if (!climbFound) {
+        return new int[0];
+      }
+    }
+
+    HashMap<Integer,Integer> riderIdsToPoints = new HashMap<Integer,Integer>();
+    // Sum of points for each rider for the specified race.
+    // For the points classification, add on the points from finish times which mountain doesn't include.
+    if (!isMountain) {
+      int pointsIndex = 0;
+      stage.generateAdjustedResults(); // Sort times in ascending order.
+
+      for (StageResult result : stage.getResults()) { // iterate through rider.
+        int riderId = result.getRiderId();
+        int points;
+        if (pointsIndex < 15) { // Only first 15 riders are awarded points.
+          points = pointsConversion.get(stage.getStageType())[pointsIndex]; // points for stage type
+        }else {
+          points = 0;
+        }
+        riderIdsToPoints.put(riderId, points);
+        pointsIndex++;
+      }
+    }
+    ArrayList<Segment> segmentsInStage = stage.getSegmentsInStage();
+    Collections.sort(segmentsInStage); // Sort segments by location.
+
+    for (int segmentIndex = 0; segmentIndex < segmentsInStage.size(); segmentIndex++){
+      SegmentType currentSegmentType = segmentsInStage.get(segmentIndex).getSegmentType();
+      Enum mapKey;
+      if (isMountain) {
+        mapKey = (SegmentType) segmentsInStage.get(segmentIndex).getSegmentType();
+      } else {
+        mapKey = (StageType) StageType.HIGH_MOUNTAIN;
+      }
+      if (((currentSegmentType == SegmentType.SPRINT) && !isMountain)
+          || !(currentSegmentType == SegmentType.SPRINT) && isMountain){
+        // Only add points if we're looking at the right classification for this segment
+        for (StageResult riderResult : stage.getResults()){
+          int riderId = riderResult.getRiderId();
+          int riderRank = stage.getRidersRankInSegment(segmentIndex,riderId); // rank starts from 0
+          int points;
+          int[] rowOfPointsTable = pointsConversion.get(mapKey);
+          int pointsLimit = rowOfPointsTable.length;
+          if (riderRank < pointsLimit) {
+            points = rowOfPointsTable[riderRank];
+          }else {
+            points = 0;
+          }
+
+          if (riderIdsToPoints.get(riderId) == null) { // if the rider is not registered with points add them.
+            riderIdsToPoints.put(riderId, points);
+          } else {
+            riderIdsToPoints.merge(riderId, points, Integer::sum);
+          }
+        }
+      }
+    }
+
+    ArrayList<StageResult> stageResults = stage.getResults();
+    Collections.sort(stageResults); // Sorts stage results by time.
+    int stageResultsSize = stageResults.size();
+    int[] riderIdsOrderedByRank = new int[stageResultsSize];
+    for (int i = 0; i < stageResultsSize; i++){
+      riderIdsOrderedByRank[i] = stageResults.get(i).getRiderId();
+    }
+
+    int[] pointsOrderedByStageTime = new int[riderIdsOrderedByRank.length];
+    if (!(riderIdsToPoints.isEmpty())){
+      int i = 0;
+      for (int riderId : riderIdsOrderedByRank){
+        pointsOrderedByStageTime[i] = riderIdsToPoints.get(riderId);
+        i++;
+      }
+    }
+
+    if (isMountain) {
+      stageIdsToRidersToMountainPoints.put(stageId, riderIdsToPoints);
+    } else {
+      stageIdsToRidersToPoints.put(stageId, riderIdsToPoints);
+    }
+
+    return pointsOrderedByStageTime;
+  }
+
   @Override
   public int[] getRidersMountainPointsInStage(int stageId) throws IDNotRecognisedException {
     Stage stage = stageIdsToStages.get(stageId);
@@ -994,10 +1100,10 @@ public class CyclingPortal implements CyclingPortalInterface {
         20.0, LocalDateTime.now(), StageType.FLAT);
     cycPort.addStageToRace(0,"stage duo", "2",
         12.0, LocalDateTime.now(), StageType.HIGH_MOUNTAIN);
-    cycPort.addIntermediateSprintToStage(0, 1.0);
-    cycPort.addIntermediateSprintToStage(0, 2.0);
-    //cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.C1,7.0,10.0);
-    //cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.HC, 8.0, 10.0);
+    //cycPort.addIntermediateSprintToStage(0, 1.0);
+    //cycPort.addIntermediateSprintToStage(0, 2.0);
+    cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.C1,7.0,10.0);
+    cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.HC, 8.0, 10.0);
     cycPort.createTeam("america","wont invade ukraine");
     cycPort.createRider(0,"Ken",1608);
     cycPort.createRider(0,"HOG RIDER",2015);
@@ -1073,7 +1179,8 @@ public class CyclingPortal implements CyclingPortalInterface {
     cycPort.registerRiderResultsInStage(1,17, t0, t1);
     // stage 2:  0, 1 ,2
 
-    System.out.println(Arrays.toString(cycPort.getGeneralClassificationTimesInRace(0)));
+    System.out.println("Mountain: " + Arrays.toString(cycPort.getRidersMountainPointsInStage(0)));
+    System.out.println("Points: " + Arrays.toString(cycPort.getRidersPointsInStage(0)));
     //System.out.println(Arrays.toString(cycPort.getRidersGeneralClassificationRank(0))+" ranks gen class");
     //System.out.println(Arrays.toString(cycPort.getRidersPointsInRace(0))+" points by gen class");
     //System.out.println(Arrays.toString(cycPort.getRankedAdjustedElapsedTimesInStage(0)));
