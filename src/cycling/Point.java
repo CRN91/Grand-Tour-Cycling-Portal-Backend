@@ -2,6 +2,7 @@ package src.cycling;
 
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.HashMap;
 
 public class Point implements Comparable<Point>, Serializable {
   private int riderId;

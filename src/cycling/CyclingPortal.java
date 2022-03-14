@@ -850,6 +850,59 @@ public class CyclingPortal implements CyclingPortalInterface {
     return pointsOrderedByGenClass;
   }
 
+  public int[] calculateRidersPointsInRace(boolean isMountain, int raceId) throws IDNotRecognisedException {
+    StagedRace race = raceIdsToRaces.get(raceId);
+    if (race == null){ // checks race is in cycling portal.
+      throw new IDNotRecognisedException("Race ID not recognised!");
+    }
+    HashMap<Integer,Integer> riderIdsToPointsInRace = new HashMap<Integer,Integer>();
+
+    // Sum of points for each rider for the specified race.
+    for (Stage stage : race.getStages()){ // iterate through stages.
+      int stageId = stage.getId();
+      HashMap<Integer, Integer> riderIdsToPointsInStage = new HashMap<>();
+      if (isMountain) {
+        if (!(this.getRidersMountainPointsInStage(stageId).length == 0)) {
+          riderIdsToPointsInStage = stageIdsToRidersToMountainPoints.get(stageId);
+        }
+      } else {
+        if (!(this.getRidersPointsInStage(stageId).length == 0)) {
+          riderIdsToPointsInStage = stageIdsToRidersToPoints.get(stageId);
+        }
+      }
+      for (StageResult result : stage.getResults()) { // iterate through rider.
+        int riderId = result.getRiderId();
+        int points;
+        if ((riderIdsToPointsInStage != null) && !(riderIdsToPointsInStage.get(riderId) == null)) {
+          points = riderIdsToPointsInStage.get(riderId);
+        } else {
+          points = 0;
+        }
+        if (riderIdsToPointsInRace.get(riderId) == null) { // if the rider is not registered with points add them.
+          riderIdsToPointsInRace.put(riderId, points);
+        } else {
+          riderIdsToPointsInRace.merge(riderId, points, Integer::sum);
+        }
+      }
+    }
+
+    if (!(riderIdsToPointsInRace.isEmpty())) {
+      int[] genClassRanks = getRidersGeneralClassificationRank(raceId); // rider Ids sorted by time
+      int[] pointsOrderedByGenClass = new int[genClassRanks.length];
+      int i = 0;
+      for (int riderId : genClassRanks) {
+        pointsOrderedByGenClass[i] = riderIdsToPointsInRace.get(riderId);
+        i++;
+      }
+
+      raceIdsToRidersToMountainPoints.put(raceId,riderIdsToPointsInRace);
+
+      return pointsOrderedByGenClass;
+    } else {
+      return new int[0];
+    }
+  }
+
   @Override
   public int[] getRidersMountainPointsInRace(int raceId) throws IDNotRecognisedException {
     // TODO from raceId get race then get competition.getFinalResults
