@@ -1,9 +1,6 @@
 package src.cycling;
 
-import java.lang.reflect.Array;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Represents an intermediate sprint. CategorisedClimb is a subclass of this for categorised climbs.
@@ -19,7 +16,7 @@ public class Segment implements Comparable<Segment> {
   private Double location;
   private SegmentType segmentType;
   private Integer id;
-  private ArrayList<SegmentTimes> orderedTimesToRiderId = new ArrayList<>();
+  private ArrayList<RiderSegmentResult> orderedTimesToRiderId = new ArrayList<>();
 
   private static int latestId = 0;
 
@@ -39,11 +36,11 @@ public class Segment implements Comparable<Segment> {
     return this.stageId;
   }
 
-  public ArrayList<SegmentTimes> getOrderedTimesToRiderId() {
+  public ArrayList<RiderSegmentResult> getOrderedTimesToRiderId() {
     return orderedTimesToRiderId;
   }
 
-  public void setOrderedTimesToRiderId(ArrayList<SegmentTimes> orderedTimesToRiderId) {
+  public void setOrderedTimesToRiderId(ArrayList<RiderSegmentResult> orderedTimesToRiderId) {
     this.orderedTimesToRiderId = orderedTimesToRiderId;
   }
 

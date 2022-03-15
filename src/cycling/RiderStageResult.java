@@ -10,18 +10,37 @@ import java.time.LocalTime;
  *
  * @author Adam Kaizra, Sam Barker
  */
-public class StageResult implements Comparable<StageResult>, Serializable {
+public class RiderStageResult implements Comparable<RiderStageResult>, Serializable {
   private int id;
   private int riderId;
   private int stageId;
   private LocalTime[] times; // Times for start, segments, finish
   private LocalTime finishTime;
   private LocalTime adjustedFinishTime;
+  private int rank;
+  private int points;
+  private int mountainPoints;
 
   private static int latestId;
 
-  public int compareTo(StageResult result) {
+  public int compareTo(RiderStageResult result) {
     return this.getFinishTime().compareTo(result.getFinishTime());
+  }
+
+  public int getPoints() {
+    return points;
+  }
+
+  public void setPoints(int points) {
+    this.points = points;
+  }
+
+  public int getMountainPoints() {
+    return mountainPoints;
+  }
+
+  public void setMountainPoints(int mountainPoints) {
+    this.mountainPoints = mountainPoints;
   }
 
   public int getId() {
@@ -56,7 +75,7 @@ public class StageResult implements Comparable<StageResult>, Serializable {
     this.adjustedFinishTime = adjustedFinishTime;
   }
 
-  public StageResult(int riderId, int stageId, LocalTime[] times) {
+  public RiderStageResult(int riderId, int stageId, LocalTime[] times) {
     this.riderId = riderId;
     this.stageId = stageId;
     this.times = times;

@@ -2,12 +2,12 @@ package src.cycling;
 
 import java.time.LocalTime;
 
-public class SegmentTimes implements Comparable<SegmentTimes> {
+public class RiderSegmentResult implements Comparable<RiderSegmentResult> {
   private LocalTime time;
   private int riderId;
   private int rank;
 
-  public int compareTo(SegmentTimes segmentTime) {
+  public int compareTo(RiderSegmentResult segmentTime) {
     return this.getTime().compareTo(segmentTime.getTime());
   }
 
@@ -35,7 +35,7 @@ public class SegmentTimes implements Comparable<SegmentTimes> {
     this.riderId = riderId;
   }
 
-  public SegmentTimes(LocalTime time, int riderId) {
+  public RiderSegmentResult(LocalTime time, int riderId) {
     this.time = time;
     this.riderId = riderId;
   }
