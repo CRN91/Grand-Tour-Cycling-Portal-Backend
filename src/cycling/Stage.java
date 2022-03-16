@@ -15,25 +15,23 @@ import java.util.*;
  * @version 1.0
  */
 public class Stage implements Serializable {
-  protected Integer raceId;
-  protected String name;
-  protected String description;
-  protected Double length;
-  protected LocalDateTime startTime;
-  protected StageType stageType;
-  protected Integer id;
+  private Integer raceId;
+  private String name;
+  private String description;
+  private Double length;
+  private LocalDateTime startTime;
+  private StageType stageType;
+  private Integer id;
   private HashMap<Integer,Integer> riderIdsToMountainPoints = new HashMap<>();
   private HashMap<Integer,Integer> riderIdsToPoints = new HashMap<>();
 
   //protected HashMap<Integer, LocalTime[]> riderIdsToResults = new HashMap<>();
-  protected ArrayList<RiderStageResult> results = new ArrayList<>();
+  private ArrayList<RiderStageResult> results = new ArrayList<>();
 
   private ArrayList<Segment> segmentsInStage = new ArrayList<>();
-  protected Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
+  private Boolean underDevelopment = true; // Either under development(T) or waiting results(F).
 
   private static int latestId = 0; // enumerates to get unique id, with 2^32 possible ids.
-
-
 
   /**
    *
@@ -161,6 +159,7 @@ public class Stage implements Serializable {
     if (!(results.contains(result))) {
       results.add(result);
     }
+    assert (results.contains(result)) : "Result object not created!";
     Collections.sort(results);
   }
 
@@ -183,33 +182,40 @@ public class Stage implements Serializable {
     Collections.sort(this.results);
   }
 
-  public void generateStageRanks() {
+  public void generateRiderSegmentResults() {
     Collections.sort(this.segmentsInStage); // Order segments by their location.
     int segmentCounter = 1; // starts from 1 as initial time is start time.
-    for (Segment segment : segmentsInStage){ // iterates through every segment.
-      ArrayList<RiderSegmentResult> riderTimeInSegmentTimeResults = new ArrayList<>();
-      // store segmentTime and associated rider then sort
+    for (Segment segment : this.segmentsInStage){ // iterates through every segment.
+      ArrayList<RiderSegmentResult> riderSegmentResults = new ArrayList<>();
+      // Stores segment results then sorts.
       int riderCounter = 0;
       for (RiderStageResult result : results){
-        riderTimeInSegmentTimeResults.add(new RiderSegmentResult(result.getTimes()[segmentCounter], result.getRiderId()));
+        riderSegmentResults.add(new RiderSegmentResult(result.getTimes()[segmentCounter], result.getRiderId()));
       }
-      Collections.sort(riderTimeInSegmentTimeResults);
-      segment.setOrderedTimesToRiderId(riderTimeInSegmentTimeResults);
+      // Sorts riders segment results in order of their time in ascending order.
+      Collections.sort(riderSegmentResults);
+      // Stores these results in segment for more intuitive access.
+      segment.setResults(riderSegmentResults);
+
+      // Sets rank of each rider in segment
       int rank = 0;
-      for (RiderSegmentResult segmentTime : riderTimeInSegmentTimeResults){
-        segmentTime.setRank(rank);
+      for (RiderSegmentResult result : riderSegmentResults){
+        result.setRank(rank);
         rank++;
       }
+    }
+    if ((!this.segmentsInStage.isEmpty()) && (!results.isEmpty())) {
+      assert !this.segmentsInStage.get(0).getResults().isEmpty();
     }
   }
 
   public int getRidersRankInSegment(int segment, int riderId) throws IDNotRecognisedException {
     //System.out.println(segmentsInStage.toString()+" segments in stage"+segment);
     //System.out.println("inside segment for 2");
-    this.generateStageRanks();
-    for (RiderSegmentResult segmentTime : segmentsInStage.get(segment).getOrderedTimesToRiderId()){
-      if (segmentTime.getRiderId() == riderId){
-        return segmentTime.getRank();
+    this.generateRiderSegmentResults();
+    for (RiderSegmentResult segmentResult : segmentsInStage.get(segment).getResults()){
+      if (segmentResult.getRiderId() == riderId){
+        return segmentResult.getRank();
       }
     }
     throw new IDNotRecognisedException("Rider ID not found in segment");
@@ -223,7 +229,7 @@ public class Stage implements Serializable {
     latestId = 0;
   }
 
-  public int[] calculatePointsInStage( boolean isMountain)
+  public int[] generatePointsInStage(boolean isMountain)
       throws IDNotRecognisedException {
 
     Map<Enum, int[]> pointsConversion;
@@ -277,6 +283,7 @@ public class Stage implements Serializable {
 
     HashMap<Integer,Integer> riderIdsToPoints = new HashMap<Integer,Integer>();
     // Sum of points for each rider for the specified race.
+
     // For the points classification, add on the points from finish times which mountain doesn't include.
     if (!isMountain) {
       int pointsIndex = 0;
@@ -294,63 +301,69 @@ public class Stage implements Serializable {
         pointsIndex++;
       }
     }
-    ArrayList<Segment> segmentsInStage = this.getSegmentsInStage();
 
-    for (int segmentIndex = 0; segmentIndex < segmentsInStage.size(); segmentIndex++){
-      SegmentType currentSegmentType = segmentsInStage.get(segmentIndex).getSegmentType();
+    // Add on points from segments.
+    ArrayList<Segment> segmentsInStage = this.getSegmentsInStage();
+    for (Segment segment : segmentsInStage){
+
+      // Cast for the appropriate Enum for mountain or points as a key for their points conversion table.
+      SegmentType currentSegmentType = segment.getSegmentType();
       Enum mapKey;
       if (isMountain) {
-        mapKey = (SegmentType) segmentsInStage.get(segmentIndex).getSegmentType();
+        mapKey = (SegmentType) currentSegmentType;
       } else {
-        mapKey = (StageType) StageType.HIGH_MOUNTAIN;
+        mapKey = (StageType) StageType.HIGH_MOUNTAIN; //
       }
+
+      // Only allow intermediate sprint + points classification or categorised climb + mountain classification
+      // combinations.
       if (((currentSegmentType == SegmentType.SPRINT) && !isMountain)
           || !(currentSegmentType == SegmentType.SPRINT) && isMountain){
-        // Only add points if we're looking at the right classification for this segment
-        for (RiderStageResult riderResult : this.getResults()){
+
+        for (RiderSegmentResult riderResult : segment.getResults()){ // Iterates through each rider's segment results.
           int riderId = riderResult.getRiderId();
-          int riderRank = this.getRidersRankInSegment(segmentIndex,riderId); // rank starts from 0
+          this.generateRiderSegmentResults(); // Creates segment objects.
+          int riderRank = riderResult.getRank(); // Gets riders rank in segment.
           int points;
-          int[] rowOfPointsTable = pointsConversion.get(mapKey);
-          int pointsLimit = rowOfPointsTable.length;
+          int[] rowOfPointsConversion = pointsConversion.get(mapKey);
+          int pointsLimit = rowOfPointsConversion.length;
           if (riderRank < pointsLimit) {
-            points = rowOfPointsTable[riderRank];
+            points = rowOfPointsConversion[riderRank]; // Points limit prevent index out of bounds error.
           }else {
             points = 0;
           }
 
-          if (riderIdsToPoints.get(riderId) == null) { // if the rider is not registered with points add them.
+          if (riderIdsToPoints.get(riderId) == null) { // If the rider is not registered with points add them.
             riderIdsToPoints.put(riderId, points);
-          } else {
+          } else { // Else sum their points to their total points.
             riderIdsToPoints.merge(riderId, points, Integer::sum);
           }
         }
       }
     }
-
-    ArrayList<RiderStageResult> riderStageResults = this.getResults();
-    int stageResultsSize = riderStageResults.size();
-    int[] riderIdsOrderedByRank = new int[stageResultsSize];
-    for (int i = 0; i < stageResultsSize; i++){
-      riderIdsOrderedByRank[i] = riderStageResults.get(i).getRiderId();
-    }
-
-    int[] pointsOrderedByStageTime = new int[riderIdsOrderedByRank.length];
-    if (!(riderIdsToPoints.isEmpty())){
+    Collections.sort(this.results);
+    // Creates an int array of points ordered by rank
+    if (!(riderIdsToPoints.isEmpty())) {
+      int[] pointsOrderedByRank = new int[this.results.size()];
       int i = 0;
-      for (int riderId : riderIdsOrderedByRank){
-        pointsOrderedByStageTime[i] = riderIdsToPoints.get(riderId);
-        i++;
+      for (RiderStageResult result : this.getResults()) {
+        if (isMountain) {
+          pointsOrderedByRank[i] = result.getMountainPoints();
+        } else {
+          pointsOrderedByRank[i] = result.getPoints();
+        }
       }
-    }
 
-    if (isMountain) {
-      this.setRiderIdsToMountainPoints(riderIdsToPoints);
+      if (isMountain) {
+        this.setRiderIdsToMountainPoints(riderIdsToPoints);
+      } else {
+        this.setRiderIdsToPoints(riderIdsToPoints);
+      }
+
+      return pointsOrderedByRank;
     } else {
-      this.setRiderIdsToPoints(riderIdsToPoints);
+      return new int[0];
     }
-
-    return pointsOrderedByStageTime;
   }
 
   /**

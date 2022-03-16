@@ -16,11 +16,12 @@ public class Segment implements Comparable<Segment> {
   private Double location;
   private SegmentType segmentType;
   private Integer id;
-  private ArrayList<RiderSegmentResult> orderedTimesToRiderId = new ArrayList<>();
+  private ArrayList<RiderSegmentResult> results = new ArrayList<>();
 
   private static int latestId = 0;
 
   public int compareTo(Segment segment) {
+    assert (segment instanceof Segment) : "Comparing incorrect types!";
     return this.getLocation().compareTo(segment.getLocation());
   }
 
@@ -36,12 +37,12 @@ public class Segment implements Comparable<Segment> {
     return this.stageId;
   }
 
-  public ArrayList<RiderSegmentResult> getOrderedTimesToRiderId() {
-    return orderedTimesToRiderId;
+  public ArrayList<RiderSegmentResult> getResults() {
+    return results;
   }
 
-  public void setOrderedTimesToRiderId(ArrayList<RiderSegmentResult> orderedTimesToRiderId) {
-    this.orderedTimesToRiderId = orderedTimesToRiderId;
+  public void setResults(ArrayList<RiderSegmentResult> results) {
+    this.results = results;
   }
 
   /**

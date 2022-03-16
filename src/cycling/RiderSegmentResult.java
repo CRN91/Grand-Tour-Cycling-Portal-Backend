@@ -7,8 +7,9 @@ public class RiderSegmentResult implements Comparable<RiderSegmentResult> {
   private int riderId;
   private int rank;
 
-  public int compareTo(RiderSegmentResult segmentTime) {
-    return this.getTime().compareTo(segmentTime.getTime());
+  public int compareTo(RiderSegmentResult result) {
+    assert (result instanceof RiderSegmentResult) : "Comparing incorrect types!";
+    return this.getTime().compareTo(result.getTime());
   }
 
   public int getRank() {
