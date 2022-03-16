@@ -10,30 +10,43 @@ import java.time.LocalTime;
  *
  * @author Adam Kaizra, Sam Barker
  */
-public class StageResult implements Comparable<StageResult>, Serializable {
-  private int id;
+public class RiderStageResult implements Comparable<RiderStageResult>, Serializable {
   private int riderId;
   private int stageId;
   private LocalTime[] times; // Times for start, segments, finish
   private LocalTime finishTime;
   private LocalTime adjustedFinishTime;
+  private int rank;
+  private int points;
+  private int mountainPoints;
 
-  private static int latestId;
-
-  public int compareTo(StageResult result) {
+  public int compareTo(RiderStageResult result) {
+    assert (result instanceof RiderStageResult) : "Comparing incorrect types!";
     return this.getFinishTime().compareTo(result.getFinishTime());
   }
 
-  public int getId() {
-    return id;
+  public int getPoints() {
+    return points;
   }
 
-  public static void resetIdCounter() {
-    latestId = 0;
+  public void setPoints(int points) {
+    this.points = points;
+  }
+
+  public int getMountainPoints() {
+    return mountainPoints;
+  }
+
+  public void setMountainPoints(int mountainPoints) {
+    this.mountainPoints = mountainPoints;
   }
 
   public int getRiderId() {
     return riderId;
+  }
+
+  public void setRiderId(int riderId) {
+    this.riderId = riderId;
   }
 
   public int getStageId() {
@@ -56,12 +69,11 @@ public class StageResult implements Comparable<StageResult>, Serializable {
     this.adjustedFinishTime = adjustedFinishTime;
   }
 
-  public StageResult(int riderId, int stageId, LocalTime[] times) {
+  public RiderStageResult(int riderId, int stageId, LocalTime[] times) {
     this.riderId = riderId;
     this.stageId = stageId;
     this.times = times;
     this.finishTime = times[times.length -1];
     this.adjustedFinishTime = this.finishTime;
-    this.id = latestId++;
   }
 }
