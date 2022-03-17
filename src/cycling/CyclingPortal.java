@@ -54,13 +54,8 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
-    // TODO TESTING
-    String raceDetails = "";
-
-    StagedRace race;
-    try {
-      race = raceIdsToRaces.get(raceId);
-    } catch (NullPointerException ex) {
+    StagedRace race = raceIdsToRaces.get(raceId);
+    if (race == null) {
       throw new IDNotRecognisedException("Race not found!");
     }
 
@@ -70,14 +65,12 @@ public class CyclingPortal implements CyclingPortalInterface {
       sumOfStagesLengths += stage.getLength();
     }
     // Add details to status output string
-    raceDetails = raceDetails
-        + "Race ID: " + race.getId() + "\n"
-        + "Race name: " + race.getName() + "\n"
-        + "Description: " + race.getDescription() + "\n"
-        + "Number of stages: " + race.getStages().size() + "\n"
-        + "Total race length: " + sumOfStagesLengths;
 
-    return raceDetails;
+    return "Race ID: " + race.getId() + "\n"
+      + "Race name: " + race.getName() + "\n"
+      + "Description: " + race.getDescription() + "\n"
+      + "Number of stages: " + race.getStages().size() + "\n"
+      + "Total race length: " + sumOfStagesLengths;
   }
 
   @Override
@@ -361,12 +354,18 @@ public class CyclingPortal implements CyclingPortalInterface {
   public int createRider(int teamID, String name, int yearOfBirth)
       throws IDNotRecognisedException, IllegalArgumentException {
     // Check if the team exists
-    if (teamIdsToTeams.get(teamID) == null) {
+    Team team = teamIdsToTeams.get(teamID);
+    if (team == null) {
       throw new IDNotRecognisedException("Team ID not found!");
     }
-    // NullPointerException not thrown so it does
+    // Check rider's name
+    if (name == null || name == "" || name.trim() == "") {
+      throw new IllegalArgumentException("Invalid name of a team!");
+    }
+
     Rider newRider = new Rider(name, teamID, yearOfBirth);
     riderIdsToRiders.put(newRider.getId(), newRider);
+    team.addRider(newRider);
     return newRider.getId();
   }
 
@@ -561,6 +560,9 @@ public class CyclingPortal implements CyclingPortalInterface {
   public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId)
       throws IDNotRecognisedException {
     Stage stage = stageIdsToStages.get(stageId);
+    if (stage == null){ // checks race is in cycling portal.
+      throw new IDNotRecognisedException("Stage ID not recognised!");
+    }
 
     stage.generateAdjustedResults();
 
@@ -688,12 +690,18 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int[] getRidersPointsInRace(int raceId) throws IDNotRecognisedException {
     StagedRace race = raceIdsToRaces.get(raceId);
+    if (race == null) { //error check
+      throw new IDNotRecognisedException("Race ID " + raceId + " not found!");
+    }
     return race.generateRidersPointsInRace(false);
   }
 
   @Override
   public int[] getRidersMountainPointsInRace(int raceId) throws IDNotRecognisedException {
     StagedRace race = raceIdsToRaces.get(raceId);
+    if (race == null) { //error check
+      throw new IDNotRecognisedException("Race ID " + raceId + " not found!");
+    }
     return race.generateRidersPointsInRace(true);
   }
 
@@ -715,42 +723,23 @@ public class CyclingPortal implements CyclingPortalInterface {
     return riderIdsOrderedByRank;
   }
 
-  public ArrayList<Point> createPointsList(int raceId) throws IDNotRecognisedException {
-    this.getRidersPointsInRace(raceId);
-    ArrayList<Point> points = new ArrayList<>();
-    HashMap<Integer,Integer> riderIdsToPoints = raceIdsToRidersToPoints.get(raceId);
-    for (Map.Entry<Integer, Integer> idToPoints : riderIdsToPoints.entrySet()) {
-      points.add(new Point(idToPoints.getKey(),idToPoints.getValue()));
-    }
-    Collections.sort(points);
-    return points;
-  }
-
   @Override
   public int[] getRidersPointClassificationRank(int raceId) throws IDNotRecognisedException {
-    ArrayList<Point> points = createPointsList(raceId);
-    int[] riderIdsByPoints = new int[points.size()];
-    int i = 0;
-    for (Point point : points){
-      riderIdsByPoints[i] = point.getRiderId();
-      i++;
+    StagedRace race = raceIdsToRaces.get(raceId);
+    if (race == null) {
+      throw new IDNotRecognisedException("Race ID "+raceId+" not recognised!");
     }
-
-    return riderIdsByPoints;
+    return race.getRiderIdsOrderedByPoints(false);
   }
 
   @Override
   public int[] getRidersMountainPointClassificationRank(int raceId)
       throws IDNotRecognisedException {
-    ArrayList<Point> points = createPointsList(raceId);
-    int[] riderIdsByPoints = new int[points.size()];
-    int i = 0;
-    for (Point point : points){
-      riderIdsByPoints[i] = point.getRiderId();
-      i++;
+    StagedRace race = raceIdsToRaces.get(raceId);
+    if (race == null) {
+      throw new IDNotRecognisedException("Race ID "+raceId+" not recognised!");
     }
-
-    return riderIdsByPoints;
+    return race.getRiderIdsOrderedByPoints(true);
   }
 
   public static void main(String[] args) throws IDNotRecognisedException, InvalidNameException, IllegalNameException,

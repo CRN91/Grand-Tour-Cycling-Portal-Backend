@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a grand tour staged race.
@@ -20,7 +21,6 @@ public class StagedRace implements Serializable {
 
   private ArrayList<Stage> stages = new ArrayList<>();
   private ArrayList<RiderRaceResult> raceResults = new ArrayList<>();
-  private ArrayList<Point> racePoints = new ArrayList<>();
   private HashMap<Integer,Integer> riderIdsToPoints = new HashMap<>();
   private HashMap<Integer,Integer> riderIdsToMountainPoints = new HashMap<>();
 
@@ -117,7 +117,7 @@ public class StagedRace implements Serializable {
 
     // Adds riders points to their race results.
     this.generateRidersRaceResults();
-    for (RiderRaceResult result : this.getResults()) { // Set riders points classification points.
+    for (RiderRaceResult result : this.getResults()) { // Set riders points classification points in race.
       if (isMountain) {
         result.setMountainPoints(riderIdsToPointsInRace.get(result.getRiderId()));
       } else {
@@ -148,6 +148,26 @@ public class StagedRace implements Serializable {
     } else {
       return new int[0];
     }
+  }
+
+  public int[] getRiderIdsOrderedByPoints(boolean isMountain) throws IDNotRecognisedException {
+    this.generateRidersPointsInRace(isMountain);
+    ArrayList<RiderRaceResult> riderRaceResults = this.getResults();
+    if (isMountain) {
+      Collections.sort(riderRaceResults, RiderRaceResult::compareByMountainPoints);
+    } else {
+      Collections.sort(riderRaceResults, RiderRaceResult::compareByPoints);
+    }
+
+    int[] riderIdsByPoints = new int[riderRaceResults.size()];
+    int i = 0;
+    for (RiderRaceResult result : riderRaceResults) {
+      riderIdsByPoints[i] = result.getRiderId();
+      i++;
+    }
+
+    Collections.sort(riderRaceResults);
+    return riderIdsByPoints;
   }
 
 

@@ -150,8 +150,17 @@ public class Stage implements Serializable {
     return this.results;
   }
 
-  public void removeResultByRiderId(int riderId) {
-    results.removeIf(result -> result.getRiderId() == riderId);
+  public void removeResultByRiderId(int riderId) throws IDNotRecognisedException {
+    boolean riderIdFound = false;
+    for (RiderStageResult result : results) {
+      if (result.getRiderId() == riderId) {
+        riderIdFound = true;
+        results.remove(result);
+      }
+    }
+    if (!riderIdFound) {
+      throw new IDNotRecognisedException("Rider ID " + riderId + " not found in stage!");
+    }
   }
 
   public void addRiderResults(Integer riderId, LocalTime[] times) {

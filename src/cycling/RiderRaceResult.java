@@ -19,6 +19,26 @@ public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializabl
     return this.getFinishTime().compareTo(result.getFinishTime());
   }
 
+  public int compareByPoints(RiderRaceResult result) {
+    if (this.getPoints() < result.getPoints()) {
+      return -1;
+    } else if (this.getPoints() == result.getPoints()) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
+  public int compareByMountainPoints(RiderRaceResult result) {
+    if (this.getMountainPoints() < result.getMountainPoints()) {
+      return -1;
+    } else if (this.getMountainPoints() == result.getMountainPoints()) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
   public int getRank() {
     return rank;
   }
