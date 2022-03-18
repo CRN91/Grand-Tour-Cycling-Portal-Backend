@@ -19,6 +19,30 @@ public class CyclingPortal implements CyclingPortalInterface {
   private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<>();
   private HashMap<Integer, HashMap<Integer,Integer>> raceIdsToRidersToPoints = new HashMap<>();
 
+  public HashMap<Integer, StagedRace> getRaceIdsToRaces() {
+    return raceIdsToRaces;
+  }
+
+  public HashMap<Integer, Stage> getStageIdsToStages() {
+    return stageIdsToStages;
+  }
+
+  public HashMap<Integer, Segment> getSegmentIdsToSegments() {
+    return segmentIdsToSegments;
+  }
+
+  public HashMap<Integer, Team> getTeamIdsToTeams() {
+    return teamIdsToTeams;
+  }
+
+  public HashMap<Integer, Rider> getRiderIdsToRiders() {
+    return riderIdsToRiders;
+  }
+
+  public HashMap<Integer, HashMap<Integer, Integer>> getRaceIdsToRidersToPoints() {
+    return raceIdsToRidersToPoints;
+  }
+
   @Override
   public int[] getRaceIds() {
     Set<Integer> raceIdsSet = raceIdsToRaces.keySet();
@@ -75,11 +99,11 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeRaceById(int raceId) throws IDNotRecognisedException {
-    try {
-      raceIdsToRaces.remove(raceId);
-    } catch (NullPointerException ex) {
-      throw new IDNotRecognisedException("Race not found!");
+    StagedRace race = raceIdsToRaces.get(raceId);
+    if (race == null) {
+      throw new IDNotRecognisedException("Race ID "+ raceId + " not recognised!");
     }
+    raceIdsToRaces.remove(raceId);
   }
 
   @Override
@@ -308,11 +332,11 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeTeam(int teamId) throws IDNotRecognisedException {
-    try {
-      teamIdsToTeams.remove(teamId);
-    } catch (NullPointerException ex) {
+    Team team = teamIdsToTeams.get(teamId);
+    if (team == null) {
       throw new IDNotRecognisedException("Team does not exist!");
     }
+    teamIdsToTeams.remove(teamId);
   }
 
   @Override
@@ -744,7 +768,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   public static void main(String[] args) throws IDNotRecognisedException, InvalidNameException, IllegalNameException,
       InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, DuplicatedResultException, InvalidCheckpointsException {
-
+  /*
     CyclingPortal cycPort = new CyclingPortal();
     cycPort.createRace("Big boy race", "food fight race");
     cycPort.addStageToRace(0,"stage uno", "first 1",
@@ -826,6 +850,6 @@ public class CyclingPortal implements CyclingPortalInterface {
     System.out.println(Arrays.toString(cycPort.getRidersPointsInRace(0)));
     System.out.println(cycPort.raceIdsToRaces.get(0).getResults().get(0).getPoints());
 
-    //System.out.println(Arrays.toString(cycPort.getRidersGeneralClassificationRank(0)));
+    //System.out.println(Arrays.toString(cycPort.getRidersGeneralClassificationRank(0)));*/
   }
 }
