@@ -369,7 +369,417 @@ public class CyclingPortalInterfaceTestApp {
     System.out.println(cycPort.viewRaceDetails(0));
   }
 
-  public static void main(String[] args) throws InvalidNameException, IllegalNameException, NameNotRecognisedException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException {
+  public static void testRemoveStageById() throws InvalidNameException, IllegalNameException, NameNotRecognisedException, IDNotRecognisedException, InvalidLengthException {
+    // Setup
+    CyclingPortal cycPort = new CyclingPortal();
+
+    // No race exist
+    try {
+      cycPort.removeStageById(0);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("No races successfully failed");
+    }
+
+    // No stage exists
+    cycPort.createRace("Race 1", "Race Description");
+    try {
+      cycPort.removeStageById(69420);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("No stage failed successfully");
+    }
+
+    // Remove a race that exists
+    cycPort.addStageToRace(0,"alanstage",null,5.0,LocalDateTime.now(),StageType.FLAT);
+    cycPort.removeStageById(0);
+    assert cycPort.getRaceStages(0).length == 0 : "Race not removed!";
+
+
+  }
+
+  public static void testGetStageLength() throws InvalidNameException, IDNotRecognisedException, InvalidLengthException, IllegalNameException {
+    // Setup
+    CyclingPortal cycPort = new CyclingPortal();
+
+    // stage doesn't exist
+    try {
+      cycPort.getStageLength(0);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("Stage doesnt exist failed good");
+    }
+
+    // stage exists
+    cycPort.createRace("Race 1", "Race Description");
+    cycPort.addStageToRace(0,"alanstage",null,5.0,LocalDateTime.now(),StageType.FLAT);
+    assert cycPort.getStageLength(0) == 5.0 : "Stage length incorrect";
+  }
+
+  public static void testGetRaceStages() throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException {
+    // Setup
+    CyclingPortal cycPort = new CyclingPortal();
+
+    // Race does not exist
+    try {
+      cycPort.getRaceStages(0);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("No race exists success");
+    }
+
+    // Race has no stages
+    cycPort.createRace("A", null);
+    assert cycPort.getRaceStages(0).length == 0 : "Incorrect number of stages: meant to be 0";
+
+    // Race has stages
+    cycPort.addStageToRace(0, "a2", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    assert cycPort.getRaceStages(0).length == 1 : "Incorrect number of stages: meant to be 1";
+  }
+
+  public static void testAddIntermediateSprintToStage() throws InvalidNameException, IllegalNameException, InvalidStageStateException, InvalidLocationException, IDNotRecognisedException, InvalidStageTypeException, InvalidLengthException {
+    // Setup
+    CyclingPortal cycPort = new CyclingPortal();
+
+    // Stage doesn't exist
+    cycPort.createRace("2", null);
+    try {
+      cycPort.addIntermediateSprintToStage(0, 5.0);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("Stage doesn't exist failed successfully");
+    }
+
+    // Stage exists, location valid, under development
+    cycPort.addStageToRace(0, "name", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addIntermediateSprintToStage(0, 5.0);
+    assert cycPort.getSegmentIdsToSegments().size() == 1 : "Int. sprint not added!";
+
+    // Location too large
+    try {
+      cycPort.addIntermediateSprintToStage(0, 69.420);
+    } catch (InvalidLocationException ex) {
+      System.out.println("Location too large failed successfully");
+    }
+
+    // Location negative
+    try {
+      cycPort.addIntermediateSprintToStage(0, -69.420);
+    } catch (InvalidLocationException ex) {
+      System.out.println("Location negative failed successfully");
+    }
+
+    // Waiting for results
+    cycPort.concludeStagePreparation(0);
+    try {
+      cycPort.addIntermediateSprintToStage(0, 5.0);
+    } catch (InvalidStageStateException ex) {
+      System.out.println("Waiting for results failed successfully");
+    }
+
+    // stage type time trial
+    cycPort.addStageToRace(0,"stagensdfasgham2e",null,8.0,LocalDateTime.now(),StageType.TT);
+    try {
+      cycPort.addIntermediateSprintToStage(1, 5.0);
+    } catch (InvalidStageTypeException ex) {
+      System.out.println("Time trial with int sprint failed good");
+    }
+
+  }
+
+  public static void testAddCategorizedClimbToStage() throws InvalidNameException, IllegalNameException, InvalidStageStateException, InvalidLocationException, IDNotRecognisedException, InvalidStageTypeException, InvalidLengthException {
+    // Setup
+    CyclingPortal cycPort = new CyclingPortal();
+
+    // Stage doesn't exist
+    cycPort.createRace("2", null);
+    try {
+      cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,10.0);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("Stage doesn't exist failed successfully");
+    }
+
+    // Stage exists, location valid, under development
+    cycPort.addStageToRace(0, "name", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,3.0);
+    assert cycPort.getSegmentIdsToSegments().size() == 1 : "CC. sprint not added!";
+
+    // Location too large
+    try {
+      cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,69420.0);
+    } catch (InvalidLocationException ex) {
+      System.out.println("Location too large failed successfully");
+    }
+
+    // Location negative
+    try {
+      cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,-69420.0);
+    } catch (InvalidLocationException ex) {
+      System.out.println("Location negative failed successfully");
+    }
+
+    // Type is sprint
+    try {
+      cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.SPRINT,4.0,10.0);
+    } catch (InvalidStageTypeException ex) {
+      System.out.println("Invalid stage Type exception");
+    }
+
+    // Waiting for results
+    cycPort.concludeStagePreparation(0);
+    try {
+      cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,10.0);
+    } catch (InvalidStageStateException ex) {
+      System.out.println("Waiting for results failed successfully");
+    }
+
+    //C1
+    cycPort.addStageToRace(0, "name1", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addCategorizedClimbToStage(1, 5.0,SegmentType.C1,4.0,3.0);
+    assert cycPort.getSegmentIdsToSegments().size() == 2 : "CC. sprint not added!";
+
+    //C2
+    cycPort.addStageToRace(0, "name2", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addCategorizedClimbToStage(2, 5.0,SegmentType.C2,4.0,3.0);
+    assert cycPort.getSegmentIdsToSegments().size() == 3 : "CC. sprint not added!";
+
+    //C3
+    cycPort.addStageToRace(0, "name3", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addCategorizedClimbToStage(3, 5.0,SegmentType.C3,4.0,3.0);
+    assert cycPort.getSegmentIdsToSegments().size() == 4 : "CC. sprint not added!";
+
+    //C4
+    cycPort.addStageToRace(0, "name4", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addCategorizedClimbToStage(4, 5.0,SegmentType.C4,4.0,3.0);
+    assert cycPort.getSegmentIdsToSegments().size() == 5 : "CC. sprint not added!";
+
+    // stage type time trial
+    cycPort.addStageToRace(0,"stagensdfasgham2e",null,8.0,LocalDateTime.now(),StageType.TT);
+    try {
+      cycPort.addCategorizedClimbToStage(5, 5.0,SegmentType.C4,4.0,3.0);
+    } catch (InvalidStageTypeException ex) {
+      System.out.println("Time trial with int sprint failed good");
+    }
+  }
+
+  public static void testGetStageSegments() throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException {
+    //Setup
+    CyclingPortal cycPort = new CyclingPortal();
+
+    //Stage no existy
+    try {
+      cycPort.getStageSegments(0);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("NO stage failed yes");
+    }
+
+    //Stage has no segments
+    cycPort.createRace("2", null);
+    cycPort.addStageToRace(0, "name", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    assert cycPort.getStageSegments(0).length == 0;
+
+    //Stage has int sprints
+    cycPort.addIntermediateSprintToStage(0, 5.0);
+    assert  cycPort.getStageSegments(0).length == 1;
+
+    //Stage has CC.
+    cycPort.addStageToRace(0, "name2", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addCategorizedClimbToStage(1, 5.0,SegmentType.HC,4.0,3.0);
+    assert  cycPort.getStageSegments(1).length == 1;
+
+    //Stage has Int & CC.
+    cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,3.0);
+    assert  cycPort.getStageSegments(0).length == 2;
+  }
+
+  public static void testRemoveSegment() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException {
+    // Setup
+    CyclingPortal cycPort = new CyclingPortal();
+
+    // Segment doesn't exist
+    cycPort.createRace("name", null);
+    cycPort.addStageToRace(0, "nanme2", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    try {
+      cycPort.removeSegment(0);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("No segments exist failed successfully");
+    }
+
+    // Intermediate sprint exists
+    cycPort.addIntermediateSprintToStage(0, 5.0);
+    assert cycPort.getSegmentIdsToSegments().size() == 1;
+    cycPort.removeSegment(0);
+    assert cycPort.getSegmentIdsToSegments().size() == 0;
+
+    // Categorised climb exists
+    cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,3.0);
+    assert cycPort.getSegmentIdsToSegments().size() == 1;
+    cycPort.removeSegment(1);
+    assert cycPort.getSegmentIdsToSegments().size() == 0;
+  }
+
+  public static void testRegisterRiderResultsInStage() throws InvalidNameException, IllegalNameException, DuplicatedResultException, InvalidCheckpointsException, InvalidStageStateException, IDNotRecognisedException, InvalidLengthException, InvalidLocationException, InvalidStageTypeException {
+    // Setup
+    CyclingPortal cycPort = new CyclingPortal();
+    LocalTime[] good = {LocalTime.of(0,0,0), LocalTime.of(0,0,1), LocalTime.of(0,0,2)};
+    LocalTime[] tooFew = {LocalTime.of(0,0,0)};
+    LocalTime[] tooMany = {LocalTime.of(0,0,0), LocalTime.of(0,0,1), LocalTime.of(0,0,2), LocalTime.of(1,1,1)};
+    LocalTime[] nonChrono = {LocalTime.of(1,0,0), LocalTime.of(0,0,0)};
+
+    // Stage doesn't exist
+    cycPort.createRace("race", null);
+    try {
+      cycPort.registerRiderResultsInStage(0, 0, good);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("Stage doesn't exist failed successfully");
+    }
+
+    // Stage under development
+    cycPort.addStageToRace(0, "stage", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.createTeam("team", null);
+    cycPort.createRider(0, "rider", 1900);
+    try {
+      cycPort.registerRiderResultsInStage(0, 0, good);
+    } catch (InvalidStageStateException ex) {
+      System.out.println("Stage not waiting for results failed successfully");
+    }
+
+    // Stage valid & Rider doesn't exist
+    cycPort.addStageToRace(0, "stage2", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addIntermediateSprintToStage(1, 5.0);
+    cycPort.concludeStagePreparation(1);
+    try {
+      cycPort.registerRiderResultsInStage(1, 69420, good);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("Rider doesn't exist failed successfully");
+    }
+
+    // Stage valid sprint & Rider exists and has no results in stage
+    cycPort.registerRiderResultsInStage(1, 0, good);
+    assert cycPort.getStageIdsToStages().get(1).getResults().size() == 1 : "Valid result not added!";
+
+    // Stage valid CC & Rider exists and has no results in stage
+    cycPort.addStageToRace(0, "name3", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addCategorizedClimbToStage(2, 3.0, SegmentType.HC, 10.0, 3.0);
+    cycPort.concludeStagePreparation(2);
+    cycPort.registerRiderResultsInStage(2, 0, good);
+    assert cycPort.getStageIdsToStages().get(2).getResults().size() == 1 : "Valid result not added!";
+
+    // Rider already has result in stage
+    try {
+      cycPort.registerRiderResultsInStage(1, 0, good);
+    } catch (DuplicatedResultException ex) {
+      System.out.println("Rider already has results failed successfully");
+    }
+
+    // Too few checkpoints
+    try {
+      cycPort.createRider(0, "aaa", 1999);
+      cycPort.registerRiderResultsInStage(1, 1, tooFew);
+    } catch (InvalidCheckpointsException ex) {
+      System.out.println("Too few checkpoints failed successfully");
+    }
+
+    // Too many checkpoints
+    try {
+      cycPort.createRider(0, "afgggaa", 1999);
+      cycPort.registerRiderResultsInStage(1, 2, tooMany);
+    } catch (InvalidCheckpointsException ex) {
+      System.out.println("Too many checkpoints failed successfully");
+    }
+
+    // Checkpoints not in chronological order
+    try {
+      cycPort.createRider(0, "asdaa", 1999);
+      cycPort.registerRiderResultsInStage(1, 3, nonChrono);
+    } catch (InvalidCheckpointsException ex) {
+      System.out.println("Non-chronological order failed successfully");
+    }
+  }
+
+  public static void testGetRidersRankInStage() throws IDNotRecognisedException, InvalidStageStateException, InvalidNameException, InvalidLengthException, IllegalNameException, DuplicatedResultException, InvalidCheckpointsException, InvalidLocationException, InvalidStageTypeException {
+    //setup
+    CyclingPortal cycPort = new CyclingPortal();
+
+    //stage no exist
+    try {
+      cycPort.getRidersRankInStage(0);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("STage no exist good");
+    }
+
+    //stage has no results
+    cycPort.createRace("name",null);
+    cycPort.addStageToRace(0,"stagename",null,8.0,LocalDateTime.now(),StageType.FLAT);
+    cycPort.addIntermediateSprintToStage(0, 5.0);
+    assert cycPort.getRidersRankInStage(0).length == 0 : "There should be no resultsa";
+
+    //stage exist and has results
+    cycPort.createTeam("t",null);
+    cycPort.createRider(0, "rider", 1900);
+    LocalTime[] good = {LocalTime.of(0,0,0), LocalTime.of(0,0,1), LocalTime.of(0,0,2)};
+    cycPort.concludeStagePreparation(0);
+    cycPort.registerRiderResultsInStage(0, 0, good);
+    assert cycPort.getRidersRankInStage(0).length == 1 : "There should be 1 resultsa";
+
+    //correct ranking
+    cycPort.createRider(0, "ride1r", 1900);
+    cycPort.createRider(0, "ri22341er", 1900);
+    LocalTime[] good1 = {LocalTime.of(0,0,0), LocalTime.of(0,0,1), LocalTime.of(0,0,3)};
+    LocalTime[] good2 = {LocalTime.of(0,0,0), LocalTime.of(0,0,1), LocalTime.of(0,0,4)};
+    cycPort.registerRiderResultsInStage(0, 1, good2);
+    cycPort.registerRiderResultsInStage(0, 2, good1);
+    assert cycPort.getRidersRankInStage(0).length == 3 : "There should be 1 resultsa";
+    assert cycPort.getRidersRankInStage(0)[1] == 2 : "Ranking incorrect";
+  }
+
+  public static void testGetRidersPointsInStage() throws IDNotRecognisedException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, InvalidNameException, InvalidLengthException, IllegalNameException, DuplicatedResultException, InvalidCheckpointsException {
+    //setup
+    CyclingPortal cycPort = new CyclingPortal();
+
+    //stage no exist
+    try {
+      cycPort.getRidersPointsInStage(0);
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("STage no exist good");
+    }
+
+    //stage no results
+    cycPort.createRace("name",null);
+    cycPort.addStageToRace(0,"stagename",null,8.0,LocalDateTime.now(),StageType.FLAT);
+    assert cycPort.getRidersPointsInStage(0).length == 0 : "There should be no resultsa";
+
+    //stage type flat
+    cycPort.createTeam("t",null);
+    cycPort.createRider(0, "rider", 1900);
+    LocalTime[] good = {LocalTime.of(0,0,0), LocalTime.of(0,0,2)};
+    cycPort.concludeStagePreparation(0);
+    cycPort.registerRiderResultsInStage(0, 0, good);
+    assert cycPort.getRidersPointsInStage(0)[0] == 50 : "There should be 50 points for first place";
+
+    // stage type medium mountain
+    cycPort.addStageToRace(0,"stagenam2e",null,8.0,LocalDateTime.now(),StageType.MEDIUM_MOUNTAIN);
+    cycPort.concludeStagePreparation(1);
+    cycPort.registerRiderResultsInStage(1, 0, good);
+    assert cycPort.getRidersPointsInStage(1)[0] == 30 : "There should be 30 points for first place";
+
+    // stage type high mountain
+    cycPort.addStageToRace(0,"stagedfgsnam2e",null,8.0,LocalDateTime.now(),StageType.HIGH_MOUNTAIN);
+    cycPort.concludeStagePreparation(2);
+    cycPort.registerRiderResultsInStage(2, 0, good);
+    assert cycPort.getRidersPointsInStage(2)[0] == 20 : "There should be 20 points for first place";
+
+    // segment int sprint
+    cycPort.addStageToRace(0,"stagenadfm2e",null,8.0,LocalDateTime.now(),StageType.FLAT);
+    cycPort.addIntermediateSprintToStage(3, 5.0);
+    cycPort.concludeStagePreparation(3);
+    LocalTime[] good2 = {LocalTime.of(0,0,0),LocalTime.of(0,0,1), LocalTime.of(0,0,2)};
+    cycPort.registerRiderResultsInStage(3, 0, good2);
+    assert cycPort.getRidersPointsInStage(3)[0] == 70 : "There should be 70 points for first place";
+
+    //time trial points
+    cycPort.addStageToRace(0,"stagedfgsnam2e",null,8.0,LocalDateTime.now(),StageType.TT);
+    cycPort.concludeStagePreparation(4);
+    cycPort.registerRiderResultsInStage(4, 0, good);
+    assert cycPort.getRidersPointsInStage(4)[0] == 20 : "There should be 20 points for first place";
+  }
+
+  public static void main(String[] args) throws InvalidNameException, IllegalNameException, NameNotRecognisedException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, DuplicatedResultException, InvalidCheckpointsException {
     //testCreateRace();
     //testRemoveRaceByName();
     //testCreateTeam();
@@ -383,6 +793,16 @@ public class CyclingPortalInterfaceTestApp {
     //testGetTeams();
     //testGetRaceIds();
     //testGetNumberOfStages();
-    testViewRaceDetails();
+    //testViewRaceDetails();
+    //testRemoveStageById();
+    //testGetStageLength();
+    //testGetRaceStages();
+    //testAddIntermediateSprintToStage();
+    //testAddCategorizedClimbToStage();
+    //testGetStageSegments();
+    //testRemoveSegment();
+    //testRegisterRiderResultsInStage();
+    //testGetRidersRankInStage();
+    //testGetRidersPointsInStage();
   }
 }

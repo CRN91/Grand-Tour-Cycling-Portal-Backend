@@ -131,7 +131,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     // Check the race exists
     StagedRace race = raceIdsToRaces.get(raceId);
     if (race == null) {
-      throw new IDNotRecognisedException("Race" + raceId + "not found!");
+      throw new IDNotRecognisedException("Race " + raceId + " not found!");
     }
     // For assertion
     int amountOfStages = race.getStages().size();
@@ -196,12 +196,12 @@ public class CyclingPortal implements CyclingPortalInterface {
                                         Double averageGradient, Double length)
       throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
       InvalidStageTypeException {
+    Stage stage = stageIdsToStages.get(stageId);
     // Does the stage exist?
-    if (stageIdsToStages.get(stageId) == null) {
+    if (stage == null) {
       throw new IDNotRecognisedException("Stage " + stageId + " not found!");
     }
     // Is the location valid?
-    Stage stage = stageIdsToStages.get(stageId);
     if ((location >= stage.getLength()) || (location <= 0)) {
       throw new InvalidLocationException("Invalid location!");
     }
@@ -213,6 +213,10 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (type == SegmentType.SPRINT) {
       throw new InvalidStageTypeException("Cannot add sprint to stage using this method!");
     }
+    if (stage.getStageType() == StageType.TT) {
+      throw new InvalidStageTypeException("Cannot add segments to a time trial stage.");
+    }
+
     // Is the length valid?
     if (length <= 0) {
       throw new InvalidLocationException("Invalid length entered! Enter one >= 0.");
@@ -233,14 +237,17 @@ public class CyclingPortal implements CyclingPortalInterface {
   public int addIntermediateSprintToStage(int stageId, double location)
       throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
           InvalidStageTypeException {
+    Stage stage = stageIdsToStages.get(stageId);
     // Does the stage exist?
-    if (stageIdsToStages.get(stageId) == null) {
+    if (stage == null) {
       throw new IDNotRecognisedException("Stage " + stageId + " not found!");
     }
     // Is the location valid?
-    Stage stage = stageIdsToStages.get(stageId);
     if ((location >= stage.getLength()) || (location <= 0)) {
       throw new InvalidLocationException("Invalid location " + location + "!");
+    }
+    if (stage.getStageType() == StageType.TT) {
+      throw new InvalidStageTypeException("Cannot add segments to a time trial stage.");
     }
     // Is the stage state "under development"?
     if (!stage.getUnderDevelopment()) {
