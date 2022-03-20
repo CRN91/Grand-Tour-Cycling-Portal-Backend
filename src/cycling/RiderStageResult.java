@@ -33,12 +33,18 @@ public class RiderStageResult implements Comparable<RiderStageResult>, Serializa
     this.points = points;
   }
 
+  public void addPoints(int points) { this.points += points;}
+
   public int getMountainPoints() {
     return mountainPoints;
   }
 
   public void setMountainPoints(int mountainPoints) {
     this.mountainPoints = mountainPoints;
+  }
+
+  public void addMountainPoints(int mountainPoints) {
+    this.mountainPoints += mountainPoints;
   }
 
   public int getRiderId() {

@@ -13,6 +13,7 @@ public class sumLocalTimes {
     double hours = Math.floor(timeSeconds / 3600);
     double minutes = Math.floor(timeSeconds / 60);
     double seconds = timeSeconds - (hours * 3600) - (minutes * 60);
+    System.out.println(seconds+"seconds");
     return LocalTime.of((int)hours, (int)minutes, (int)seconds);
   }
 

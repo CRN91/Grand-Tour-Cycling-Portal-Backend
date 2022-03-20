@@ -7,8 +7,8 @@ import java.util.Collections;
 public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializable {
   private int riderId;
   private int raceId;
-  private int points;
-  private int mountainPoints;
+  private int points = 0;
+  private int mountainPoints = 0;
   private int rank;
 
   private LocalTime[] times; // Stage final finish times
@@ -67,6 +67,8 @@ public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializabl
     return points;
   }
 
+  public void addPoints(int points) { this.points += points;}
+
   public void setPoints(int points) {
     this.points = points;
   }
@@ -74,6 +76,8 @@ public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializabl
   public int getMountainPoints() {
     return mountainPoints;
   }
+
+  public void addMountainPoints(int points) { this.mountainPoints += points;}
 
   public void setMountainPoints(int points) {
     this.mountainPoints = points;

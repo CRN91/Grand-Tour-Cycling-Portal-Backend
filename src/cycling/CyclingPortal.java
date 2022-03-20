@@ -58,7 +58,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int createRace(String name, String description)
       throws IllegalNameException, InvalidNameException {
-    if (name.trim().equals("")) {
+    name = name.trim();
+    if (name.equals("")) {
       throw new InvalidNameException("Race name is invalid!");
     }
     // Search hashmap of races for one with the given name and throw exception if found
@@ -148,15 +149,17 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int[] getRaceStages(int raceId) throws IDNotRecognisedException {
-    if ( raceIdsToRaces.get(raceId) == null) {
+    StagedRace race = raceIdsToRaces.get(raceId);
+    if (race == null) {
       throw new IDNotRecognisedException("Race ID not recognised!");
     }
 
-    Set<Integer> stageIdsSet = stageIdsToStages.keySet();
-    int[] stageIds = new int[stageIdsSet.size()];
-    int index = 0;
-    for (Integer i : stageIdsSet) {
-      stageIds[index++] = i;
+    ArrayList<Stage> stages = race.getStages();
+    int[] stageIds = new int[stages.size()];
+    int i = 0;
+    for (Stage stage : stages) {
+      stageIds[i] = stage.getId();
+      i++;
     }
 
     return stageIds;
@@ -324,7 +327,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int createTeam(String name, String description) throws IllegalNameException,
       InvalidNameException {
-    if (name == null || name == "" || name.trim() == "") {
+    name = name.trim();
+    if (name == null || name == "") {
       throw new InvalidNameException("Invalid name of a team!");
     }
     for (Team team : teamIdsToTeams.values()) {
@@ -384,13 +388,14 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int createRider(int teamID, String name, int yearOfBirth)
       throws IDNotRecognisedException, IllegalArgumentException {
+    name = name.trim();
     // Check if the team exists
     Team team = teamIdsToTeams.get(teamID);
     if (team == null) {
       throw new IDNotRecognisedException("Team ID not found!");
     }
     // Check rider's name
-    if (name == null || name == "" || name.trim() == "") {
+    if (name == null || name == "") {
       throw new IllegalArgumentException("Invalid name of a team!");
     }
 

@@ -307,6 +307,7 @@ public class Stage implements Serializable {
           points = 0;
         }
         riderIdsToPoints.put(riderId, points);
+        result.setPoints(points);
         pointsIndex++;
       }
     }
@@ -326,12 +327,13 @@ public class Stage implements Serializable {
 
       // Only allow intermediate sprint + points classification or categorised climb + mountain classification
       // combinations.
-      if (((currentSegmentType == SegmentType.SPRINT) && !isMountain)
-          || !(currentSegmentType == SegmentType.SPRINT) && isMountain){
 
+      if (((currentSegmentType == SegmentType.SPRINT) && !isMountain)
+          || (!(currentSegmentType == SegmentType.SPRINT) && isMountain)) {
+        int i = 0;
+        this.generateRiderSegmentResults(); // Creates segment objects.
         for (RiderSegmentResult riderResult : segment.getResults()){ // Iterates through each rider's segment results.
           int riderId = riderResult.getRiderId();
-          this.generateRiderSegmentResults(); // Creates segment objects.
           int riderRank = riderResult.getRank(); // Gets riders rank in segment.
           int points;
           int[] rowOfPointsConversion = pointsConversion.get(mapKey);
@@ -344,9 +346,20 @@ public class Stage implements Serializable {
 
           if (riderIdsToPoints.get(riderId) == null) { // If the rider is not registered with points add them.
             riderIdsToPoints.put(riderId, points);
+            if (!isMountain) {
+              this.getResults().get(i).setPoints(points);
+            } else {
+              this.getResults().get(i).setMountainPoints(points);
+            }
           } else { // Else sum their points to their total points.
             riderIdsToPoints.merge(riderId, points, Integer::sum);
+            if (!isMountain) {
+              this.getResults().get(i).addPoints(points);
+            } else {
+              this.getResults().get(i).addMountainPoints(points);
+            }
           }
+          i++;
         }
       }
     }
@@ -361,6 +374,7 @@ public class Stage implements Serializable {
         } else {
           pointsOrderedByRank[i] = result.getPoints();
         }
+        i++;
       }
 
       if (isMountain) {
@@ -368,7 +382,6 @@ public class Stage implements Serializable {
       } else {
         this.setRiderIdsToPoints(riderIdsToPoints);
       }
-
       return pointsOrderedByRank;
     } else {
       return new int[0];
