@@ -393,9 +393,7 @@ public class CyclingPortalInterfaceTestApp {
     // Remove a race that exists
     cycPort.addStageToRace(0,"alanstage",null,5.0,LocalDateTime.now(),StageType.FLAT);
     cycPort.removeStageById(0);
-    assert cycPort.getRaceStages(0).length == 0 : "Race not removed!";
-
-
+    assert cycPort.getRaceStages(0).length == 0 : "Stage not removed!";
   }
 
   public static void testGetStageLength() throws InvalidNameException, IDNotRecognisedException, InvalidLengthException, IllegalNameException {

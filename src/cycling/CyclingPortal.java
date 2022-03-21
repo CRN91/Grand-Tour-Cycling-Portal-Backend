@@ -60,7 +60,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   public int createRace(String name, String description)
       throws IllegalNameException, InvalidNameException {
     name = name.trim();
-    if (name.equals("")) {
+    if (name.equals("") || name.length() > 30 || name == null) {
       throw new InvalidNameException("Race name is invalid!");
     }
     // Search hashmap of races for one with the given name and throw exception if found
@@ -126,7 +126,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   }
 
   @Override
-  public int addStageToRace(int raceId, String stageName, String description, double length,
+  public int addStageToRace(int raceId, String name, String description, double length,
                             LocalDateTime startTime, StageType type)
       throws IDNotRecognisedException, IllegalNameException, InvalidNameException,
       InvalidLengthException {
@@ -135,8 +135,8 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (race == null) {
       throw new IDNotRecognisedException("Race " + raceId + " not found!");
     }
-    stageName = stageName.trim();
-    if (stageName.length() > 30) {
+    name = name.trim();
+    if (name.equals("") || name.length() > 30 || name == null) {
       throw new InvalidNameException("Name is greater than 30 characters!");
     }
 
@@ -144,7 +144,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     int amountOfStages = race.getStages().size();
 
     // Check the length is >=5km
-    Stage stage = new Stage(raceId, stageName, description, length, startTime, type);
+    Stage stage = new Stage(raceId, name, description, length, startTime, type);
     stageIdsToStages.put(stage.getId(), stage);
     race.addStage(stage);
 
@@ -183,9 +183,13 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public void removeStageById(int stageId) throws IDNotRecognisedException {
-    if ( stageIdsToStages.get(stageId) == null) {
+    Stage stage = stageIdsToStages.get(stageId);
+    if ( stage == null) {
       throw new IDNotRecognisedException("Stage ID not recognised!");
     }
+    // Get the race object that contains it
+    StagedRace race = raceIdsToRaces.get(stage.getRaceId());
+    race.getStages().remove(stage);
 
     Boolean foundId = false;
     for ( Integer stgId : stageIdsToStages.keySet() ) {
@@ -401,7 +405,7 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new IDNotRecognisedException("Team ID not found!");
     }
     // Check rider's name
-    if (name == null || name == "") {
+    if (name == null || name == "" || name.length() > 30 ) {
       throw new IllegalArgumentException("Invalid name of a team!");
     }
 
