@@ -4,17 +4,19 @@ import java.time.LocalTime;
 
 public class sumLocalTimes {
   public static double localTimeToSeconds(LocalTime time) {
+    if (time == null) {
+      return 0;
+    }
     return (time.getHour() * 3600)
         + (time.getMinute() * 60)
         + (time.getSecond());
   }
 
   public static LocalTime secondsToLocalTime(double timeSeconds) {
-    double hours = Math.floor(timeSeconds / 3600);
-    double minutes = Math.floor(timeSeconds / 60);
-    double seconds = timeSeconds - (hours * 3600) - (minutes * 60);
-    System.out.println(seconds+"seconds");
-    return LocalTime.of((int)hours, (int)minutes, (int)seconds);
+    int hours = (int) (timeSeconds/3600);
+    int minutes = (int) (timeSeconds/60) - (hours * 60);
+    int seconds = (int) ((timeSeconds % 3600) % 60);
+    return LocalTime.of(hours, minutes, seconds);
   }
 
   public static LocalTime addLocalTimes(LocalTime... times) {

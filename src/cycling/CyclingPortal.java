@@ -11,6 +11,7 @@ import java.util.*;
  * @author Adam Kaizra, Sam Barker
  * @version 1.0
  */
+
 public class CyclingPortal implements CyclingPortalInterface {
   private HashMap<Integer, StagedRace> raceIdsToRaces = new HashMap<>();
   private HashMap<Integer, Stage> stageIdsToStages = new HashMap<>();
@@ -134,6 +135,11 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (race == null) {
       throw new IDNotRecognisedException("Race " + raceId + " not found!");
     }
+    stageName = stageName.trim();
+    if (stageName.length() > 30) {
+      throw new InvalidNameException("Name is greater than 30 characters!");
+    }
+
     // For assertion
     int amountOfStages = race.getStages().size();
 
@@ -328,7 +334,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   public int createTeam(String name, String description) throws IllegalNameException,
       InvalidNameException {
     name = name.trim();
-    if (name == null || name == "") {
+    if (name == null || name == "" || name.length() > 30) {
       throw new InvalidNameException("Invalid name of a team!");
     }
     for (Team team : teamIdsToTeams.values()) {
@@ -529,7 +535,7 @@ public class CyclingPortal implements CyclingPortalInterface {
       }
     }
     if (result == null){
-      throw new IDNotRecognisedException("Rider ID " + riderId + " not recognised!");
+      return new LocalTime[0];
     }
 
     return result.getTimes();
@@ -765,6 +771,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (race == null) {
       throw new IDNotRecognisedException("Race ID "+raceId+" not recognised!");
     }
+    race.generateRidersPointsInRace(false);
     return race.getRiderIdsOrderedByPoints(false);
   }
 
@@ -775,6 +782,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (race == null) {
       throw new IDNotRecognisedException("Race ID "+raceId+" not recognised!");
     }
+    race.generateRidersPointsInRace(true);
     return race.getRiderIdsOrderedByPoints(true);
   }
 

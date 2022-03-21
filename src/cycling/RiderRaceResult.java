@@ -21,21 +21,21 @@ public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializabl
 
   public int compareByPoints(RiderRaceResult result) {
     if (this.getPoints() < result.getPoints()) {
-      return -1;
+      return 1;
     } else if (this.getPoints() == result.getPoints()) {
       return 0;
     } else {
-      return 1;
+      return -1;
     }
   }
 
   public int compareByMountainPoints(RiderRaceResult result) {
     if (this.getMountainPoints() < result.getMountainPoints()) {
-      return -1;
+      return 1;
     } else if (this.getMountainPoints() == result.getMountainPoints()) {
       return 0;
     } else {
-      return 1;
+      return -1;
     }
   }
 
@@ -87,12 +87,10 @@ public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializabl
     this.finishTime = time;
   }
 
-  public RiderRaceResult(int riderId, int raceId, LocalTime... stageFinalTimes) {
+  public RiderRaceResult(int riderId, int raceId) {
     this.riderId = riderId;
     this.raceId = raceId;
-    this.times = stageFinalTimes;
     // Sum final times
-    this.finishTime = sumLocalTimes.addLocalTimes(stageFinalTimes);
     this.points = 0;
     this.mountainPoints = 0;
   }

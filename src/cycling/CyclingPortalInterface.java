@@ -9,7 +9,7 @@ import java.time.LocalTime;
  * submissions ONLY.
  *
  * @author Diogo Pacheco
- * @version 1.1
+ * @version 1.2
  *
  */
 public interface CyclingPortalInterface extends MiniCyclingPortalInterface {
@@ -20,10 +20,10 @@ public interface CyclingPortalInterface extends MiniCyclingPortalInterface {
    * <p>
    * The state of this MiniCyclingPortalInterface must be unchanged if any
    * exceptions are thrown.
-   * 
+   *
    * @param name The name of the race to be removed.
    * @throws NameNotRecognisedException If the name does not match to any race in
-   *                  the system.
+   *                                    the system.
    */
   void removeRaceByName(String name) throws NameNotRecognisedException;
 
@@ -32,14 +32,14 @@ public interface CyclingPortalInterface extends MiniCyclingPortalInterface {
    * <p>
    * The state of this MiniCyclingPortalInterface must be unchanged if any
    * exceptions are thrown.
-   * 
+   *
    * @param raceId The ID of the race being queried.
    * @return A ranked list of riders' IDs sorted ascending by the sum of their
-   *     adjusted elapsed times in all stages of the race. That is, the first
-   *     in this list is the winner (least time). An empty list if there is no
-   *     result for any stage in the race.
+   *         adjusted elapsed times in all stages of the race. That is, the first
+   *         in this list is the winner (least time). An empty list if there is no
+   *         result for any stage in the race.
    * @throws IDNotRecognisedException If the ID does not match any race in the
-   *                  system.
+   *                                  system.
    */
   int[] getRidersGeneralClassificationRank(int raceId) throws IDNotRecognisedException;
 
@@ -48,14 +48,14 @@ public interface CyclingPortalInterface extends MiniCyclingPortalInterface {
    * <p>
    * The state of this MiniCyclingPortalInterface must be unchanged if any
    * exceptions are thrown.
-   * 
+   *
    * @param raceId The ID of the race being queried.
    * @return A list of riders' times sorted by the sum of their adjusted elapsed
-   *     times in all stages of the race. An empty list if there is no result
-   *     for any stage in the race. These times should match the riders
-   *     returned by {@link #getRidersGeneralClassificationRank(int)}.
+   *         times in all stages of the race. An empty list if there is no result
+   *         for any stage in the race. These times should match the riders
+   *         returned by {@link #getRidersGeneralClassificationRank(int)}.
    * @throws IDNotRecognisedException If the ID does not match any race in the
-   *                  system.
+   *                                  system.
    */
   LocalTime[] getGeneralClassificationTimesInRace(int raceId) throws IDNotRecognisedException;
 
@@ -64,14 +64,14 @@ public interface CyclingPortalInterface extends MiniCyclingPortalInterface {
    * <p>
    * The state of this MiniCyclingPortalInterface must be unchanged if any
    * exceptions are thrown.
-   * 
+   *
    * @param raceId The ID of the race being queried.
-   * @return A list of riders' points (i.e., the sum of their points in all stages
-   *     of the race), sorted by the total elapsed time. An empty list if
-   *     there is no result for any stage in the race. These points should
-   *     match the riders returned by {@link #getRidersGeneralClassificationRank(int)}.
+   * @return An array of riders' points (i.e., the sum of their points in all stages
+   *         of the race), sorted by the total adjusted elapsed time. An empty array if
+   *         there is no result for any stage in the race. These points should
+   *         match the riders returned by {@link #getRidersGeneralClassificationRank(int)}.
    * @throws IDNotRecognisedException If the ID does not match any race in the
-   *                  system.
+   *                                  system.
    */
   int[] getRidersPointsInRace(int raceId) throws IDNotRecognisedException;
 
@@ -80,15 +80,15 @@ public interface CyclingPortalInterface extends MiniCyclingPortalInterface {
    * <p>
    * The state of this MiniCyclingPortalInterface must be unchanged if any
    * exceptions are thrown.
-   * 
+   *
    * @param raceId The ID of the race being queried.
-   * @return A list of riders' mountain points (i.e., the sum of their mountain
-   *     points in all stages of the race), sorted by the total elapsed time.
-   *     An empty list if there is no result for any stage in the race. These
-   *     points should match the riders returned by
-   *     {@link #getRidersGeneralClassificationRank(int)}.
+   * @return An array of riders' mountain points (i.e., the sum of their mountain
+   *         points in all stages of the race), sorted by the total adjusted elapsed time.
+   *         An empty array if there is no result for any stage in the race. These
+   *         points should match the riders returned by
+   *         {@link #getRidersGeneralClassificationRank(int)}.
    * @throws IDNotRecognisedException If the ID does not match any race in the
-   *                  system.
+   *                                  system.
    */
   int[] getRidersMountainPointsInRace(int raceId) throws IDNotRecognisedException;
 
@@ -97,14 +97,14 @@ public interface CyclingPortalInterface extends MiniCyclingPortalInterface {
    * <p>
    * The state of this MiniCyclingPortalInterface must be unchanged if any
    * exceptions are thrown.
-   * 
+   *
    * @param raceId The ID of the race being queried.
    * @return A ranked list of riders' IDs sorted descending by the sum of their
-   *     points in all stages of the race. That is, the first in this list is
-   *     the winner (more points). An empty list if there is no result for any
-   *     stage in the race.
+   *         points in all stages of the race. That is, the first in this list is
+   *         the winner (more points). An empty list if there is no result for any
+   *         stage in the race.
    * @throws IDNotRecognisedException If the ID does not match any race in the
-   *                  system.
+   *                                  system.
    */
   int[] getRidersPointClassificationRank(int raceId) throws IDNotRecognisedException;
 
@@ -113,14 +113,14 @@ public interface CyclingPortalInterface extends MiniCyclingPortalInterface {
    * <p>
    * The state of this MiniCyclingPortalInterface must be unchanged if any
    * exceptions are thrown.
-   * 
+   *
    * @param raceId The ID of the race being queried.
    * @return A ranked list of riders' IDs sorted descending by the sum of their
-   *     mountain points in all stages of the race. That is, the first in this
-   *     list is the winner (more points). An empty list if there is no result
-   *     for any stage in the race.
+   *         mountain points in all stages of the race. That is, the first in this
+   *         list is the winner (more points). An empty list if there is no result
+   *         for any stage in the race.
    * @throws IDNotRecognisedException If the ID does not match any race in the
-   *                  system.
+   *                                  system.
    */
   int[] getRidersMountainPointClassificationRank(int raceId) throws IDNotRecognisedException;
 

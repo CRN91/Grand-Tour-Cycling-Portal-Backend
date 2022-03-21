@@ -152,15 +152,18 @@ public class Stage implements Serializable {
 
   public void removeResultByRiderId(int riderId) throws IDNotRecognisedException {
     boolean riderIdFound = false;
+    RiderStageResult finalResult = null;
     for (RiderStageResult result : results) {
       if (result.getRiderId() == riderId) {
         riderIdFound = true;
-        results.remove(result);
+        finalResult = result;
+        break;
       }
     }
     if (!riderIdFound) {
       throw new IDNotRecognisedException("Rider ID " + riderId + " not found in stage!");
     }
+    results.remove(finalResult);
   }
 
   public void addRiderResults(Integer riderId, LocalTime[] times) {
@@ -180,7 +183,7 @@ public class Stage implements Serializable {
       LocalTime currentTime = result.getFinishTime();
       double currentTimeSeconds = (currentTime.getHour() * 3600) + (currentTime.getMinute() * 60) + currentTime.getSecond();
       double previousTimeSeconds = (previousTime.getHour() * 3600) + (previousTime.getMinute() * 60 + previousTime.getSecond());
-      if ((currentTimeSeconds - previousTimeSeconds) <= 1.0) {
+      if (((currentTimeSeconds - previousTimeSeconds) <= 1.0) && (previousTimeSeconds != 0)) {
         result.setAdjustedFinishTime(pelotonLeader);
       } else {
         pelotonLeader = currentTime;
@@ -219,8 +222,6 @@ public class Stage implements Serializable {
   }
 
   public int getRidersRankInSegment(int segment, int riderId) throws IDNotRecognisedException {
-    //System.out.println(segmentsInStage.toString()+" segments in stage"+segment);
-    //System.out.println("inside segment for 2");
     this.generateRiderSegmentResults();
     for (RiderSegmentResult segmentResult : segmentsInStage.get(segment).getResults()){
       if (segmentResult.getRiderId() == riderId){
@@ -314,8 +315,8 @@ public class Stage implements Serializable {
 
     // Add on points from segments.
     ArrayList<Segment> segmentsInStage = this.getSegmentsInStage();
+    this.generateRiderSegmentResults(); // Creates segment objects.
     for (Segment segment : segmentsInStage){
-
       // Cast for the appropriate Enum for mountain or points as a key for their points conversion table.
       SegmentType currentSegmentType = segment.getSegmentType();
       Enum mapKey;
@@ -331,7 +332,6 @@ public class Stage implements Serializable {
       if (((currentSegmentType == SegmentType.SPRINT) && !isMountain)
           || (!(currentSegmentType == SegmentType.SPRINT) && isMountain)) {
         int i = 0;
-        this.generateRiderSegmentResults(); // Creates segment objects.
         for (RiderSegmentResult riderResult : segment.getResults()){ // Iterates through each rider's segment results.
           int riderId = riderResult.getRiderId();
           int riderRank = riderResult.getRank(); // Gets riders rank in segment.

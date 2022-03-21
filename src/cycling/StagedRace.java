@@ -62,24 +62,45 @@ public class StagedRace implements Serializable {
   public void generateRidersRaceResults() {
     // sort race result object then return the list of integers
     //StagedRace race = raceIdsToRaces.get(raceId);
+
+    int sizeOfArrayOfTotalTimes;
+    if (this.getStages().size() == 0) {
+      return;
+    } else {
+      sizeOfArrayOfTotalTimes = this.getStages().get(0).getResults().size();
+    }
+
+    LocalTime[] arrayOfTotalTimes = new LocalTime[sizeOfArrayOfTotalTimes];
     for (Stage stage : this.getStages()){ // iterates through all stages in a race
+      int i = 0;
       for (RiderStageResult riderStageResult : stage.getResults()) { // iterates through all results in a stage
         int riderId = riderStageResult.getRiderId();
         boolean riderFound = false;
         for (RiderRaceResult raceResult : this.raceResults) { // iterates through race results
           if (raceResult.getRiderId() == riderId) {
-            raceResult.setFinishTime(sumLocalTimes.addLocalTimes(raceResult.getFinishTime(),
-                riderStageResult.getFinishTime())); // sums race results finish time with new stages finish time
+            arrayOfTotalTimes[i] = sumLocalTimes.addLocalTimes(arrayOfTotalTimes[i], riderStageResult.getFinishTime());
+
+
+            // sums race results finish time with new stages finish time
             riderFound = true;
             break;
           }
         }
+
         if (!riderFound) { // if no race result for rider one is made.
-          RiderRaceResult raceResult = new RiderRaceResult(riderStageResult.getRiderId(), this.raceId,
-              riderStageResult.getFinishTime());
+          RiderRaceResult raceResult = new RiderRaceResult(riderStageResult.getRiderId(), this.raceId);
+          arrayOfTotalTimes[i] = riderStageResult.getFinishTime();
+
           this.raceResults.add(raceResult);
+
         }
+        i++;
       }
+    }
+    int i = 0;
+    for (RiderRaceResult result : this.raceResults) {
+      result.setFinishTime(arrayOfTotalTimes[i]);
+      i++;
     }
     Collections.sort(this.raceResults); // orders race results by total time.
   }
@@ -93,22 +114,63 @@ public class StagedRace implements Serializable {
 
     this.generateRidersRaceResults();
 
-    System.out.println("race results generated with "+this.raceResults.size()+" items");
-    // Sum of points for each rider for the specified race.
-
-    System.out.println("amount of stages = "+this.getStages().size());
-    int resultsSize = this.raceResults.size();
-    int[] racePoints = new int[resultsSize];
-    for (int i = 0; i < resultsSize; i++) {
-      racePoints[i] = 0;
-    }
+    int[] points = new int[this.raceResults.size()];
     for (Stage stage : this.getStages()) { // iterate through stages.
+      stage.generatePointsInStage(isMountain); // points ordered by rank
+      for (RiderStageResult stageResult : stage.getResults()) {
+        int i = 0;
+        if (isMountain) {
+          for (RiderRaceResult raceResult : this.getResults()) {
+            if (stageResult.getRiderId() == raceResult.getRiderId()) {
+              if (points[i] == 0){
+                points[i] = stageResult.getMountainPoints();
+              } else {
+                points[i] += stageResult.getMountainPoints();
+              }
+
+            }
+            i++;
+          }
+        } else {
+          for (RiderRaceResult raceResult : this.getResults()) {
+            if (stageResult.getRiderId() == raceResult.getRiderId()) {
+              if (points[i] == 0){
+                points[i] = stageResult.getPoints();
+              } else {
+                points[i] += stageResult.getPoints();
+              }
+            }
+            i++;
+          }
+        }
+      }
       int i = 0;
-      int[] stagePoints = stage.generatePointsInStage(isMountain);
-      for (int point : stagePoints) {
-        racePoints[i] += point;
+      for (RiderRaceResult result : this.getResults()) {
+        if (isMountain) {
+          result.setMountainPoints(points[i]);
+        } else {
+          result.setPoints(points[i]);
+        }
         i++;
       }
+    }
+    // Sum of points for each rider for the specified race.
+    int resultsSize = this.raceResults.size();
+    int[] racePoints = new int[resultsSize];
+    int i = 0;
+
+    if (isMountain) {
+      Collections.sort(raceResults, RiderRaceResult::compareByMountainPoints);
+    } else {
+      Collections.sort(raceResults, RiderRaceResult::compareByPoints);
+    }
+    for (RiderRaceResult result : this.raceResults) {
+      if (isMountain) {
+        racePoints[i] = result.getMountainPoints();
+      } else {
+        racePoints[i] = result.getPoints();
+      }
+      i++;
     }
     return racePoints;
   }
@@ -166,7 +228,6 @@ public class StagedRace implements Serializable {
 
 
   public int[] getRiderIdsOrderedByPoints(boolean isMountain) throws IDNotRecognisedException {
-    this.generateRidersPointsInRace(isMountain);
     ArrayList<RiderRaceResult> riderRaceResults = this.getResults();
     if (isMountain) {
       Collections.sort(riderRaceResults, RiderRaceResult::compareByMountainPoints);
@@ -180,8 +241,6 @@ public class StagedRace implements Serializable {
       riderIdsByPoints[i] = result.getRiderId();
       i++;
     }
-
-    Collections.sort(riderRaceResults);
     return riderIdsByPoints;
   }
 
