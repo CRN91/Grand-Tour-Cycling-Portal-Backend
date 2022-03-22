@@ -27,30 +27,40 @@ public class CyclingPortal implements CyclingPortalInterface {
   private HashMap<Integer, Segment> segmentIdsToSegments = new HashMap<>();
   private HashMap<Integer, Team> teamIdsToTeams = new HashMap<>();
   private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<>();
-  private final HashMap<Integer, HashMap<Integer, Integer>> raceIdsToRidersToPoints = new HashMap<>();
 
+  /**
+   * @return The hashmap of each race's ID to its corresponding StagedRace object.
+   */
   public HashMap<Integer, StagedRace> getRaceIdsToRaces() {
     return raceIdsToRaces;
   }
 
+  /**
+   * @return The hashmap of each stage's ID to its corresponding Stage object.
+   */
   public HashMap<Integer, Stage> getStageIdsToStages() {
     return stageIdsToStages;
   }
 
+  /**
+   * @return The hashmap of each segment's ID to its corresponding Stage object.
+   */
   public HashMap<Integer, Segment> getSegmentIdsToSegments() {
     return segmentIdsToSegments;
   }
 
+  /**
+   * @return The hashmap of each team's ID to its corresponding Team object.
+   */
   public HashMap<Integer, Team> getTeamIdsToTeams() {
     return teamIdsToTeams;
   }
 
+  /**
+   * @return The hashmap of each rider's ID to its corresponding Rider object.
+   */
   public HashMap<Integer, Rider> getRiderIdsToRiders() {
     return riderIdsToRiders;
-  }
-
-  public HashMap<Integer, HashMap<Integer, Integer>> getRaceIdsToRidersToPoints() {
-    return raceIdsToRidersToPoints;
   }
 
   @Override
@@ -68,6 +78,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int createRace(String name, String description)
       throws IllegalNameException, InvalidNameException {
+    // Trim surrounding whitespace and check if the name is blank (meaning it was just whitespace,
+    // it's more than 30 characters in length or it's null
     name = name.trim();
     if (name.equals("") || name.length() > 30 || name == null) {
       throw new InvalidNameException("Race name is invalid!");
@@ -144,6 +156,8 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (race == null) {
       throw new IDNotRecognisedException("Race " + raceId + " not found!");
     }
+    // Trim surrounding whitespace and check if the name is blank (meaning it was just whitespace,
+    // it's more than 30 characters in length or it's null
     name = name.trim();
     if (name.equals("") || name.length() > 30 || name == null) {
       throw new InvalidNameException("Name is greater than 30 characters!");
@@ -346,6 +360,8 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int createTeam(String name, String description) throws IllegalNameException,
       InvalidNameException {
+    // Trim surrounding whitespace and check if the name is blank (meaning it was just whitespace,
+    // it's more than 30 characters in length or it's null
     name = name.trim();
     if (name == null || name == "" || name.length() > 30) {
       throw new InvalidNameException("Invalid name of a team!");
@@ -413,7 +429,8 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (team == null) {
       throw new IDNotRecognisedException("Team ID not found!");
     }
-    // Check rider's name
+    // Trim surrounding whitespace and check if the name is blank (meaning it was just whitespace,
+    // it's more than 30 characters in length or it's null
     if (name == null || name == "" || name.length() > 30) {
       throw new IllegalArgumentException("Invalid name of a team!");
     }
@@ -567,6 +584,7 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new IDNotRecognisedException("Stage ID is not recognised!");
     }
 
+    // Populate the RiderStageResults objects with their adjusted elapsed times.
     stage.generateAdjustedResults();
 
     for (RiderStageResult result : stage.getResults()) {
@@ -677,6 +695,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     Stage.resetIdCounter();
     StagedRace.resetIdCounter();
     Segment.resetIdCounter();
+    CategorisedClimb.resetIdCounter();
     // Erase all references and get them garbage collected
     this.raceIdsToRaces = new HashMap<>();
     this.stageIdsToStages = new HashMap<>();
