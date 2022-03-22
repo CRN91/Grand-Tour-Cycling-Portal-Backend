@@ -6,12 +6,11 @@ import java.time.LocalTime;
 
 
 /**
- * BadCyclingPortal is a minimally compiling, but non-functioning implementor
- * of the CyclingPortalInterface interface.
+ * BadCyclingPortal is a minimally compiling, but non-functioning implementor of the
+ * CyclingPortalInterface interface.
  *
  * @author Diogo Pacheco
  * @version 1.0
- *
  */
 public class BadCyclingPortal implements CyclingPortalInterface {
 
@@ -48,7 +47,7 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int addStageToRace(int raceId, String stageName, String description, double length,
-                            LocalDateTime startTime, StageType type)
+      LocalDateTime startTime, StageType type)
       throws IDNotRecognisedException, IllegalNameException, InvalidNameException,
       InvalidLengthException {
     // TODO Auto-generated method stub
@@ -75,7 +74,7 @@ public class BadCyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int addCategorizedClimbToStage(int stageId, Double location, SegmentType type,
-                                        Double averageGradient, Double length)
+      Double averageGradient, Double length)
       throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
       InvalidStageTypeException {
     // TODO Auto-generated method stub

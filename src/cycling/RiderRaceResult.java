@@ -2,17 +2,25 @@ package src.cycling;
 
 import java.io.Serializable;
 import java.time.LocalTime;
-import java.util.Collections;
 
 public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializable {
+
   private int riderId;
-  private int raceId;
+  private final int raceId;
   private int points = 0;
   private int mountainPoints = 0;
   private int rank;
 
   private LocalTime[] times; // Stage final finish times
   private LocalTime finishTime; // The sum of all stage finish times (the GC time)
+
+  public RiderRaceResult(int riderId, int raceId) {
+    this.riderId = riderId;
+    this.raceId = raceId;
+    // Sum final times
+    this.points = 0;
+    this.mountainPoints = 0;
+  }
 
   public int compareTo(RiderRaceResult result) {
     assert (result instanceof RiderRaceResult) : "Comparing incorrect types!";
@@ -63,35 +71,31 @@ public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializabl
     return finishTime;
   }
 
+  public void setFinishTime(LocalTime time) {
+    this.finishTime = time;
+  }
+
   public int getPoints() {
     return points;
   }
 
-  public void addPoints(int points) { this.points += points;}
-
   public void setPoints(int points) {
     this.points = points;
+  }
+
+  public void addPoints(int points) {
+    this.points += points;
   }
 
   public int getMountainPoints() {
     return mountainPoints;
   }
 
-  public void addMountainPoints(int points) { this.mountainPoints += points;}
-
   public void setMountainPoints(int points) {
     this.mountainPoints = points;
   }
 
-  public void setFinishTime(LocalTime time) {
-    this.finishTime = time;
-  }
-
-  public RiderRaceResult(int riderId, int raceId) {
-    this.riderId = riderId;
-    this.raceId = raceId;
-    // Sum final times
-    this.points = 0;
-    this.mountainPoints = 0;
+  public void addMountainPoints(int points) {
+    this.mountainPoints += points;
   }
 }

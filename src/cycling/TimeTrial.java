@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
  * @version 1.0
  */
 public class TimeTrial extends Stage {
-   StageType stageType = StageType.TT;
+
+  StageType stageType = StageType.TT;
 
   /**
    * Constructor
@@ -22,7 +23,7 @@ public class TimeTrial extends Stage {
    * @param stageType
    */
   public TimeTrial(Integer raceId, String name, String description, Double length,
-                   LocalDateTime startTime, StageType stageType) {
+      LocalDateTime startTime, StageType stageType) {
     super(raceId, name, description, length, startTime, stageType);
   }
 }

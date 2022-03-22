@@ -5,12 +5,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
- * BadMiniCyclingPortal is a minimally compiling, but non-functioning implementor
- * of the MiniCyclingPortalInterface interface.
+ * BadMiniCyclingPortal is a minimally compiling, but non-functioning implementor of the
+ * MiniCyclingPortalInterface interface.
  *
  * @author Diogo Pacheco
  * @version 1.0
- *
  */
 public class BadMiniCyclingPortal implements MiniCyclingPortalInterface {
 
@@ -46,7 +45,7 @@ public class BadMiniCyclingPortal implements MiniCyclingPortalInterface {
 
   @Override
   public int addStageToRace(int raceId, String stageName, String description, double length,
-                            LocalDateTime startTime, StageType type)
+      LocalDateTime startTime, StageType type)
       throws IDNotRecognisedException, IllegalNameException, InvalidNameException,
       InvalidLengthException {
     // TODO Auto-generated method stub
@@ -72,7 +71,7 @@ public class BadMiniCyclingPortal implements MiniCyclingPortalInterface {
 
   @Override
   public int addCategorizedClimbToStage(int stageId, Double location, SegmentType type,
-                                        Double averageGradient, Double length)
+      Double averageGradient, Double length)
       throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
       InvalidStageTypeException {
     // TODO Auto-generated method stub

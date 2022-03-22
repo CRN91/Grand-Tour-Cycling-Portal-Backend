@@ -1,9 +1,17 @@
 package src.cycling;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Implementor of the CyclingPortalInterface interface.
@@ -13,12 +21,101 @@ import java.util.*;
  */
 
 public class CyclingPortal implements CyclingPortalInterface {
+
   private HashMap<Integer, StagedRace> raceIdsToRaces = new HashMap<>();
   private HashMap<Integer, Stage> stageIdsToStages = new HashMap<>();
   private HashMap<Integer, Segment> segmentIdsToSegments = new HashMap<>();
   private HashMap<Integer, Team> teamIdsToTeams = new HashMap<>();
   private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<>();
-  private HashMap<Integer, HashMap<Integer,Integer>> raceIdsToRidersToPoints = new HashMap<>();
+  private final HashMap<Integer, HashMap<Integer, Integer>> raceIdsToRidersToPoints = new HashMap<>();
+
+  public static void main(String[] args)
+      throws IDNotRecognisedException, InvalidNameException, IllegalNameException,
+      InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, DuplicatedResultException, InvalidCheckpointsException {
+  /*
+    CyclingPortal cycPort = new CyclingPortal();
+    cycPort.createRace("Big boy race", "food fight race");
+    cycPort.addStageToRace(0,"stage uno", "first 1",
+        20.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addStageToRace(0,"stage duo", "2",
+        12.0, LocalDateTime.now(), StageType.HIGH_MOUNTAIN);
+    cycPort.addIntermediateSprintToStage(0, 1.0);
+    cycPort.addIntermediateSprintToStage(0, 2.0);
+    cycPort.addIntermediateSprintToStage(1, 2.0);
+    //cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.C1,7.0,10.0);
+    //cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.HC, 8.0, 10.0);
+    //cycPort.addCategorizedClimbToStage(1, 6.0, SegmentType.HC, 8.0, 1.0);
+    cycPort.createTeam("america","wont invade ukraine");
+    cycPort.createRider(0,"Ken",1608);
+    cycPort.createRider(0,"HOG RIDER",2015);
+    cycPort.createRider(0,"Kenith",1608);
+    cycPort.createRider(0,"HOG RIDER 2",2015);
+    cycPort.createRider(0,"Kenny",1608);
+    cycPort.createRider(0,"HOG RIER",2015);
+    cycPort.createRider(0,"Ken2",1608);
+    cycPort.createRider(0,"HOG 2RIDER",2015);
+    cycPort.createRider(0,"Keni2th",1608);
+    cycPort.createRider(0,"HOG R3IDER 2",2015);
+    cycPort.createRider(0,"Kenn3y",1608);
+    cycPort.createRider(0,"HOG 3RIER",2015);
+    cycPort.createRider(0,"Ke4n",1608);
+    cycPort.createRider(0,"HO4G RIDER",2015);
+    cycPort.createRider(0,"Ken4ith",1608);
+    cycPort.createRider(0,"HOG 5RIDER 2",2015);
+    cycPort.createRider(0,"Kenny5",1608);
+    cycPort.createRider(0,"HOG RI5ER",2015);
+    cycPort.concludeStagePreparation(0);
+    cycPort.concludeStagePreparation(1);
+    LocalTime t0 = LocalTime.of(0,0,0);
+    LocalTime t1 = LocalTime.of(0,0,10);
+    LocalTime t2 = LocalTime.of(0,0,20);
+    LocalTime t3 = LocalTime.of(0,0,30);
+    LocalTime t4 = LocalTime.of(0,0,40);
+    LocalTime t5 = LocalTime.of(0,0,50);
+    LocalTime t6 = LocalTime.of(0,0,59);
+    LocalTime t7 = LocalTime.of(0,1,0);
+    LocalTime t8 = LocalTime.of(0,1,10);
+    LocalTime t9 = LocalTime.of(0,1,20);
+    LocalTime t10 = LocalTime.of(0,1,30);
+    LocalTime t11 = LocalTime.of(0,1,40);
+    LocalTime t12 = LocalTime.of(0,1,50);
+    LocalTime t13 = LocalTime.of(0,1,59);
+    LocalTime t14 = LocalTime.of(0,2,0);
+    LocalTime t15 = LocalTime.of(0,2,10);
+    LocalTime t16 = LocalTime.of(0,2,20);
+    LocalTime t17 = LocalTime.of(0,2,30);
+    LocalTime t18 = LocalTime.of(0,2,40);
+    LocalTime t19 = LocalTime.of(0,2,50);
+    LocalTime t20 = LocalTime.of(0,3,0);
+    LocalTime t21 = LocalTime.of(0,3,10);
+    cycPort.registerRiderResultsInStage(0,0, t0, t1,t2, t19);
+    cycPort.registerRiderResultsInStage(0,1, t0, t2,t3, t20);
+    cycPort.registerRiderResultsInStage(0,2, t0, t3,t4, t20);
+    cycPort.registerRiderResultsInStage(0,3, t0, t4,t5, t20);
+    cycPort.registerRiderResultsInStage(0,4, t0, t5, t6,t21);
+    cycPort.registerRiderResultsInStage(0,5, t0, t6,t7, t21);
+    cycPort.registerRiderResultsInStage(0,6, t0, t7, t8,t21);
+    cycPort.registerRiderResultsInStage(0,7, t0, t8,t9, t21);
+    cycPort.registerRiderResultsInStage(0,8, t0, t9,t10, t21);
+
+
+    // stage 1: rider 1 ,2 , 0 ,segments 0 , 1, 2
+    cycPort.registerRiderResultsInStage(1,0, t0, t1, t2);
+    cycPort.registerRiderResultsInStage(1,1, t0, t2, t3);
+    cycPort.registerRiderResultsInStage(1,2, t0, t3, t4);
+    cycPort.registerRiderResultsInStage(1,3, t0, t4, t5);
+    cycPort.registerRiderResultsInStage(1,4, t0, t5, t6);
+    cycPort.registerRiderResultsInStage(1,5, t0, t6, t17);
+    cycPort.registerRiderResultsInStage(1,6, t0, t7, t8);
+    cycPort.registerRiderResultsInStage(1,7, t0, t8, t9);
+    cycPort.registerRiderResultsInStage(1,8, t0, t9, t10);
+    // stage 2:  0, 1 ,2
+
+    System.out.println(Arrays.toString(cycPort.getRidersPointsInRace(0)));
+    System.out.println(cycPort.raceIdsToRaces.get(0).getResults().get(0).getPoints());
+
+    //System.out.println(Arrays.toString(cycPort.getRidersGeneralClassificationRank(0)));*/
+  }
 
   public HashMap<Integer, StagedRace> getRaceIdsToRaces() {
     return raceIdsToRaces;
@@ -93,17 +190,17 @@ public class CyclingPortal implements CyclingPortalInterface {
     // Add details to status output string
 
     return "Race ID: " + race.getId() + "\n"
-      + "Race name: " + race.getName() + "\n"
-      + "Description: " + race.getDescription() + "\n"
-      + "Number of stages: " + race.getStages().size() + "\n"
-      + "Total race length: " + sumOfStagesLengths;
+        + "Race name: " + race.getName() + "\n"
+        + "Description: " + race.getDescription() + "\n"
+        + "Number of stages: " + race.getStages().size() + "\n"
+        + "Total race length: " + sumOfStagesLengths;
   }
 
   @Override
   public void removeRaceById(int raceId) throws IDNotRecognisedException {
     StagedRace race = raceIdsToRaces.get(raceId);
     if (race == null) {
-      throw new IDNotRecognisedException("Race ID "+ raceId + " not recognised!");
+      throw new IDNotRecognisedException("Race ID " + raceId + " not recognised!");
     }
     raceIdsToRaces.remove(raceId);
   }
@@ -127,7 +224,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int addStageToRace(int raceId, String name, String description, double length,
-                            LocalDateTime startTime, StageType type)
+      LocalDateTime startTime, StageType type)
       throws IDNotRecognisedException, IllegalNameException, InvalidNameException,
       InvalidLengthException {
     // Check the race exists
@@ -184,7 +281,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public void removeStageById(int stageId) throws IDNotRecognisedException {
     Stage stage = stageIdsToStages.get(stageId);
-    if ( stage == null) {
+    if (stage == null) {
       throw new IDNotRecognisedException("Stage ID not recognised!");
     }
     // Get the race object that contains it
@@ -192,7 +289,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     race.getStages().remove(stage);
 
     Boolean foundId = false;
-    for ( Integer stgId : stageIdsToStages.keySet() ) {
+    for (Integer stgId : stageIdsToStages.keySet()) {
       if (stgId == stageId) {
         stageIdsToStages.remove(stgId);
         foundId = true;
@@ -206,7 +303,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
   @Override
   public int addCategorizedClimbToStage(int stageId, Double location, SegmentType type,
-                                        Double averageGradient, Double length)
+      Double averageGradient, Double length)
       throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
       InvalidStageTypeException {
     Stage stage = stageIdsToStages.get(stageId);
@@ -249,7 +346,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int addIntermediateSprintToStage(int stageId, double location)
       throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
-          InvalidStageTypeException {
+      InvalidStageTypeException {
     Stage stage = stageIdsToStages.get(stageId);
     // Does the stage exist?
     if (stage == null) {
@@ -319,7 +416,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int[] getStageSegments(int stageId) throws IDNotRecognisedException {
     Stage stage = stageIdsToStages.get(stageId);
-    if ( stage == null ) {
+    if (stage == null) {
       throw new IDNotRecognisedException("Stage ID not recognised!");
     }
 
@@ -405,7 +502,7 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new IDNotRecognisedException("Team ID not found!");
     }
     // Check rider's name
-    if (name == null || name == "" || name.length() > 30 ) {
+    if (name == null || name == "" || name.length() > 30) {
       throw new IllegalArgumentException("Invalid name of a team!");
     }
 
@@ -426,7 +523,8 @@ public class CyclingPortal implements CyclingPortalInterface {
         }
         riders.remove(riderId);
         break;
-      } catch (NullPointerException ex) { } // Errors thrown for each team until ID is found
+      } catch (NullPointerException ex) {
+      } // Errors thrown for each team until ID is found
     }
     if (!hasBeenFound) {
       throw new IDNotRecognisedException("Rider ID not found!");
@@ -477,16 +575,17 @@ public class CyclingPortal implements CyclingPortalInterface {
     Stage stage = stageIdsToStages.get(stageId); // Gets the stage.
 
     // Error checking
-    if (stage == null){
+    if (stage == null) {
       throw new IDNotRecognisedException("Stage ID not recognised!");
     }
     Rider rider = riderIdsToRiders.get(riderId);
-    if (rider == null){
+    if (rider == null) {
       throw new IDNotRecognisedException("Rider ID not recognised!");
     }
 
-    if (stage.getUnderDevelopment()){
-      throw new InvalidStageStateException("The stage is under development so can't add rider results!");
+    if (stage.getUnderDevelopment()) {
+      throw new InvalidStageStateException(
+          "The stage is under development so can't add rider results!");
     }
 // get the location data for each segment, order it, sync it to times, store it
     // Check whether the result has already been registered for this rider in this stage
@@ -503,17 +602,17 @@ public class CyclingPortal implements CyclingPortalInterface {
     ArrayList<Segment> segments = stage.getSegmentsInStage();
     int checkpointLength = checkpoints.length;
     if (!(segments == null)) {
-      if (!(checkpointLength == segments.size() + 2)){
+      if (!(checkpointLength == segments.size() + 2)) {
         throw new InvalidCheckpointsException("Incorrect number of checkpoints in stage!");
       }
-    } else if (checkpointLength != 2){
+    } else if (checkpointLength != 2) {
       throw new InvalidCheckpointsException("Incorrect number of checkpoints in stage!");
     }
 
     // Check whether checkpoints are in chronological order
-    LocalTime previousTime = LocalTime.of(0,0,0);
-    for (LocalTime time : checkpoints){
-      if (time.compareTo(previousTime) < 0){
+    LocalTime previousTime = LocalTime.of(0, 0, 0);
+    for (LocalTime time : checkpoints) {
+      if (time.compareTo(previousTime) < 0) {
         throw new InvalidCheckpointsException("Checkpoint times are not in chronological order!");
       }
       previousTime = time;
@@ -538,7 +637,7 @@ public class CyclingPortal implements CyclingPortalInterface {
         break;
       }
     }
-    if (result == null){
+    if (result == null) {
       return new LocalTime[0];
     }
 
@@ -552,7 +651,7 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new IDNotRecognisedException("Rider ID is not recognised!");
     }
     Stage stage = stageIdsToStages.get(stageId);
-    if (stage == null){
+    if (stage == null) {
       throw new IDNotRecognisedException("Stage ID is not recognised!");
     }
 
@@ -606,7 +705,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId)
       throws IDNotRecognisedException {
     Stage stage = stageIdsToStages.get(stageId);
-    if (stage == null){ // checks race is in cycling portal.
+    if (stage == null) { // checks race is in cycling portal.
       throw new IDNotRecognisedException("Stage ID not recognised!");
     }
 
@@ -615,7 +714,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     ArrayList<RiderStageResult> results = stage.getResults();
     LocalTime[] RankAdjustedElapsedTimesInStage = new LocalTime[results.size()];
     int i = 0;
-    for (RiderStageResult result : stage.getResults()){
+    for (RiderStageResult result : stage.getResults()) {
       RankAdjustedElapsedTimesInStage[i] = result.getAdjustedFinishTime();
       i++;
     }
@@ -625,7 +724,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int[] getRidersPointsInStage(int stageId) throws IDNotRecognisedException {
     Stage stage = stageIdsToStages.get(stageId);
-    if (stage == null){ // checks race is in cycling portal.
+    if (stage == null) { // checks race is in cycling portal.
       throw new IDNotRecognisedException("Stage ID not recognised!");
     }
 
@@ -635,7 +734,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int[] getRidersMountainPointsInStage(int stageId) throws IDNotRecognisedException {
     Stage stage = stageIdsToStages.get(stageId);
-    if (stage == null){ // checks race is in cycling portal.
+    if (stage == null) { // checks race is in cycling portal.
       throw new IDNotRecognisedException("Stage ID not recognised!");
     }
     if ((stage.getStageType() == StageType.TT) || (stage.getSegmentsInStage().size() == 0)) {
@@ -726,7 +825,7 @@ public class CyclingPortal implements CyclingPortalInterface {
 
     LocalTime[] finishTimes = new LocalTime[raceResults.size()];
     int i = 0;
-    for (RiderRaceResult result : raceResults){
+    for (RiderRaceResult result : raceResults) {
       finishTimes[i] = result.getFinishTime();
       i++;
     }
@@ -773,7 +872,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   public int[] getRidersPointClassificationRank(int raceId) throws IDNotRecognisedException {
     StagedRace race = raceIdsToRaces.get(raceId);
     if (race == null) {
-      throw new IDNotRecognisedException("Race ID "+raceId+" not recognised!");
+      throw new IDNotRecognisedException("Race ID " + raceId + " not recognised!");
     }
     race.generateRidersPointsInRace(false);
     return race.getRiderIdsOrderedByPoints(false);
@@ -784,96 +883,9 @@ public class CyclingPortal implements CyclingPortalInterface {
       throws IDNotRecognisedException {
     StagedRace race = raceIdsToRaces.get(raceId);
     if (race == null) {
-      throw new IDNotRecognisedException("Race ID "+raceId+" not recognised!");
+      throw new IDNotRecognisedException("Race ID " + raceId + " not recognised!");
     }
     race.generateRidersPointsInRace(true);
     return race.getRiderIdsOrderedByPoints(true);
-  }
-
-  public static void main(String[] args) throws IDNotRecognisedException, InvalidNameException, IllegalNameException,
-      InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, DuplicatedResultException, InvalidCheckpointsException {
-  /*
-    CyclingPortal cycPort = new CyclingPortal();
-    cycPort.createRace("Big boy race", "food fight race");
-    cycPort.addStageToRace(0,"stage uno", "first 1",
-        20.0, LocalDateTime.now(), StageType.FLAT);
-    cycPort.addStageToRace(0,"stage duo", "2",
-        12.0, LocalDateTime.now(), StageType.HIGH_MOUNTAIN);
-    cycPort.addIntermediateSprintToStage(0, 1.0);
-    cycPort.addIntermediateSprintToStage(0, 2.0);
-    cycPort.addIntermediateSprintToStage(1, 2.0);
-    //cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.C1,7.0,10.0);
-    //cycPort.addCategorizedClimbToStage(0,6.0,SegmentType.HC, 8.0, 10.0);
-    //cycPort.addCategorizedClimbToStage(1, 6.0, SegmentType.HC, 8.0, 1.0);
-    cycPort.createTeam("america","wont invade ukraine");
-    cycPort.createRider(0,"Ken",1608);
-    cycPort.createRider(0,"HOG RIDER",2015);
-    cycPort.createRider(0,"Kenith",1608);
-    cycPort.createRider(0,"HOG RIDER 2",2015);
-    cycPort.createRider(0,"Kenny",1608);
-    cycPort.createRider(0,"HOG RIER",2015);
-    cycPort.createRider(0,"Ken2",1608);
-    cycPort.createRider(0,"HOG 2RIDER",2015);
-    cycPort.createRider(0,"Keni2th",1608);
-    cycPort.createRider(0,"HOG R3IDER 2",2015);
-    cycPort.createRider(0,"Kenn3y",1608);
-    cycPort.createRider(0,"HOG 3RIER",2015);
-    cycPort.createRider(0,"Ke4n",1608);
-    cycPort.createRider(0,"HO4G RIDER",2015);
-    cycPort.createRider(0,"Ken4ith",1608);
-    cycPort.createRider(0,"HOG 5RIDER 2",2015);
-    cycPort.createRider(0,"Kenny5",1608);
-    cycPort.createRider(0,"HOG RI5ER",2015);
-    cycPort.concludeStagePreparation(0);
-    cycPort.concludeStagePreparation(1);
-    LocalTime t0 = LocalTime.of(0,0,0);
-    LocalTime t1 = LocalTime.of(0,0,10);
-    LocalTime t2 = LocalTime.of(0,0,20);
-    LocalTime t3 = LocalTime.of(0,0,30);
-    LocalTime t4 = LocalTime.of(0,0,40);
-    LocalTime t5 = LocalTime.of(0,0,50);
-    LocalTime t6 = LocalTime.of(0,0,59);
-    LocalTime t7 = LocalTime.of(0,1,0);
-    LocalTime t8 = LocalTime.of(0,1,10);
-    LocalTime t9 = LocalTime.of(0,1,20);
-    LocalTime t10 = LocalTime.of(0,1,30);
-    LocalTime t11 = LocalTime.of(0,1,40);
-    LocalTime t12 = LocalTime.of(0,1,50);
-    LocalTime t13 = LocalTime.of(0,1,59);
-    LocalTime t14 = LocalTime.of(0,2,0);
-    LocalTime t15 = LocalTime.of(0,2,10);
-    LocalTime t16 = LocalTime.of(0,2,20);
-    LocalTime t17 = LocalTime.of(0,2,30);
-    LocalTime t18 = LocalTime.of(0,2,40);
-    LocalTime t19 = LocalTime.of(0,2,50);
-    LocalTime t20 = LocalTime.of(0,3,0);
-    LocalTime t21 = LocalTime.of(0,3,10);
-    cycPort.registerRiderResultsInStage(0,0, t0, t1,t2, t19);
-    cycPort.registerRiderResultsInStage(0,1, t0, t2,t3, t20);
-    cycPort.registerRiderResultsInStage(0,2, t0, t3,t4, t20);
-    cycPort.registerRiderResultsInStage(0,3, t0, t4,t5, t20);
-    cycPort.registerRiderResultsInStage(0,4, t0, t5, t6,t21);
-    cycPort.registerRiderResultsInStage(0,5, t0, t6,t7, t21);
-    cycPort.registerRiderResultsInStage(0,6, t0, t7, t8,t21);
-    cycPort.registerRiderResultsInStage(0,7, t0, t8,t9, t21);
-    cycPort.registerRiderResultsInStage(0,8, t0, t9,t10, t21);
-
-
-    // stage 1: rider 1 ,2 , 0 ,segments 0 , 1, 2
-    cycPort.registerRiderResultsInStage(1,0, t0, t1, t2);
-    cycPort.registerRiderResultsInStage(1,1, t0, t2, t3);
-    cycPort.registerRiderResultsInStage(1,2, t0, t3, t4);
-    cycPort.registerRiderResultsInStage(1,3, t0, t4, t5);
-    cycPort.registerRiderResultsInStage(1,4, t0, t5, t6);
-    cycPort.registerRiderResultsInStage(1,5, t0, t6, t17);
-    cycPort.registerRiderResultsInStage(1,6, t0, t7, t8);
-    cycPort.registerRiderResultsInStage(1,7, t0, t8, t9);
-    cycPort.registerRiderResultsInStage(1,8, t0, t9, t10);
-    // stage 2:  0, 1 ,2
-
-    System.out.println(Arrays.toString(cycPort.getRidersPointsInRace(0)));
-    System.out.println(cycPort.raceIdsToRaces.get(0).getResults().get(0).getPoints());
-
-    //System.out.println(Arrays.toString(cycPort.getRidersGeneralClassificationRank(0)));*/
   }
 }

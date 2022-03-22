@@ -5,7 +5,6 @@ package src.cycling;
  *
  * @author Diogo Pacheco
  * @version 1.0
- *
  */
 public class InvalidStageTypeException extends Exception {
 
@@ -18,7 +17,7 @@ public class InvalidStageTypeException extends Exception {
 
   /**
    * Constructs an instance of the exception containing the message argument.
-   * 
+   *
    * @param message message containing details regarding the exception cause.
    */
   public InvalidStageTypeException(String message) {

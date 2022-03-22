@@ -3,9 +3,15 @@ package src.cycling;
 import java.time.LocalTime;
 
 public class RiderSegmentResult implements Comparable<RiderSegmentResult> {
+
   private LocalTime time;
   private int riderId;
   private int rank;
+
+  public RiderSegmentResult(LocalTime time, int riderId) {
+    this.time = time;
+    this.riderId = riderId;
+  }
 
   public int compareTo(RiderSegmentResult result) {
     assert (result instanceof RiderSegmentResult) : "Comparing incorrect types!";
@@ -20,7 +26,7 @@ public class RiderSegmentResult implements Comparable<RiderSegmentResult> {
     this.rank = rank;
   }
 
-  public LocalTime getTime(){
+  public LocalTime getTime() {
     return this.time;
   }
 
@@ -33,11 +39,6 @@ public class RiderSegmentResult implements Comparable<RiderSegmentResult> {
   }
 
   public void setRiderId(int riderId) {
-    this.riderId = riderId;
-  }
-
-  public RiderSegmentResult(LocalTime time, int riderId) {
-    this.time = time;
     this.riderId = riderId;
   }
 }
