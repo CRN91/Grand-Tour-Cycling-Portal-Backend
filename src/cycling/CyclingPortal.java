@@ -775,7 +775,7 @@ public class CyclingPortal implements CyclingPortalInterface {
   @Override
   public int[] getRidersMountainPointsInRace(int raceId) throws IDNotRecognisedException {
     StagedRace race = raceIdsToRaces.get(raceId);
-    if (race == null) { //error check
+    if (race == null) { // Error check.
       throw new IDNotRecognisedException("Race ID " + raceId + " not found!");
     }
     return race.generateRidersPointsInRace(true);
