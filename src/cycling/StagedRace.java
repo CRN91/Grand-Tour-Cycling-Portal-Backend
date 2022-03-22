@@ -21,9 +21,13 @@ public class StagedRace implements Serializable {
   private LocalTime[] datesOfCompetitions;
   private final ArrayList<Stage> stages = new ArrayList<>();
   private final ArrayList<RiderRaceResult> raceResults = new ArrayList<>();
-  private HashMap<Integer, Integer> riderIdsToPoints = new HashMap<>();
-  private HashMap<Integer, Integer> riderIdsToMountainPoints = new HashMap<>();
 
+  /**
+   * Constructor.
+   *
+   * @param name
+   * @param description
+   */
   public StagedRace(String name, String description) {
     this.name = name;
     this.description = description;
@@ -31,52 +35,52 @@ public class StagedRace implements Serializable {
   }
 
   /**
-   * Reset the internal ID counter
+   * Reset the internal ID counter.
    */
   public static void resetIdCounter() {
     latestId = 0;
   }
 
+  /**
+   * @return The name of the staged race.
+   */
   public String getName() {
     return this.name;
   }
 
+  /**
+   * @return The description of the staged race.
+   */
   public String getDescription() {
     return this.description;
   }
 
+  /**
+   * @return The ID of the staged race.
+   */
   public int getId() {
     return this.raceId;
   }
 
+  /**
+   * @return An array list of stages in the staged race.
+   */
   public ArrayList<Stage> getStages() {
     return stages;
   }
 
+  /**
+   * @param stage The new stage to be added to the staged race.
+   */
   public void addStage(Stage stage) {
     this.stages.add(stage);
   }
 
-  public HashMap<Integer, Integer> getRiderIdsToPoints() {
-    return riderIdsToPoints;
-  }
-
-  public void setRiderIdsToPoints(HashMap<Integer, Integer> riderIdsToPoints) {
-    this.riderIdsToPoints = riderIdsToPoints;
-  }
-
-  public HashMap<Integer, Integer> getRiderIdsToMountainPoints() {
-    return riderIdsToMountainPoints;
-  }
-
-  public void setRiderIdsToMountainPoints(HashMap<Integer, Integer> riderIdsToMountainPoints) {
-    this.riderIdsToMountainPoints = riderIdsToMountainPoints;
-  }
-
-  public void generateRidersRaceResults() {
-    // sort race result object then return the list of integers
-    //StagedRace race = raceIdsToRaces.get(raceId);
-
+  /**
+   * Sums all the riders stage results finish times and stores it as a race finish time in each
+   * rider's race result object.
+   */
+  public void generateRidersRaceFinishTimes() {
     int sizeOfArrayOfTotalTimes;
     if (this.getStages().size() == 0) {
       return;
@@ -85,29 +89,27 @@ public class StagedRace implements Serializable {
     }
 
     LocalTime[] arrayOfTotalTimes = new LocalTime[sizeOfArrayOfTotalTimes];
-    for (Stage stage : this.getStages()) { // iterates through all stages in a race
+    for (Stage stage : this.getStages()) { // Iterates through all stages in a race.
       int i = 0;
-      for (RiderStageResult riderStageResult : stage.getResults()) { // iterates through all results in a stage
+      for (RiderStageResult riderStageResult : stage.getResults()) { // Iterates through all results
+        // in a stage.
         int riderId = riderStageResult.getRiderId();
         boolean riderFound = false;
-        for (RiderRaceResult raceResult : this.raceResults) { // iterates through race results
-          if (raceResult.getRiderId() == riderId) {
+        for (RiderRaceResult raceResult : this.raceResults) { // Iterates through race results.
+          if (raceResult.getRiderId() == riderId) { // If the race result and stage result refer to
+            // the same rider.
             arrayOfTotalTimes[i] = SumLocalTimes.addLocalTimes(arrayOfTotalTimes[i],
                 riderStageResult.getFinishTime());
-
-            // sums race results finish time with new stages finish time
+            // Sums race results finish time with new stages finish time.
             riderFound = true;
             break;
           }
         }
-
-        if (!riderFound) { // if no race result for rider one is made.
+        if (!riderFound) { // If no race result for rider one is made.
           RiderRaceResult raceResult = new RiderRaceResult(riderStageResult.getRiderId(),
               this.raceId);
           arrayOfTotalTimes[i] = riderStageResult.getFinishTime();
-
           this.raceResults.add(raceResult);
-
         }
         i++;
       }
@@ -117,76 +119,32 @@ public class StagedRace implements Serializable {
       result.setFinishTime(arrayOfTotalTimes[i]);
       i++;
     }
-    Collections.sort(this.raceResults); // orders race results by total time.
+    Collections.sort(this.raceResults); // Sorts race results by total time.
   }
-  //  for (RiderStageResult result : stage.getResults()) { // iterate through rider.
-//
-  //    int riderId = result.getRiderId();
-  //    int points;
-//
-  //    if (isMountain) {
-  //      points = result.getMountainPoints();
-  //    } else {
-  //      points = result.getPoints();
-  //    }
-//
-  //    riderIdsToPointsInRace.merge(riderId, points, Integer::sum);
-  //    if (!isMountain) {
-  //      this.raceResults.get(i).addPoints(points);
-  //    } else {
-  //      this.raceResults.get(i).addMountainPoints(points);
-  //    }
-  //    i++;
-  //  }
-  //}
-//
-  //// Adds riders points to their race results.
-  ///*
-//
-  //for (RiderRaceResult result : this.getResults()) { // Set riders points classification points in race.
-  //  if (isMountain) {
-  //    result.setMountainPoints(riderIdsToPointsInRace.get(result.getRiderId()));
-  //  } else {
-  //    result.setPoints(riderIdsToPointsInRace.get(result.getRiderId()));
-  //  }
-  //}*/
-  //int[] pointsOrderedByRank = new int[this.raceResults.size()];
-  //if (!(riderIdsToPointsInRace.isEmpty())) {
-  //  // creates an int array of points ordered by rank
-  //  int i = 0;
-  //  for (RiderRaceResult result : this.raceResults) {
-  //    if (isMountain) {
-  //      pointsOrderedByRank[i] = result.getMountainPoints();
-  //    } else {
-  //      pointsOrderedByRank[i] = result.getPoints();
-  //    }
-  //    i++;
-  //  }
-  //  /*if (isMountain) {
-  //    this.setRiderIdsToMountainPoints(riderIdsToPointsInRace);
-  //  } else {
-  //    this.setRiderIdsToPoints(riderIdsToPointsInRace);
-  //  }*/
-  //}
-  // re//turn pointsOrderedByRank;
 
   public ArrayList<RiderRaceResult> getResults() {
     return raceResults;
   }
 
-  public int[] generateRidersPointsInRace(boolean isMountain) throws IDNotRecognisedException {
-    HashMap<Integer, Integer> riderIdsToPointsInRace = new HashMap<Integer, Integer>();
+  /**
+   * Sums all the mountain or point classification points for each rider in the race.
+   *
+   * @param isMountain True if mountain point classification, false if point classification.
+   * @return An array of rider's total points respective of given classification.
+   */
+  public int[] generateRidersPointsInRace(boolean isMountain) {
+    this.generateRidersRaceFinishTimes();
 
-    this.generateRidersRaceResults();
-
-    int[] points = new int[this.raceResults.size()];
-    for (Stage stage : this.getStages()) { // iterate through stages.
-      stage.generatePointsInStage(isMountain); // points ordered by rank
+    int[] points = new int[this.raceResults.size()]; // Points for the entire race.
+    for (Stage stage : this.getStages()) { // Iterate through stages.
+      stage.generatePointsInStage(isMountain); // Points ordered by rank are generated.
       for (RiderStageResult stageResult : stage.getResults()) {
         int i = 0;
-        if (isMountain) {
-          for (RiderRaceResult raceResult : this.getResults()) {
+        if (isMountain) { // Mountain classification.
+          for (RiderRaceResult raceResult : this.getResults()) { // Iterates through race results.
+            // If the stage result rider ID and the race result rider ID match.
             if (stageResult.getRiderId() == raceResult.getRiderId()) {
+              // Points are set or added to the race total array.
               if (points[i] == 0) {
                 points[i] = stageResult.getMountainPoints();
               } else {
@@ -196,9 +154,10 @@ public class StagedRace implements Serializable {
             }
             i++;
           }
-        } else {
+        } else { // Point classification.
           for (RiderRaceResult raceResult : this.getResults()) {
             if (stageResult.getRiderId() == raceResult.getRiderId()) {
+              // Points are sent to an array that stores each rider's total points in the race.
               if (points[i] == 0) {
                 points[i] = stageResult.getPoints();
               } else {
@@ -209,6 +168,7 @@ public class StagedRace implements Serializable {
           }
         }
       }
+      // Iterates through race results and sets each rider's total points for the race.
       int i = 0;
       for (RiderRaceResult result : this.getResults()) {
         if (isMountain) {
@@ -224,6 +184,7 @@ public class StagedRace implements Serializable {
     int[] racePoints = new int[resultsSize];
     int i = 0;
 
+    // Sorts race results by either their mountain or point classification points.
     if (isMountain) {
       Collections.sort(raceResults, RiderRaceResult::compareByMountainPoints);
     } else {
@@ -237,23 +198,31 @@ public class StagedRace implements Serializable {
       }
       i++;
     }
+    Collections.sort(raceResults); // Sorts race results back to its order by finishing times.
     return racePoints;
   }
 
-  public int[] getRiderIdsOrderedByPoints(boolean isMountain) throws IDNotRecognisedException {
+  /**
+   * @param isMountain True if mountain point classification, false if point classification.
+   * @return An array of rider ID's ordered by their points in the given classification.
+   */
+  public int[] getRiderIdsOrderedByPoints(boolean isMountain) {
     ArrayList<RiderRaceResult> riderRaceResults = this.getResults();
+    // Sorts race results by their points in the given classification.
     if (isMountain) {
       Collections.sort(riderRaceResults, RiderRaceResult::compareByMountainPoints);
     } else {
       Collections.sort(riderRaceResults, RiderRaceResult::compareByPoints);
     }
 
+    // Gets the rider ID's in order of points and adds them to an array.
     int[] riderIdsByPoints = new int[riderRaceResults.size()];
     int i = 0;
     for (RiderRaceResult result : riderRaceResults) {
       riderIdsByPoints[i] = result.getRiderId();
       i++;
     }
+    Collections.sort(raceResults); // Sorts race results back to its order by finishing times.
     return riderIdsByPoints;
   }
 }

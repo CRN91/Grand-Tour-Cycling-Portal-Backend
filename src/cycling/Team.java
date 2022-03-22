@@ -11,12 +11,12 @@ import java.util.HashMap;
  */
 public class Team implements Serializable {
 
-  private static int latestId = 0; // enumerates to get unique id, with 2^32 possible ids.
+  private static int latestId = 0; // Enumerates to get unique id, with 2^32 possible ids.
   private String name;
-  private final String description;
-  private final int id;
+  private String description;
+  private int id;
   // Creates a hash map between the team's rider's Ids and the rider objects.
-  private final HashMap<Integer, Rider> riderIdsToRiders = new HashMap<Integer, Rider>();
+  private HashMap<Integer, Rider> riderIdsToRiders = new HashMap<Integer, Rider>();
 
   /**
    * Constructor.
@@ -30,7 +30,7 @@ public class Team implements Serializable {
   }
 
   /**
-   * Reset the internal ID counter
+   * Reset the internal ID counter.
    */
   public static void resetIdCounter() {
     latestId = 0;
@@ -65,13 +65,6 @@ public class Team implements Serializable {
   }
 
   /**
-   * @param riderId
-   */
-  //public void removeRider(Integer riderId) {
-  // this.riderIdsToRiders.remove(riderId);
-  // }
-
-  /**
    * @return A hash map between the team's rider's IDs and their corresponding rider objects.
    */
   public HashMap<Integer, Rider> getRiderIdsToRiders() {
@@ -79,7 +72,7 @@ public class Team implements Serializable {
   }
 
   /**
-   * @param rider
+   * @param rider A rider object to be added to the team's internal hashmap of rider ID's to riders.
    */
   public void addRider(Rider rider) {
     this.riderIdsToRiders.put(rider.getId(), rider);

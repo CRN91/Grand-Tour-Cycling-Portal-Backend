@@ -4,20 +4,21 @@ import java.io.Serializable;
 
 /**
  * Each cyclist is treated as an object that can be assigned to a team and compete in competitions.
+ * Their results are stored in separate objects that can be accessed via the rider's ID.
  *
  * @author Sam Barker, Adam Kaizra
  * @version 1.0
  */
 public class Rider implements Serializable {
 
-  private static int latestId = 0; // enumerates to get unique id, with 2^32 possible ids
+  private static int latestId = 0; // Enumerates to get unique id, with 2^32 possible ids.
   private String name;
   private final int id;
   private int teamId;
   private int yearOfBirth;
 
   /**
-   * Constructor
+   * Constructor.
    *
    * @param name        Rider's name
    * @param teamId      The ID of the team the rider belongs to
@@ -31,7 +32,7 @@ public class Rider implements Serializable {
   }
 
   /**
-   * Reset the internal ID counter
+   * Reset the internal ID counter.
    */
   public static void resetIdCounter() {
     latestId = 0;
@@ -66,10 +67,10 @@ public class Rider implements Serializable {
   }
 
   /**
-   * @param teamId
+   * @param newTeamId
    */
-  public void setTeamId(int teamId) {
-    this.teamId = teamId;
+  public void setTeamId(int newTeamId) {
+    this.teamId = newTeamId;
   }
 
   /**
@@ -80,9 +81,9 @@ public class Rider implements Serializable {
   }
 
   /**
-   * @param yearOfBirth
+   * @param newYearOfBirth
    */
-  public void setYearOfBirth(int yearOfBirth) {
-    this.yearOfBirth = yearOfBirth;
+  public void setYearOfBirth(int newYearOfBirth) {
+    this.yearOfBirth = newYearOfBirth;
   }
 }

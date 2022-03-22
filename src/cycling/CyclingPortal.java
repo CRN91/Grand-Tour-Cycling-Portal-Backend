@@ -751,7 +751,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (race == null) {
       throw new IDNotRecognisedException("Race ID " + raceId + " not found!");
     }
-    race.generateRidersRaceResults();
+    race.generateRidersRaceFinishTimes();
     ArrayList<RiderRaceResult> raceResults = race.getResults();
 
     LocalTime[] finishTimes = new LocalTime[raceResults.size()];
@@ -787,7 +787,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     if (race == null) { //error check
       throw new IDNotRecognisedException("Race ID " + raceId + " not found!");
     }
-    race.generateRidersRaceResults(); // returns race results also stores in race result list
+    race.generateRidersRaceFinishTimes(); // returns race results also stores in race result list
     ArrayList<RiderRaceResult> raceResults = race.getResults(); //gets race result arraylist
 
     int raceResultsSize = raceResults.size();
