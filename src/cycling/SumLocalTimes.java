@@ -2,7 +2,7 @@ package src.cycling;
 
 import java.time.LocalTime;
 
-public class sumLocalTimes {
+public class SumLocalTimes {
 
   public static double localTimeToSeconds(LocalTime time) {
     if (time == null) {

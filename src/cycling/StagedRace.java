@@ -92,7 +92,7 @@ public class StagedRace implements Serializable {
         boolean riderFound = false;
         for (RiderRaceResult raceResult : this.raceResults) { // iterates through race results
           if (raceResult.getRiderId() == riderId) {
-            arrayOfTotalTimes[i] = sumLocalTimes.addLocalTimes(arrayOfTotalTimes[i],
+            arrayOfTotalTimes[i] = SumLocalTimes.addLocalTimes(arrayOfTotalTimes[i],
                 riderStageResult.getFinishTime());
 
             // sums race results finish time with new stages finish time

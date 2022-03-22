@@ -3,7 +3,6 @@ package src;
 import java.io.*;
 import src.cycling.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -3064,23 +3063,23 @@ public class CyclingPortalInterfaceTestApp {
     cycPort.registerRiderResultsInStage(6, 16, t0,t18,t20,t21);
 
     //number 1 programmer guy!
-    assert cycPort.getGeneralClassificationTimesInRace(2)[0]  .compareTo(sumLocalTimes.addLocalTimes(tnoughtpointfive,  tnoughtpointfive, tnoughtpointfive,  tnoughtpointfive,  t3)) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[1]  .compareTo(sumLocalTimes.addLocalTimes(t1,  t1,  t1  ,t1 ,t4 )) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[2]  .compareTo(sumLocalTimes.addLocalTimes(t2,  t2,  t2  ,t2 ,t5 )) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[3]  .compareTo(sumLocalTimes.addLocalTimes(t3,  t3,  t3  ,t3 ,t6 )) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[4]  .compareTo(sumLocalTimes.addLocalTimes(t4,  t4,  t4  ,t4 ,t7 )) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[5]  .compareTo(sumLocalTimes.addLocalTimes(t5,  t5,  t5  ,t5 ,t8 )) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[6]  .compareTo(sumLocalTimes.addLocalTimes(t6,  t6,  t6  ,t6 ,t9 )) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[7]  .compareTo(sumLocalTimes.addLocalTimes(t7,  t7,  t7  ,t7 ,t10 )) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[8]  .compareTo(sumLocalTimes.addLocalTimes(t8,  t8,  t8  ,t8 ,t11)) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[9]  .compareTo(sumLocalTimes.addLocalTimes(t9, t9, t9 ,t9,t12)) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[10] .compareTo(sumLocalTimes.addLocalTimes(t10, t10, t10 ,t10,t13)) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[11] .compareTo(sumLocalTimes.addLocalTimes(t11, t11, t11 ,t11,t14)) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[12] .compareTo(sumLocalTimes.addLocalTimes(t12, t12, t12 ,t12,t15)) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[13] .compareTo(sumLocalTimes.addLocalTimes(t13, t13, t13 ,t13,t17)) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[14] .compareTo(sumLocalTimes.addLocalTimes(t14, t14, t14 ,t14,t18)) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[15] .compareTo(sumLocalTimes.addLocalTimes(t15, t15, t15 ,t15,t20)) == 0;
-    assert cycPort.getGeneralClassificationTimesInRace(2)[16] .compareTo(sumLocalTimes.addLocalTimes(t17, t17, t17 ,t17,t21)) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[0]  .compareTo(SumLocalTimes.addLocalTimes(tnoughtpointfive,  tnoughtpointfive, tnoughtpointfive,  tnoughtpointfive,  t3)) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[1]  .compareTo(SumLocalTimes.addLocalTimes(t1,  t1,  t1  ,t1 ,t4 )) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[2]  .compareTo(SumLocalTimes.addLocalTimes(t2,  t2,  t2  ,t2 ,t5 )) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[3]  .compareTo(SumLocalTimes.addLocalTimes(t3,  t3,  t3  ,t3 ,t6 )) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[4]  .compareTo(SumLocalTimes.addLocalTimes(t4,  t4,  t4  ,t4 ,t7 )) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[5]  .compareTo(SumLocalTimes.addLocalTimes(t5,  t5,  t5  ,t5 ,t8 )) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[6]  .compareTo(SumLocalTimes.addLocalTimes(t6,  t6,  t6  ,t6 ,t9 )) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[7]  .compareTo(SumLocalTimes.addLocalTimes(t7,  t7,  t7  ,t7 ,t10 )) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[8]  .compareTo(SumLocalTimes.addLocalTimes(t8,  t8,  t8  ,t8 ,t11)) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[9]  .compareTo(SumLocalTimes.addLocalTimes(t9, t9, t9 ,t9,t12)) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[10] .compareTo(SumLocalTimes.addLocalTimes(t10, t10, t10 ,t10,t13)) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[11] .compareTo(SumLocalTimes.addLocalTimes(t11, t11, t11 ,t11,t14)) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[12] .compareTo(SumLocalTimes.addLocalTimes(t12, t12, t12 ,t12,t15)) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[13] .compareTo(SumLocalTimes.addLocalTimes(t13, t13, t13 ,t13,t17)) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[14] .compareTo(SumLocalTimes.addLocalTimes(t14, t14, t14 ,t14,t18)) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[15] .compareTo(SumLocalTimes.addLocalTimes(t15, t15, t15 ,t15,t20)) == 0;
+    assert cycPort.getGeneralClassificationTimesInRace(2)[16] .compareTo(SumLocalTimes.addLocalTimes(t17, t17, t17 ,t17,t21)) == 0;
   }
 
   public static void testSaveCyclingPortal() throws IOException {

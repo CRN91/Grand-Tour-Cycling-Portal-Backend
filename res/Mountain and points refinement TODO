@@ -1,0 +1,14 @@
+IN STAGE
+[X] Pass in the points conversion map
+[X] Pass in a bool for whether it's points or mountains
+[X] If statement for the stage result (for points - final finish time)
+[X] If segment is a sprint AND we're in "points", set the segment type
+    for points conversion to HighMountain,
+    if mountain AND not sprint, use the right segment type for map.
+[X] Rank limit variable (length of point conversion lists)
+Other things all the same
+
+[X] isMountain bool pass
+[X] if in first for loop getRiders(Mountain)PointsInStage
+[X] copy from mountain
+[X] raceIdsToRidersTo(Mountain)Points.put...
