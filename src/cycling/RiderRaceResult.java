@@ -6,6 +6,8 @@ import java.time.LocalTime;
 /**
  * Represents the result of one rider in one race, including points, mountain points, finish time,
  * and rank by finish time.
+ * @author Adam Kaizra, Sam Barker
+ * @version 1.0
  */
 public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializable {
 

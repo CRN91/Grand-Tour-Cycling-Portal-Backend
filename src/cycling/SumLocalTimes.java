@@ -5,6 +5,8 @@ import java.time.LocalTime;
 /**
  * A helper object whose static methods deal with the addition of LocalTimes
  * and conversion between seconds (doubles) and LocalTime objects, of times.
+ * @author Sam Barker, Adam Kaizra
+ * @version 1.0
  */
 public class SumLocalTimes {
 

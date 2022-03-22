@@ -6,6 +6,8 @@ import java.time.LocalTime;
  * Represents the result of one rider in one segment of a stage, including finish time,
  * and rank. Points are not included for individual segments, but created for stages and races,
  * and stored in RiderStageResult and RiderRaceResult respectively.
+ * @author Sam Barker, Adam Kaizra
+ * @version 1.0
  */
 public class RiderSegmentResult implements Comparable<RiderSegmentResult> {
 
