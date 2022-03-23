@@ -504,9 +504,6 @@ public class CyclingPortal implements CyclingPortalInterface {
         }
       }
     }
-    if (!foundRiderInRace) {
-      throw new IDNotRecognisedException("Rider ID " + riderId + " is not recognised!");
-    }
   }
 
   @Override

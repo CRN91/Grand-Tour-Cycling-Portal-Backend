@@ -3130,14 +3130,14 @@ public class CyclingPortalInterfaceTestApp {
 
   public static void main(String[] args) throws InvalidNameException, IllegalNameException, NameNotRecognisedException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, DuplicatedResultException, InvalidCheckpointsException, IOException, ClassNotFoundException {
     //testCreateRace();
-    testRemoveRaceByName();
+    //testRemoveRaceByName();
     //testCreateTeam();
     //testCreateRider();
     //testAddStageToRace();
     //testConcludeStagePreparations();
     //testRemoveTeam();
     //testRemoveRaceById();
-    //testRemoveRider();
+    testRemoveRider();
     //testGetTeamRiders();
     //testGetTeams();
     //testGetRaceIds();
