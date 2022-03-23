@@ -272,7 +272,7 @@ public class Stage implements Serializable {
       // Stores these results in segment for more intuitive access.
       segment.setResults(riderSegmentResults);
 
-      // Sets rank of each rider in segment
+      // Sets rank of each rider in segment.
       int rank = 0;
       for (RiderSegmentResult result : riderSegmentResults) {
         result.setRank(rank);
@@ -296,11 +296,11 @@ public class Stage implements Serializable {
 
     if (isMountain) {
       // Table of rank to points for each segment type in mountain classification.
-      int[] pointsHC = {20, 15, 12, 10, 8, 6, 4, 2}; // TOP 8 ONLY
-      int[] pointsC1 = {10, 8, 6, 4, 2, 1, 0, 0}; // TOP 6 ONLY
-      int[] pointsC2 = {5, 3, 2, 1, 0, 0, 0, 0}; // TOP 4 ONLY
-      int[] pointsC3 = {2, 1, 0, 0, 0, 0, 0, 0}; // TOP 2 ONLY
-      int[] pointsC4 = {1, 0, 0, 0, 0, 0, 0, 0}; // TOP 1 ONLY
+      int[] pointsHC = {20, 15, 12, 10, 8, 6, 4, 2}; // TOP 8 ONLY.
+      int[] pointsC1 = {10, 8, 6, 4, 2, 1, 0, 0}; // TOP 6 ONLY.
+      int[] pointsC2 = {5, 3, 2, 1, 0, 0, 0, 0}; // TOP 4 ONLY.
+      int[] pointsC3 = {2, 1, 0, 0, 0, 0, 0, 0}; // TOP 2 ONLY.
+      int[] pointsC4 = {1, 0, 0, 0, 0, 0, 0, 0}; // TOP 1 ONLY.
       pointsConversion = Map.of(
           SegmentType.HC, pointsHC,
           SegmentType.C1, pointsC1,

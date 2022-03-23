@@ -46,7 +46,7 @@ public class SumLocalTimes {
    * @return The sum of the given LocalTimes.
    */
   public static LocalTime addLocalTimes(LocalTime... times) {
-    // Convert the LocalTimes to seconds, sum them all up, then convert back to LocalTime
+    // Convert the LocalTimes to seconds, sum them all up, then convert back to LocalTime.
     double finalTimeSeconds = 0;
     for (LocalTime time : times) {
       double timeSeconds = localTimeToSeconds(time);
