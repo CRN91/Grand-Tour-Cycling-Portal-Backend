@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 /**
  * Represents a grand tour staged race.
@@ -109,7 +108,10 @@ public class StagedRace implements Serializable {
           RiderRaceResult raceResult = new RiderRaceResult(riderStageResult.getRiderId(),
               this.raceId);
           arrayOfTotalTimes[i] = riderStageResult.getFinishTime();
+          int raceResultsSize = this.raceResults.size();
           this.raceResults.add(raceResult);
+          assert this.raceResults.size() == raceResultsSize + 1 : "Race result not added to array"
+              + "list!";
         }
         i++;
       }
@@ -148,9 +150,10 @@ public class StagedRace implements Serializable {
               if (points[i] == 0) {
                 points[i] = stageResult.getMountainPoints();
               } else {
-                points[i] += stageResult.getMountainPoints();
+                int stagePoints = stageResult.getMountainPoints();
+                assert stagePoints >= 0 : "Stage mountain points can not be negative!";
+                points[i] += stagePoints;
               }
-
             }
             i++;
           }
@@ -161,7 +164,9 @@ public class StagedRace implements Serializable {
               if (points[i] == 0) {
                 points[i] = stageResult.getPoints();
               } else {
-                points[i] += stageResult.getPoints();
+                int stagePoints = stageResult.getPoints();
+                assert stagePoints >= 0 : "Stage points can not be negative!";
+                points[i] += stagePoints;
               }
             }
             i++;
@@ -223,6 +228,7 @@ public class StagedRace implements Serializable {
       i++;
     }
     Collections.sort(raceResults); // Sorts race results back to its order by finishing times.
+    assert riderRaceResults.size() == riderIdsByPoints.length : "Gathered rider IDs incorrectly!";
     return riderIdsByPoints;
   }
 }

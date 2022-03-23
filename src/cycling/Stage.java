@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class Stage implements Serializable {
 
-  private static int latestId = 0; // enumerates to get unique id, with 2^32 possible ids.
+  private static int latestId = 0; // Enumerates to get unique id, with 2^32 possible ids.
   private final Integer raceId;
   private String name;
   private String description;
@@ -203,6 +203,7 @@ public class Stage implements Serializable {
       throw new IDNotRecognisedException("Rider ID " + riderId + " not found in stage!");
     }
     results.remove(finalResult); // Removes the result from the stage results array list.
+    assert !results.contains(finalResult) : "Rider's result not removed!";
   }
 
   /**
@@ -264,8 +265,10 @@ public class Stage implements Serializable {
       ArrayList<RiderSegmentResult> riderSegmentResults = new ArrayList<>();
       // Stores segment results then sorts.
       for (RiderStageResult result : results) {
-        riderSegmentResults.add(
-            new RiderSegmentResult(result.getTimes()[segmentCounter], result.getRiderId()));
+        RiderSegmentResult newRiderSegmentResult = new
+            RiderSegmentResult(result.getTimes()[segmentCounter], result.getRiderId());
+        riderSegmentResults.add(newRiderSegmentResult);
+        assert riderSegmentResults.contains(newRiderSegmentResult);
       }
       // Sorts riders segment results in order of their time in ascending order.
       Collections.sort(riderSegmentResults);
@@ -348,13 +351,14 @@ public class Stage implements Serializable {
     // include.
     if (!isMountain) {
       int pointsIndex = 0;
-      this.generateAdjustedResults(); // Sort times in ascending order.
+      this.generateAdjustedResults(); // Sorts times in ascending order.
 
       for (RiderStageResult result : this.getResults()) { // Iterate through rider.
         int riderId = result.getRiderId();
         int points;
         if (pointsIndex < 15) { // Only first 15 riders are awarded points.
           points = pointsConversion.get(this.getStageType())[pointsIndex]; // Points for stage type.
+          assert points > 0 : "Incorrect points assigned!";
         } else {
           points = 0;
         }
@@ -395,12 +399,13 @@ public class Stage implements Serializable {
           if (riderRank < pointsLimit) {
             points = rowOfPointsConversion[riderRank]; // Points limit prevent index out of bounds
             // error.
+            assert points >= 0 : "Negative point value assigned!";
           } else {
             points = 0;
           }
 
-          if (riderIdsToPoints.get(riderId)
-              == null) { // If the rider is not registered with points add them.
+          if (riderIdsToPoints.get(riderId) == null) { // If the rider is not registered with points
+            // add them.
             riderIdsToPoints.put(riderId, points);
             if (!isMountain) {
               this.getResults().get(i).setPoints(points);

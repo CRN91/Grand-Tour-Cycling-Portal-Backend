@@ -3137,7 +3137,7 @@ public class CyclingPortalInterfaceTestApp {
     //testConcludeStagePreparations();
     //testRemoveTeam();
     //testRemoveRaceById();
-    testRemoveRider();
+    //testRemoveRider();
     //testGetTeamRiders();
     //testGetTeams();
     //testGetRaceIds();

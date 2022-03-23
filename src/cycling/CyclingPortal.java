@@ -92,9 +92,14 @@ public class CyclingPortal implements CyclingPortalInterface {
       }
     }
 
+    // For assertion.
+    int noOfRaces = raceIdsToRaces.size();
+
     // Race doesn't already exist.
     StagedRace raceToAdd = new StagedRace(name, description);
-    raceIdsToRaces.put(raceToAdd.getId(), raceToAdd);
+    int raceToAddId = raceToAdd.getId();
+    raceIdsToRaces.put(raceToAddId, raceToAdd);
+    assert raceIdsToRaces.size() == noOfRaces + 1 : "Race not added to hashmap!";
 
     return raceToAdd.getId();
   }
@@ -112,8 +117,8 @@ public class CyclingPortal implements CyclingPortalInterface {
     for (Stage stage : stages) {
       sumOfStagesLengths += stage.getLength();
     }
-    // Add details to status output string
 
+    // Add details to status output string
     return "Race ID: " + race.getId() + "\n"
         + "Race name: " + race.getName() + "\n"
         + "Description: " + race.getDescription() + "\n"
@@ -128,23 +133,18 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new IDNotRecognisedException("Race ID " + raceId + " is not recognised!");
     }
     raceIdsToRaces.remove(raceId);
+    assert raceIdsToRaces.get(raceId) == null : "Race not successfully removed!";
   }
 
   @Override
   public int getNumberOfStages(int raceId) throws IDNotRecognisedException {
-    int numberOfStages = 0;
+    StagedRace race = raceIdsToRaces.get(raceId);
     // Does the race exist?
-    if (raceIdsToRaces.get(raceId) == null) {
+    if (race == null) {
       throw new IDNotRecognisedException("Race ID " + raceId + " is not recognised!");
     }
-    // Yes so count its stages.
-    for (Map.Entry<Integer, Stage> idToStage : stageIdsToStages.entrySet()) {
-      Stage stage = idToStage.getValue();
-      if (stage.getRaceId() == raceId) {
-        numberOfStages++;
-      }
-    }
-    return numberOfStages;
+
+    return race.getStages().size();
   }
 
   @Override
@@ -193,6 +193,8 @@ public class CyclingPortal implements CyclingPortalInterface {
       i++;
     }
 
+    assert race.getStages().size() == stageIds.length : "Incorrect amount of stage IDs!";
+
     return stageIds;
   }
 
@@ -215,11 +217,13 @@ public class CyclingPortal implements CyclingPortalInterface {
     // Get the race object that contains it.
     StagedRace race = raceIdsToRaces.get(stage.getRaceId());
     race.getStages().remove(stage);
+    assert !race.getStages().contains(stage) : "Stage not removed from race!";
 
     Boolean foundId = false;
     for (Integer stgId : stageIdsToStages.keySet()) {
       if (stgId == stageId) {
         stageIdsToStages.remove(stgId);
+        assert stageIdsToStages.get(stgId) == null : "Stage not removed!";
         foundId = true;
         break;
       }
@@ -266,7 +270,9 @@ public class CyclingPortal implements CyclingPortalInterface {
     // Creates new categorised climb and adds it to the stage.
     Segment categorisedClimb = new CategorisedClimb(stageId, type, averageGradient,
         length, location);
-    segmentIdsToSegments.put(categorisedClimb.getId(), categorisedClimb);
+    int ccId = categorisedClimb.getId();
+    segmentIdsToSegments.put(ccId, categorisedClimb);
+    assert segmentIdsToSegments.get(ccId) != null : "Categorised climb not added to hashmap!";
     stage.addSegment(categorisedClimb);
 
     return categorisedClimb.getId();
@@ -296,7 +302,10 @@ public class CyclingPortal implements CyclingPortalInterface {
 
     // Creates a nwe intermediate sprint and adds it to the stage.
     Segment intermediateSprint = new Segment(stageId, SegmentType.SPRINT, location);
-    segmentIdsToSegments.put(intermediateSprint.getId(), intermediateSprint);
+    int intSprintId = intermediateSprint.getId();
+    segmentIdsToSegments.put(intSprintId, intermediateSprint);
+    assert segmentIdsToSegments.get(intSprintId) != null : "Intermediate sprint not added to"
+        + "hashmap!";
     stage.addSegment(intermediateSprint);
 
     return intermediateSprint.getId();
@@ -319,6 +328,7 @@ public class CyclingPortal implements CyclingPortalInterface {
         // This is the right stage, now check we can delete segments from it.
         if (stage.getUnderDevelopment()) {
           segmentIdsToSegments.remove(segmentId);
+          assert segmentIdsToSegments.get(segmentId) == null : "Segment not removed from hashmap!";
         } else {
           throw new InvalidStageStateException("Stage " + stage.getId()
               + " is not under development!");
@@ -342,6 +352,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     } else {
       stage.setUnderDevelopment(false);
     }
+    assert stage.getUnderDevelopment() == false : "Stage preparations not concluded!";
   }
 
   @Override
@@ -360,6 +371,8 @@ public class CyclingPortal implements CyclingPortalInterface {
       segmentIdsInStage[i] = segment.getId();
       i++;
     }
+    assert segmentsInStage.size() == segmentIdsInStage.length : "Segment IDs not gathered"
+        + "correctly!";
     return segmentIdsInStage;
   }
 
@@ -379,7 +392,9 @@ public class CyclingPortal implements CyclingPortalInterface {
     }
     // Creates a new team and then stores it in a hashmap for easier access.
     Team newTeam = new Team(name, description);
-    teamIdsToTeams.put(newTeam.getId(), newTeam);
+    int newTeamId = newTeam.getId();
+    teamIdsToTeams.put(newTeamId, newTeam);
+    assert teamIdsToTeams.get(newTeamId) != null : "Team not added to hashmap!";
     return newTeam.getId();
   }
 
@@ -390,6 +405,7 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new IDNotRecognisedException("Team ID " + teamId + " is not recognised!");
     }
     teamIdsToTeams.remove(teamId);
+    assert teamIdsToTeams.get(teamId) == null : "Team not removed from hashmap!";
   }
 
   @Override
@@ -401,6 +417,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     for (Integer i : teamIdsSet) {
       teamIds[index++] = i;
     }
+    assert teamIdsToTeams.size() == teamIds.length : "Team IDs not gathered correctly!";
 
     return teamIds;
   }
@@ -445,7 +462,9 @@ public class CyclingPortal implements CyclingPortalInterface {
 
     // Creates a new rider and adds it to the hashmap for easier access.
     Rider newRider = new Rider(name, teamID, yearOfBirth);
-    riderIdsToRiders.put(newRider.getId(), newRider);
+    int newRiderId = newRider.getId();
+    riderIdsToRiders.put(newRiderId, newRider);
+    assert riderIdsToRiders.get(newRiderId) != null : "Rider not added to hashmap!";
     team.addRider(newRider);
 
     return newRider.getId();
@@ -461,6 +480,7 @@ public class CyclingPortal implements CyclingPortalInterface {
           hasBeenFound = true;
         }
         riders.remove(riderId);
+        assert riders.get(riderId) == null : "Rider not successfully removed from their team!";
         break;
       } catch (NullPointerException ex) { } // Errors thrown for each team until ID is found.
     }
@@ -469,6 +489,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     }
 
     riderIdsToRiders.remove(riderId);
+    assert riderIdsToRiders.get(riderId) == null : "Rider not removed from hashmap!";
 
     // Results.
     boolean foundRiderInRace = false;
@@ -479,6 +500,7 @@ public class CyclingPortal implements CyclingPortalInterface {
         if (raceResult.getRiderId() == riderId) {
           foundRiderInRace = true;
           raceResults.remove(raceResult);
+          assert !raceResults.contains(raceResult) : "Rider's race result not removed!";
 
           // Destroy references to this rider in stages.
           for (Stage stage : race.getStages()) {
@@ -486,7 +508,10 @@ public class CyclingPortal implements CyclingPortalInterface {
 
             for (RiderStageResult stageResult : stageResults) {
               if (stageResult.getRiderId() == riderId) {
+                int stageResultsLength = stageResults.size();
                 stageResults.remove(stageResult);
+                assert stageResults.size() == stageResultsLength - 1 : "Rider's stage result not"
+                    + "successfully removed!";
 
                 // Destroy references to this rider in segments
                 for (Segment segment : stage.getSegmentsInStage()) {
@@ -494,7 +519,10 @@ public class CyclingPortal implements CyclingPortalInterface {
 
                   for (RiderSegmentResult segmentResult : segmentResults) {
                     if (segmentResult.getRiderId() == riderId) {
+                      int segmentResultsLength = segmentResults.size();
                       segmentResults.remove(segmentResult);
+                      assert segmentResults.size() == segmentResultsLength - 1 : "Rider's segment"
+                          + "result not successfully removed!";
                     }
                   }
                 }
@@ -556,7 +584,9 @@ public class CyclingPortal implements CyclingPortalInterface {
       previousTime = time;
     }
 
+    int stageResultsLength = stage.getResults().size();
     stage.addRiderResults(riderId, checkpoints);
+    assert stage.getResults().size() == stageResultsLength + 1 : "Rider not added to stage!";
   }
 
   @Override
@@ -618,7 +648,9 @@ public class CyclingPortal implements CyclingPortalInterface {
       throw new IDNotRecognisedException("Rider ID " + riderId + " is not recognised!");
     }
 
+    int stageResultsLength = stage.getResults().size();
     stage.removeResultByRiderId(riderId);
+    assert stage.getResults().size() == stageResultsLength - 1 : "Rider not removed from stage!";
   }
 
   @Override
@@ -751,6 +783,7 @@ public class CyclingPortal implements CyclingPortalInterface {
         // Found it.
         foundRace = true;
         raceIdsToRaces.remove(raceId);
+        assert raceIdsToRaces.get(raceId) == null : "Race not removed from hashmap!";
       }
     }
     // Gone through the whole hashmap and still haven't found it.
@@ -777,6 +810,7 @@ public class CyclingPortal implements CyclingPortalInterface {
       finishTimes[i] = result.getFinishTime();
       i++;
     }
+    assert raceResults.size() == finishTimes.length : "Finish times gathered incorrectly!";
     return finishTimes;
   }
 
@@ -812,6 +846,7 @@ public class CyclingPortal implements CyclingPortalInterface {
     // Iterates through race results to fill an array with rider IDs sorted by their rank.
     int raceResultsSize = raceResults.size();
     int[] riderIdsOrderedByRank = new int[raceResultsSize];
+    assert raceResultsSize == riderIdsOrderedByRank.length : "Integer array created incorrectly!";
     for (int i = 0; i < raceResultsSize; i++) {
       riderIdsOrderedByRank[i] = raceResults.get(i).getRiderId();
     }
