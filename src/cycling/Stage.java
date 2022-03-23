@@ -287,7 +287,6 @@ public class Stage implements Serializable {
    *
    * @param isMountain True if mountain classification, false if point classification.
    * @return An array of rider ID's ordered by their points in the given classification.
-   * @throws IDNotRecognisedException
    */
   public int[] generatePointsInStage(boolean isMountain) {
 
