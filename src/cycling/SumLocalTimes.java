@@ -5,6 +5,7 @@ import java.time.LocalTime;
 /**
  * A helper object whose static methods deal with the addition of LocalTimes
  * and conversion between seconds (doubles) and LocalTime objects, of times.
+ *
  * @author Sam Barker, Adam Kaizra
  * @version 1.0
  */
@@ -12,6 +13,7 @@ public class SumLocalTimes {
 
   /**
    * Convert a LocalTime object to the number of seconds after midnight.
+   *
    * @param time
    * @return The time after midnight in seconds that a LocalTime object represents.
    */
@@ -26,6 +28,7 @@ public class SumLocalTimes {
 
   /**
    * Create a LocalTime object from the number of seconds after midnight.
+   *
    * @param timeSeconds
    * @return The LocalTime object representing the time given.
    */
@@ -38,6 +41,7 @@ public class SumLocalTimes {
 
   /**
    * Add an arbitrary number of LocalTimes together.
+   *
    * @param times
    * @return The sum of the given LocalTimes.
    */

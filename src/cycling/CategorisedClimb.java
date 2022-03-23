@@ -3,6 +3,7 @@ package src.cycling;
 /**
  * Represents a categorised climb segment in a race. This is a subclass of Segment (which
  * represents an intermediate sprint) as they share common features.
+ *
  * @author Sam Barker, Adam Kaizra
  * @version 1.0
  */
@@ -16,6 +17,8 @@ public class CategorisedClimb extends Segment {
   private SegmentType segmentType;
 
   /**
+   * Constructor.
+   *
    * @param stageId The ID of the stage that this segment is part of.
    * @param segmentType The SegmentType of this climb (i.e. HC, C1...3)
    * @param averageGradient The average gradient of the climb segment

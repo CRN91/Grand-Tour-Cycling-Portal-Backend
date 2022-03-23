@@ -284,6 +284,8 @@ public class Stage implements Serializable {
   }
 
   /**
+   * Calculates either mountain or point classification points for a stage and stores them in each
+   * rider's stage result object.
    *
    * @param isMountain True if mountain classification, false if point classification.
    * @return An array of rider ID's ordered by their points in the given classification.

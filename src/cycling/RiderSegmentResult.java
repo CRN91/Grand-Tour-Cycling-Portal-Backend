@@ -6,6 +6,7 @@ import java.time.LocalTime;
  * Represents the result of one rider in one segment of a stage, including finish time,
  * and rank. Points are not included for individual segments, but created for stages and races,
  * and stored in RiderStageResult and RiderRaceResult respectively.
+ *
  * @author Sam Barker, Adam Kaizra
  * @version 1.0
  */
@@ -26,6 +27,7 @@ public class RiderSegmentResult implements Comparable<RiderSegmentResult> {
 
   /**
    * Compare two RiderSegmentResults by their finish time (for the purpose of sorting).
+   *
    * @param result
    * @return 1 if calling object's finish time is greater than the parameter object's.
    * 0 if equal. -1 if less than.
@@ -44,6 +46,7 @@ public class RiderSegmentResult implements Comparable<RiderSegmentResult> {
 
   /**
    * Set the rank of the rider in the segment (by finish time).
+   *
    * @param rank
    */
   public void setRank(int rank) {
@@ -59,6 +62,7 @@ public class RiderSegmentResult implements Comparable<RiderSegmentResult> {
 
   /**
    * Set the finish time of the rider in the segment.
+   *
    * @param time
    */
   public void setTime(LocalTime time) {
@@ -74,6 +78,7 @@ public class RiderSegmentResult implements Comparable<RiderSegmentResult> {
 
   /**
    * Set the ID of the rider who achieved this result.
+   *
    * @param riderId
    */
   public void setRiderId(int riderId) {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /**
  * Represents an intermediate sprint. CategorisedClimb is a subclass of this for categorised
  * climbs.
+ *
  * @author Sam Barker, Adam Kaizrea
  * @version 1.0
  */
@@ -18,6 +19,8 @@ public class Segment implements Comparable<Segment> {
   private ArrayList<RiderSegmentResult> results = new ArrayList<>();
 
   /**
+   * Constructor.
+   *
    * @param stageId The ID of the stage this sprint is part of.
    * @param segmentType The type of segment (SPRINT)
    * @param location The location of the segment in the stage.
@@ -30,7 +33,7 @@ public class Segment implements Comparable<Segment> {
   }
 
   /**
-   * Reset the internal ID counter
+   * Reset the internal ID counter.
    */
   public static void resetIdCounter() {
     latestId = 0;
@@ -54,6 +57,7 @@ public class Segment implements Comparable<Segment> {
 
   /**
    * Set the segment type.
+   *
    * @param segmentType The segment type to set this object's segmentType to.
    */
   public void setSegmentType(SegmentType segmentType) {
@@ -78,6 +82,7 @@ public class Segment implements Comparable<Segment> {
   /**
    * Set the ArrayList of RiderSegmentResults objects representing the per-segment, per-rider
    * results in this segment.
+   *
    * @param results
    */
   public void setResults(ArrayList<RiderSegmentResult> results) {
@@ -100,6 +105,7 @@ public class Segment implements Comparable<Segment> {
 
   /**
    * Set the location of the segment in the stage.
+   *
    * @param location
    */
   public void setLocation(Double location) {

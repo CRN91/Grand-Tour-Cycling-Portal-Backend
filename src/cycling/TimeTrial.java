@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 /**
  * Represents a time trial stage.
+ *
  * @author Sam Barker, Adam Kaizra
  * @version 1.0
  */
@@ -12,6 +13,8 @@ public class TimeTrial extends Stage {
   StageType stageType = StageType.TT;
 
   /**
+   * Constructor.
+   *
    * @param raceId The ID of the race in which this time trial happens.
    * @param name The name of the time trial.
    * @param description The description of the time trial.
