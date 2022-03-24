@@ -13,13 +13,15 @@ import java.util.Arrays;
  * will want to increase these checks, and run it on your CyclingPortal class
  * (not the BadCyclingPortal class).
  *
- * 
+ *
  * @author Diogo Pacheco
  * @version 1.0
  */
 public class CyclingPortalInterfaceTestApp {
 
   public static void testCreateRace() throws InvalidNameException, IllegalNameException {
+    final int intendedCatches = 3;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
     // Name not blank
     cycPort.createRace("Race 1", "aaaa");
@@ -30,6 +32,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.createRace("", null);
     } catch (InvalidNameException ex) {
       System.out.println("Blank name successfully failed");
+      catches++;
     }
 
     // Valid name with whitespace
@@ -42,6 +45,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.createRace("      ", null);
     } catch (InvalidNameException ex) {
       System.out.println("Whitespace name successfully failed");
+      catches++;
     }
 
     // Name taken
@@ -49,11 +53,15 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.createRace("Race 1", null);
     } catch (IllegalNameException ex) {
       System.out.println("Taken name successfully failed");
+      catches++;
     }
+    assert catches == intendedCatches;
   }
 
   public static void testRemoveRaceByName() throws InvalidNameException, IllegalNameException, NameNotRecognisedException {
     // Setup
+    final int intendedCatches = 3;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // No races exist
@@ -61,6 +69,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.removeRaceByName("asdsa");
     } catch (NameNotRecognisedException ex) {
       System.out.println("No races successfully failed");
+      catches++;
     }
 
     // Remove a race that exists
@@ -73,6 +82,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.removeRaceByName("ASDASDASDASD");
     } catch (NameNotRecognisedException ex) {
       System.out.println("Name not found successfully failed");
+      catches++;
     }
 
     // Blank input
@@ -81,15 +91,20 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.removeRaceByName("");
     } catch (NameNotRecognisedException ex) {
       System.out.println("Blank name successfully failed");
+      catches++;
     }
 
     // Unicode test
     cycPort.createRace("女", null);
     cycPort.removeRaceByName("女");
     assert cycPort.getRaceIds().length == 0 : "Unicode race not removed!";
+
+    assert catches == intendedCatches;
   }
 
   public static void testCreateTeam() throws InvalidNameException, IllegalNameException {
+    final int intendedCatches = 3;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
     // Team name not taken
     cycPort.createTeam("Team 1", "asedasda");
@@ -100,6 +115,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.createTeam("Team 1", null);
     } catch (IllegalNameException ex) {
       System.out.println("Taken name fail");
+      catches++;
     }
 
     // Name blank
@@ -107,6 +123,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.createTeam("", null);
     } catch (InvalidNameException ex) {
       System.out.println("Blank name fail");
+      catches++;
     }
 
     // Valid name with whitespace
@@ -118,11 +135,15 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.createTeam("    ", null);
     } catch (InvalidNameException ex) {
       System.out.println("Whitespace name fail");
+      catches++;
     }
+    assert catches == intendedCatches;
   }
 
   public static void testCreateRider() throws IDNotRecognisedException, InvalidNameException, IllegalNameException {
     // Setup
+    final int intendedCatches = 4;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Team doesn't exist
@@ -130,6 +151,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.createRider(0, "Alan", 1995);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Team doesnt exists failed successfully");
+      catches++;
     }
 
     //Team Exists
@@ -142,6 +164,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.createRider(0, "", 1995);
     } catch (IllegalArgumentException ex) {
       System.out.println("Blank name failed successfully");
+      catches++;
     }
 
     //name valid whitespace
@@ -153,6 +176,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.createRider(0, "        ", 1995);
     } catch (IllegalArgumentException ex) {
       System.out.println("Invalid whitespace dfailed successfully");
+      catches++;
     }
 
     // yOB = 1900
@@ -164,11 +188,16 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.createRider(0, "ZombieAlan", 1600);
     } catch (IllegalArgumentException ex) {
       System.out.println("YOB < 1900 failed successfully");
+      catches++;
     }
+
+    assert catches == intendedCatches;
   }
 
   public static void testAddStageToRace() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException {
     // Setup
+    final int intendedCatches = 2;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
 
@@ -177,6 +206,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addStageToRace(0,"name","jeff",10.0, LocalDateTime.now(), StageType.TT);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Invalid race Id FAILED SUCCESSFULLY");
+      catches++;
     }
 
     // Valid race ID
@@ -198,12 +228,15 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addStageToRace(0,"2","jeff",1.0, LocalDateTime.now(), StageType.FLAT);
     } catch (InvalidLengthException ex) {
       System.out.println("Lenght invalid failed good");
+      catches++;
     }
-
+    assert catches == intendedCatches;
   }
 
   public static void testConcludeStagePreparations() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException {
     // Setup
+    final int intendedCatches = 2;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
     cycPort.createRace("Race 1", null);
     cycPort.addStageToRace(0, "Stage 1", "Desc", 10.0, LocalDateTime.now(), StageType.FLAT);
@@ -217,6 +250,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.concludeStagePreparation(69420);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Stage does not exist fail");
+      catches++;
     }
 
     // Already waiting for results
@@ -224,11 +258,16 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.concludeStagePreparation(0);
     } catch (InvalidStageStateException ex) {
       System.out.println("Already waiting for results fail");
+      catches++;
     }
+
+    assert catches == intendedCatches;
   }
 
   public static void testRemoveTeam() throws InvalidNameException, IllegalNameException, IDNotRecognisedException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Team does not exist
@@ -236,16 +275,21 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.removeTeam(69420);
     } catch (IDNotRecognisedException ex) {
       System.out.println("remove team good");
+      catches++;
     }
 
     // Team exists
     cycPort.createTeam("Team", null);
     cycPort.removeTeam(0);
     assert cycPort.getTeams().length == 0;
+
+    assert catches == intendedCatches;
   }
 
   public static void testRemoveRaceById() throws InvalidNameException, IllegalNameException, NameNotRecognisedException, IDNotRecognisedException {
     // Setup
+    final int intendedCatches = 2;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // No races exist
@@ -253,6 +297,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.removeRaceById(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("No races successfully failed");
+      catches++;
     }
 
     // Remove a race that exists
@@ -265,11 +310,16 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.removeRaceById(8);
     } catch (IDNotRecognisedException ex) {
       System.out.println("RACE NO EXIST successfully failed");
+      catches++;
     }
+
+    assert catches == intendedCatches;
   }
 
   public static void testRemoveRider() throws IDNotRecognisedException, InvalidNameException, IllegalNameException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Rider no exist
@@ -277,6 +327,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.removeRider(69420);
     }catch (IDNotRecognisedException ex) {
       System.out.println("BAD ID failed successfully");
+      catches++;
     }
 
     //Rider exist
@@ -284,10 +335,14 @@ public class CyclingPortalInterfaceTestApp {
     cycPort.createRider(0,"alan",1901);
     cycPort.removeRider(0);
     assert cycPort.getRiderIdsToRiders().get(0) == null;
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetTeamRiders() throws InvalidNameException, IllegalNameException, IDNotRecognisedException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // team doesn't exist
@@ -295,6 +350,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getTeamRiders(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Team no exist fail");
+      catches++;
     }
 
     // Team has no riders
@@ -304,6 +360,8 @@ public class CyclingPortalInterfaceTestApp {
     // Team has riders
     cycPort.createRider(0, "alan", 1901);
     assert cycPort.getTeamRiders(0).length == 1;
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetTeams() throws InvalidNameException, IllegalNameException {
@@ -332,6 +390,8 @@ public class CyclingPortalInterfaceTestApp {
 
   public static void testGetNumberOfStages() throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException {
     //Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     //race no exist
@@ -339,6 +399,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getNumberOfStages(69420);
     }catch (IDNotRecognisedException ex) {
       System.out.println("Race not exist failed successfully");
+      catches++;
     }
 
     //race exist
@@ -348,10 +409,14 @@ public class CyclingPortalInterfaceTestApp {
     //race stage
     cycPort.addStageToRace(0,"name",null,10.0,LocalDateTime.now(),StageType.FLAT);
     assert cycPort.getNumberOfStages(0) == 1;
+
+    assert catches == intendedCatches;
   }
 
   public static void testViewRaceDetails() throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Race no exist
@@ -359,6 +424,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.viewRaceDetails(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Raace not exist fail successfully");
+      catches++;
     }
 
     // There are no stages
@@ -372,6 +438,8 @@ public class CyclingPortalInterfaceTestApp {
 
   public static void testRemoveStageById() throws InvalidNameException, IllegalNameException, NameNotRecognisedException, IDNotRecognisedException, InvalidLengthException {
     // Setup
+    final int intendedCatches = 2;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // No race exist
@@ -379,6 +447,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.removeStageById(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("No races successfully failed");
+      catches++;
     }
 
     // No stage exists
@@ -387,16 +456,21 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.removeStageById(69420);
     } catch (IDNotRecognisedException ex) {
       System.out.println("No stage failed successfully");
+      catches++;
     }
 
     // Remove a race that exists
     cycPort.addStageToRace(0,"alanstage",null,5.0,LocalDateTime.now(),StageType.FLAT);
     cycPort.removeStageById(0);
     assert cycPort.getRaceStages(0).length == 0 : "Stage not removed!";
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetStageLength() throws InvalidNameException, IDNotRecognisedException, InvalidLengthException, IllegalNameException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // stage doesn't exist
@@ -404,6 +478,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getStageLength(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Stage doesnt exist failed good");
+      catches++;
     }
 
     // stage exists
@@ -414,6 +489,8 @@ public class CyclingPortalInterfaceTestApp {
 
   public static void testGetRaceStages() throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Race does not exist
@@ -421,6 +498,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRaceStages(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("No race exists success");
+      catches++;
     }
 
     // Race has no stages
@@ -430,10 +508,13 @@ public class CyclingPortalInterfaceTestApp {
     // Race has stages
     cycPort.addStageToRace(0, "a2", null, 10.0, LocalDateTime.now(), StageType.FLAT);
     assert cycPort.getRaceStages(0).length == 1 : "Incorrect number of stages: meant to be 1";
+    assert catches == intendedCatches;
   }
 
   public static void testAddIntermediateSprintToStage() throws InvalidNameException, IllegalNameException, InvalidStageStateException, InvalidLocationException, IDNotRecognisedException, InvalidStageTypeException, InvalidLengthException {
     // Setup
+    final int intendedCatches = 5;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Stage doesn't exist
@@ -442,6 +523,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addIntermediateSprintToStage(0, 5.0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Stage doesn't exist failed successfully");
+      catches++;
     }
 
     // Stage exists, location valid, under development
@@ -454,6 +536,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addIntermediateSprintToStage(0, 69.420);
     } catch (InvalidLocationException ex) {
       System.out.println("Location too large failed successfully");
+      catches++;
     }
 
     // Location negative
@@ -461,6 +544,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addIntermediateSprintToStage(0, -69.420);
     } catch (InvalidLocationException ex) {
       System.out.println("Location negative failed successfully");
+      catches++;
     }
 
     // Waiting for results
@@ -469,6 +553,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addIntermediateSprintToStage(0, 5.0);
     } catch (InvalidStageStateException ex) {
       System.out.println("Waiting for results failed successfully");
+      catches++;
     }
 
     // stage type time trial
@@ -477,12 +562,16 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addIntermediateSprintToStage(1, 5.0);
     } catch (InvalidStageTypeException ex) {
       System.out.println("Time trial with int sprint failed good");
+      catches++;
     }
 
+    assert catches == intendedCatches;
   }
 
   public static void testAddCategorizedClimbToStage() throws InvalidNameException, IllegalNameException, InvalidStageStateException, InvalidLocationException, IDNotRecognisedException, InvalidStageTypeException, InvalidLengthException {
     // Setup
+    final int intendedCatches = 6;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Stage doesn't exist
@@ -491,6 +580,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,10.0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Stage doesn't exist failed successfully");
+      catches++;
     }
 
     // Stage exists, location valid, under development
@@ -503,6 +593,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,69420.0);
     } catch (InvalidLocationException ex) {
       System.out.println("Location too large failed successfully");
+      catches++;
     }
 
     // Location negative
@@ -510,6 +601,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,-69420.0);
     } catch (InvalidLocationException ex) {
       System.out.println("Location negative failed successfully");
+      catches++;
     }
 
     // Type is sprint
@@ -517,6 +609,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.SPRINT,4.0,10.0);
     } catch (InvalidStageTypeException ex) {
       System.out.println("Invalid stage Type exception");
+      catches++;
     }
 
     // Waiting for results
@@ -525,6 +618,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,10.0);
     } catch (InvalidStageStateException ex) {
       System.out.println("Waiting for results failed successfully");
+      catches++;
     }
 
     //C1
@@ -553,11 +647,16 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.addCategorizedClimbToStage(5, 5.0,SegmentType.C4,4.0,3.0);
     } catch (InvalidStageTypeException ex) {
       System.out.println("Time trial with int sprint failed good");
+      catches++;
     }
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetStageSegments() throws IDNotRecognisedException, InvalidNameException, IllegalNameException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException {
     //Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     //Stage no existy
@@ -565,6 +664,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getStageSegments(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("NO stage failed yes");
+      catches++;
     }
 
     //Stage has no segments
@@ -584,10 +684,14 @@ public class CyclingPortalInterfaceTestApp {
     //Stage has Int & CC.
     cycPort.addCategorizedClimbToStage(0, 5.0,SegmentType.HC,4.0,3.0);
     assert  cycPort.getStageSegments(0).length == 2;
+
+    assert catches == intendedCatches;
   }
 
   public static void testRemoveSegment() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Segment doesn't exist
@@ -597,6 +701,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.removeSegment(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("No segments exist failed successfully");
+      catches++;
     }
 
     // Intermediate sprint exists
@@ -610,10 +715,14 @@ public class CyclingPortalInterfaceTestApp {
     assert cycPort.getSegmentIdsToSegments().size() == 1;
     cycPort.removeSegment(1);
     assert cycPort.getSegmentIdsToSegments().size() == 0;
+
+    assert catches == intendedCatches;
   }
 
   public static void testRegisterRiderResultsInStage() throws InvalidNameException, IllegalNameException, DuplicatedResultException, InvalidCheckpointsException, InvalidStageStateException, IDNotRecognisedException, InvalidLengthException, InvalidLocationException, InvalidStageTypeException {
     // Setup
+    final int intendedCatches = 7;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
     LocalTime[] good = {LocalTime.of(0,0,0), LocalTime.of(0,0,1), LocalTime.of(0,0,2)};
     LocalTime[] tooFew = {LocalTime.of(0,0,0)};
@@ -626,6 +735,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.registerRiderResultsInStage(0, 0, good);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Stage doesn't exist failed successfully");
+      catches++;
     }
 
     // Stage under development
@@ -636,6 +746,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.registerRiderResultsInStage(0, 0, good);
     } catch (InvalidStageStateException ex) {
       System.out.println("Stage not waiting for results failed successfully");
+      catches++;
     }
 
     // Stage valid & Rider doesn't exist
@@ -646,6 +757,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.registerRiderResultsInStage(1, 69420, good);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Rider doesn't exist failed successfully");
+      catches++;
     }
 
     // Stage valid sprint & Rider exists and has no results in stage
@@ -664,6 +776,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.registerRiderResultsInStage(1, 0, good);
     } catch (DuplicatedResultException ex) {
       System.out.println("Rider already has results failed successfully");
+      catches++;
     }
 
     // Too few checkpoints
@@ -672,6 +785,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.registerRiderResultsInStage(1, 1, tooFew);
     } catch (InvalidCheckpointsException ex) {
       System.out.println("Too few checkpoints failed successfully");
+      catches++;
     }
 
     // Too many checkpoints
@@ -680,6 +794,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.registerRiderResultsInStage(1, 2, tooMany);
     } catch (InvalidCheckpointsException ex) {
       System.out.println("Too many checkpoints failed successfully");
+      catches++;
     }
 
     // Checkpoints not in chronological order
@@ -688,11 +803,16 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.registerRiderResultsInStage(1, 3, nonChrono);
     } catch (InvalidCheckpointsException ex) {
       System.out.println("Non-chronological order failed successfully");
+      catches++;
     }
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetRidersRankInStage() throws IDNotRecognisedException, InvalidStageStateException, InvalidNameException, InvalidLengthException, IllegalNameException, DuplicatedResultException, InvalidCheckpointsException, InvalidLocationException, InvalidStageTypeException {
     //setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     //stage no exist
@@ -700,6 +820,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRidersRankInStage(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("STage no exist good");
+      catches++;
     }
 
     //stage has no results
@@ -725,10 +846,14 @@ public class CyclingPortalInterfaceTestApp {
     cycPort.registerRiderResultsInStage(0, 2, good1);
     assert cycPort.getRidersRankInStage(0).length == 3 : "There should be 1 resultsa";
     assert cycPort.getRidersRankInStage(0)[1] == 2 : "Ranking incorrect";
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetRidersPointsInStage() throws IDNotRecognisedException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, InvalidNameException, InvalidLengthException, IllegalNameException, DuplicatedResultException, InvalidCheckpointsException {
     //setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     //stage no exist
@@ -736,6 +861,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRidersPointsInStage(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("STage no exist good");
+      catches++;
     }
 
     //stage no results
@@ -999,10 +1125,13 @@ public class CyclingPortalInterfaceTestApp {
     assert cycPort.getRidersPointsInStage(7)[14] == 1;
     assert cycPort.getRidersPointsInStage(7)[15] == 0;
 
+    assert catches == intendedCatches;
   }
 
   public static void testGetRidersMountainPointsInStage() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, DuplicatedResultException, InvalidCheckpointsException {
     //setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     //stage no exist
@@ -1010,6 +1139,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRidersMountainPointsInStage(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("STage no exist good");
+      catches++;
     }
 
     //stage no results
@@ -1160,10 +1290,14 @@ public class CyclingPortalInterfaceTestApp {
     assert cycPort.getRidersMountainPointsInStage(4)[6] == 0;
     assert cycPort.getRidersMountainPointsInStage(4)[7] == 0;
     assert cycPort.getRidersMountainPointsInStage(4)[8] == 0;
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetRidersPointsInRace() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, DuplicatedResultException, InvalidCheckpointsException, InvalidLocationException, InvalidStageTypeException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Race doesn't exist
@@ -1171,6 +1305,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRidersPointsInRace(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Race doesn't exist failed successfully");
+      catches++;
     }
 
     // No stages in race
@@ -1330,10 +1465,14 @@ public class CyclingPortalInterfaceTestApp {
     assert cycPort.getRidersPointsInRace(0)[13] == 6;
     assert cycPort.getRidersPointsInRace(0)[14] == 4;
     assert cycPort.getRidersPointsInRace(0)[15] == 0;
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetRidersMountainPointsInRace() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, DuplicatedResultException, InvalidCheckpointsException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Race doesn't exist
@@ -1341,6 +1480,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRidersMountainPointsInRace(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Race doesn't exist failed successfully");
+      catches++;
     }
 
     // No stages in race
@@ -1550,10 +1690,14 @@ public class CyclingPortalInterfaceTestApp {
     assert cycPort.getRidersMountainPointsInRace(6)[7]  == 2;
     assert cycPort.getRidersMountainPointsInRace(6)[8]  == 0;
     assert cycPort.getRidersMountainPointsInRace(6)[9]  == 0;
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetRiderAdjustedElapsedTimeInStage() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, DuplicatedResultException, InvalidCheckpointsException {
     // Setup
+    final int intendedCatches = 2;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Stage does not exist
@@ -1562,6 +1706,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRiderAdjustedElapsedTimeInStage(0, 0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Stage does not exist failed successfully");
+      catches++;
     }
 
     // Riders and times setup
@@ -1636,11 +1781,15 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRiderAdjustedElapsedTimeInStage(0, 69420);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Rider doesn't exist failed successfully");
+      catches++;
     }
+    assert catches == intendedCatches;
   }
 
   public static void testGetRankedAdjustedElapsedTimesInStage() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, DuplicatedResultException, InvalidCheckpointsException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     // Stage does not exist
@@ -1649,6 +1798,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRiderAdjustedElapsedTimeInStage(0, 0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Stage does not exist failed successfully");
+      catches++;
     }
 
     // Riders and times setup
@@ -1758,10 +1908,14 @@ public class CyclingPortalInterfaceTestApp {
     assert cycPort.getRankedAdjustedElapsedTimesInStage(2)[13] == t12;
     assert cycPort.getRankedAdjustedElapsedTimesInStage(2)[14] == t12;
     assert cycPort.getRankedAdjustedElapsedTimesInStage(2)[15] == t12;
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetRiderResultsInStage() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, DuplicatedResultException, InvalidCheckpointsException {
     //setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     //stage no exist
@@ -1770,16 +1924,13 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRiderAdjustedElapsedTimeInStage(0, 0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Stage does not exist failed successfully");
+      catches++;
     }
 
     //rider does not exist
     cycPort.addStageToRace(0, "Stage 1", null, 10.0, LocalDateTime.now(), StageType.FLAT);
     cycPort.concludeStagePreparation(0);
-    try {
-      cycPort.getRiderResultsInStage(0,0);
-    } catch (IDNotRecognisedException ex) {
-      System.out.println("rider does not exist failed successfully!");
-    }
+    assert cycPort.getRiderResultsInStage(0,0).length == 0 : "Rider does not exist failed successfully!";
 
     //rider has no results registered
     cycPort.createTeam("team", null);
@@ -1793,10 +1944,13 @@ public class CyclingPortalInterfaceTestApp {
     assert cycPort.getRiderResultsInStage(0,0)[0] == t0;
     assert cycPort.getRiderResultsInStage(0,0)[1] == t1;
 
+    assert catches == intendedCatches;
   }
 
   public static void testDeleteRiderResultsInStage() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, DuplicatedResultException, InvalidCheckpointsException {
     //Setup
+    final int intendedCatches = 3;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     //stage no exist
@@ -1805,6 +1959,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.deleteRiderResultsInStage(0, 0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Stage does not exist failed successfully");
+      catches++;
     }
 
     //rider does not exist
@@ -1814,6 +1969,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.deleteRiderResultsInStage(0,0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("rider does not exist failed successfully!");
+      catches++;
     }
 
     //rider has no results registered
@@ -1823,6 +1979,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.deleteRiderResultsInStage(0,0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("rider has no results failed successfully");
+      catches++;
     }
 
     //rider exists and has results
@@ -1833,10 +1990,13 @@ public class CyclingPortalInterfaceTestApp {
     cycPort.deleteRiderResultsInStage(0,0);
     assert cycPort.getRiderResultsInStage(0,0).length == 0;
 
+    assert catches == intendedCatches;
   }
 
   public static void testGetRidersGeneralClassificationRank() throws InvalidNameException, IllegalNameException, InvalidStageStateException, IDNotRecognisedException, InvalidLengthException, DuplicatedResultException, InvalidCheckpointsException {
     //Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     //race no existy
@@ -1844,15 +2004,12 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRidersGeneralClassificationRank(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Race does not exist failed successfully");
+      catches++;
     }
 
     //stage no existy
     cycPort.createRace("Race", null);
-    try {
-      cycPort.getRidersGeneralClassificationRank(0);
-    } catch (IDNotRecognisedException ex) {
-      System.out.println("Stage does not exist failed successfully");
-    }
+    assert cycPort.getRidersGeneralClassificationRank(0).length == 0 : "Stage does not exist failed successfully";
 
     // race with Flat stage with rider 5 coming last and rider 16 coming 5th
     cycPort.addStageToRace(0, "Stage 1", null, 10.0, LocalDateTime.now(), StageType.FLAT);
@@ -2052,10 +2209,13 @@ public class CyclingPortalInterfaceTestApp {
     assert cycPort.getRidersGeneralClassificationRank(0)[15] == 15;
     assert cycPort.getRidersGeneralClassificationRank(0)[16] == 5;
 
+    assert catches == intendedCatches;
   }
 
   public static void testGetRidersMountainPointsClassificationRank() throws InvalidNameException, IllegalNameException, InvalidStageStateException, DuplicatedResultException, IDNotRecognisedException, InvalidCheckpointsException, InvalidLengthException, InvalidLocationException, InvalidStageTypeException {
     //Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
     LocalTime t0 = LocalTime.of(0, 0, 0);
     LocalTime t1 = LocalTime.of(0, 0, 10);
@@ -2102,15 +2262,13 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getRidersMountainPointClassificationRank(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Race does not exist failed successfully");
+      catches++;
     }
 
     //stage no existy
     cycPort.createRace("Race", null);
-    try {
-      cycPort.getRidersMountainPointClassificationRank(0);
-    } catch (IDNotRecognisedException ex) {
-      System.out.println("Stage does not exist failed successfully");
-    }
+    assert cycPort.getRidersMountainPointClassificationRank(0).length == 0 : "Stage does not exist failed successfully";
+
     // race with C1 climb with rider 5 coming last and rider 16 coming 5th
     cycPort.addStageToRace(0, "Stage 0", null, 10.0, LocalDateTime.now(), StageType.FLAT);
     cycPort.addCategorizedClimbToStage(0, 3.0, SegmentType.C1, 10.0, 3.0);
@@ -2360,7 +2518,7 @@ public class CyclingPortalInterfaceTestApp {
     cycPort.registerRiderResultsInStage(5, 13, t0, t13, t14, t15);
     cycPort.registerRiderResultsInStage(5, 14, t0, t14, t15, t17);
     cycPort.registerRiderResultsInStage(5, 15, t0, t15, t17, t18);
-    cycPort.registerRiderResultsInStage(5, 16, t0, t5, t18, t20);
+    cycPort.registerRiderResultsInStage(5, 16, t0, t17, t18, t20);
 
     //stage 6 1 seg
     cycPort.registerRiderResultsInStage(6, 0, t0, LocalTime.of(0, 0, 0, 5), t1);
@@ -2379,7 +2537,7 @@ public class CyclingPortalInterfaceTestApp {
     cycPort.registerRiderResultsInStage(6, 13, t0, t13, t14);
     cycPort.registerRiderResultsInStage(6, 14, t0, t14, t15);
     cycPort.registerRiderResultsInStage(6, 15, t0, t15, t17);
-    cycPort.registerRiderResultsInStage(6, 16, t0, t5, t18);
+    cycPort.registerRiderResultsInStage(6, 16, t0, t17, t18);
 
     //stage 7 1 seg
     cycPort.registerRiderResultsInStage(7, 0, t0, LocalTime.of(0, 0, 0, 5), t1);
@@ -2398,7 +2556,7 @@ public class CyclingPortalInterfaceTestApp {
     cycPort.registerRiderResultsInStage(7, 13, t0, t13, t14);
     cycPort.registerRiderResultsInStage(7, 14, t0, t14, t15);
     cycPort.registerRiderResultsInStage(7, 15, t0, t15, t17);
-    cycPort.registerRiderResultsInStage(7, 16, t0, t5, t18);
+    cycPort.registerRiderResultsInStage(7, 16, t0, t17, t18);
 
     //stage 8 1 seg
     cycPort.registerRiderResultsInStage(8, 0, t0, LocalTime.of(0, 0, 0, 5), t1);
@@ -2417,7 +2575,7 @@ public class CyclingPortalInterfaceTestApp {
     cycPort.registerRiderResultsInStage(8, 13, t0, t13, t14);
     cycPort.registerRiderResultsInStage(8, 14, t0, t14, t15);
     cycPort.registerRiderResultsInStage(8, 15, t0, t15, t17);
-    cycPort.registerRiderResultsInStage(8, 16, t0, t5, t18);
+    cycPort.registerRiderResultsInStage(8, 16, t0, t17, t18);
 
     //stage 9 seg 3
     cycPort.registerRiderResultsInStage(9, 0, t0, LocalTime.of(0, 0, 0, 5), t1, t2, t3);
@@ -2436,8 +2594,9 @@ public class CyclingPortalInterfaceTestApp {
     cycPort.registerRiderResultsInStage(9, 13, t0, t13, t14, t15, t17);
     cycPort.registerRiderResultsInStage(9, 14, t0, t14, t15, t17, t18);
     cycPort.registerRiderResultsInStage(9, 15, t0, t15, t17, t18, t20);
-    cycPort.registerRiderResultsInStage(9, 16, t0, t5, t18, t20, t21);
+    cycPort.registerRiderResultsInStage(9, 16, t0, t17, t18, t20, t21);
 
+    System.out.println(Arrays.toString(cycPort.getRidersMountainPointClassificationRank(5)));
     assert cycPort.getRidersMountainPointClassificationRank(5)[0] == 0;
     assert cycPort.getRidersMountainPointClassificationRank(5)[1] == 1;
     assert cycPort.getRidersMountainPointClassificationRank(5)[2] == 2;
@@ -2455,411 +2614,418 @@ public class CyclingPortalInterfaceTestApp {
     assert cycPort.getRidersMountainPointClassificationRank(5)[14] == 14;
     assert cycPort.getRidersMountainPointClassificationRank(5)[15] == 15;
     assert cycPort.getRidersMountainPointClassificationRank(5)[16] == 16;
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetRidersPointsClassificationRank() throws InvalidNameException, IllegalNameException, InvalidStageStateException, DuplicatedResultException, IDNotRecognisedException, InvalidCheckpointsException, InvalidLengthException, InvalidLocationException, InvalidStageTypeException {
-      //Setup
-      CyclingPortal cycPort = new CyclingPortal();
-      LocalTime t0 = LocalTime.of(0,0,0);
-      LocalTime t1 = LocalTime.of(0,0,10);
-      LocalTime t2 = LocalTime.of(0,0,20);
-      LocalTime t3 = LocalTime.of(0,0,30);
-      LocalTime t4 = LocalTime.of(0,0,40);
-      LocalTime t5 = LocalTime.of(0,0,50);
-      LocalTime t6 = LocalTime.of(0,1,0);
-      LocalTime t7 = LocalTime.of(0,1,10);
-      LocalTime t8= LocalTime.of(0,1,20);
-      LocalTime t9 = LocalTime.of(0,1,30);
-      LocalTime t10 = LocalTime.of(0,1,40);
-      LocalTime t11 = LocalTime.of(0,1,50);
-      LocalTime t12 = LocalTime.of(0,2,0);
-      LocalTime t13 = LocalTime.of(0,2,10);
-      LocalTime t14 = LocalTime.of(0,2,20);
-      LocalTime t15 = LocalTime.of(0,2,30);
-      LocalTime t17 = LocalTime.of(0,2,50);
-      LocalTime t18 = LocalTime.of(0,3,50);
-      LocalTime t20 = LocalTime.of(0,4,40);
-      LocalTime t21 = LocalTime.of(0,4,50);
+    //Setup
+    final int intendedCatches = 1;
+    int catches = 0;
+    CyclingPortal cycPort = new CyclingPortal();
+    LocalTime t0 = LocalTime.of(0,0,0);
+    LocalTime t1 = LocalTime.of(0,0,10);
+    LocalTime t2 = LocalTime.of(0,0,20);
+    LocalTime t3 = LocalTime.of(0,0,30);
+    LocalTime t4 = LocalTime.of(0,0,40);
+    LocalTime t5 = LocalTime.of(0,0,50);
+    LocalTime t6 = LocalTime.of(0,1,0);
+    LocalTime t7 = LocalTime.of(0,1,10);
+    LocalTime t8= LocalTime.of(0,1,20);
+    LocalTime t9 = LocalTime.of(0,1,30);
+    LocalTime t10 = LocalTime.of(0,1,40);
+    LocalTime t11 = LocalTime.of(0,1,50);
+    LocalTime t12 = LocalTime.of(0,2,0);
+    LocalTime t13 = LocalTime.of(0,2,10);
+    LocalTime t14 = LocalTime.of(0,2,20);
+    LocalTime t15 = LocalTime.of(0,2,30);
+    LocalTime t17 = LocalTime.of(0,2,50);
+    LocalTime t18 = LocalTime.of(0,3,50);
+    LocalTime t20 = LocalTime.of(0,4,40);
+    LocalTime t21 = LocalTime.of(0,4,50);
 
-      cycPort.createTeam("Alan's Team","Everyone is called alasn");
-      cycPort.createRider(0,"0",1998);
-      cycPort.createRider(0,"1",1998);
-      cycPort.createRider(0,"2",2015);
-      cycPort.createRider(0,"3",1988);
-      cycPort.createRider(0,"4",2015);
-      cycPort.createRider(0,"5",1998);
-      cycPort.createRider(0,"6",2015);
-      cycPort.createRider(0,"7",2000);
-      cycPort.createRider(0,"8",2015);
-      cycPort.createRider(0,"9",1998);
-      cycPort.createRider(0,"10",2015);
-      cycPort.createRider(0,"11",1998);
-      cycPort.createRider(0,"12",2015);
-      cycPort.createRider(0,"13",1998);
-      cycPort.createRider(0,"14",2015);
-      cycPort.createRider(0,"15",1998);
-      cycPort.createRider(0,"16",2015);
+    cycPort.createTeam("Alan's Team","Everyone is called alasn");
+    cycPort.createRider(0,"0",1998);
+    cycPort.createRider(0,"1",1998);
+    cycPort.createRider(0,"2",2015);
+    cycPort.createRider(0,"3",1988);
+    cycPort.createRider(0,"4",2015);
+    cycPort.createRider(0,"5",1998);
+    cycPort.createRider(0,"6",2015);
+    cycPort.createRider(0,"7",2000);
+    cycPort.createRider(0,"8",2015);
+    cycPort.createRider(0,"9",1998);
+    cycPort.createRider(0,"10",2015);
+    cycPort.createRider(0,"11",1998);
+    cycPort.createRider(0,"12",2015);
+    cycPort.createRider(0,"13",1998);
+    cycPort.createRider(0,"14",2015);
+    cycPort.createRider(0,"15",1998);
+    cycPort.createRider(0,"16",2015);
 
-      //race no existy
-      try {
-        cycPort.getRidersPointClassificationRank(0);
-      } catch (IDNotRecognisedException ex) {
-        System.out.println("Race does not exist failed successfully");
-      }
-
-      //stage no existy
-      cycPort.createRace("Race", null);
-      try {
-        cycPort.getRidersPointClassificationRank(0);
-      } catch (IDNotRecognisedException ex) {
-        System.out.println("Stage does not exist failed successfully");
-      }
-      // race with C1 climb with rider 5 coming last and rider 16 coming 5th
-      cycPort.addStageToRace(0, "Stage 0", null, 10.0, LocalDateTime.now(), StageType.FLAT);
-      cycPort.addIntermediateSprintToStage(0,6.0);
-      cycPort.concludeStagePreparation(0);
-
-      cycPort.registerRiderResultsInStage(0, 0, t0,LocalTime.of(0,0,0,5),t18);
-      cycPort.registerRiderResultsInStage(0, 1, t0,t1,t18);
-      cycPort.registerRiderResultsInStage(0, 2, t0,t2,t18);
-      cycPort.registerRiderResultsInStage(0, 3, t0,t3,t18);
-      cycPort.registerRiderResultsInStage(0, 4, t0,t4,t18);
-      cycPort.registerRiderResultsInStage(0, 16, t0,t5,t18);
-      cycPort.registerRiderResultsInStage(0, 6, t0,t6,t18);
-      cycPort.registerRiderResultsInStage(0, 7, t0,t7,t18);
-      cycPort.registerRiderResultsInStage(0, 8, t0,t8,t18);
-      cycPort.registerRiderResultsInStage(0, 9, t0,t9,t18);
-      cycPort.registerRiderResultsInStage(0, 10, t0,t10,t18);
-      cycPort.registerRiderResultsInStage(0, 11, t0,t11,t18);
-      cycPort.registerRiderResultsInStage(0, 12, t0,t12,t18);
-      cycPort.registerRiderResultsInStage(0, 13, t0,t13,t18);
-      cycPort.registerRiderResultsInStage(0, 14, t0,t14,t18);
-      cycPort.registerRiderResultsInStage(0, 15, t0,t15,t18);
-      cycPort.registerRiderResultsInStage(0, 5, t0,t17,t18);
+    //race no existy
+    try {
       cycPort.getRidersPointClassificationRank(0);
-      assert cycPort.getRidersPointClassificationRank(0)[0 ] ==  0;
-      assert cycPort.getRidersPointClassificationRank(0)[1 ] ==  1;
-      assert cycPort.getRidersPointClassificationRank(0)[2 ] ==  2;
-      assert cycPort.getRidersPointClassificationRank(0)[3 ] ==  3;
-      assert cycPort.getRidersPointClassificationRank(0)[4 ] ==  4;
-      assert cycPort.getRidersPointClassificationRank(0)[5 ] ==  16;
-      assert cycPort.getRidersPointClassificationRank(0)[6 ] ==  6;
-      assert cycPort.getRidersPointClassificationRank(0)[7 ] ==  7;
-      assert cycPort.getRidersPointClassificationRank(0)[8 ] ==  8;
-      assert cycPort.getRidersPointClassificationRank(0)[9 ] ==  9;
-      assert cycPort.getRidersPointClassificationRank(0)[10] == 10;
-      assert cycPort.getRidersPointClassificationRank(0)[11] == 11;
-      assert cycPort.getRidersPointClassificationRank(0)[12] == 12;
-      assert cycPort.getRidersPointClassificationRank(0)[13] == 13;
-      assert cycPort.getRidersPointClassificationRank(0)[14] == 14;
-      assert cycPort.getRidersPointClassificationRank(0)[15] == 15;
-      assert cycPort.getRidersPointClassificationRank(0)[16] == 5;
+    } catch (IDNotRecognisedException ex) {
+      System.out.println("Race does not exist failed successfully");
+      catches++;
+    }
 
-      // race with C2 climb stage with rider 5 coming last and rider 16 coming 5th
-      cycPort.createRace("Race1", null);
-      cycPort.addStageToRace(1, "Stage 1", null, 10.0, LocalDateTime.now(), StageType.FLAT);
-      cycPort.addIntermediateSprintToStage(1,8.0);
-      cycPort.concludeStagePreparation(1);
+    //stage no existy
+    cycPort.createRace("Race", null);
+    assert cycPort.getRidersPointClassificationRank(0).length == 0 : "Stage does not exist failed successfully";
 
-      cycPort.registerRiderResultsInStage(1, 0, t0,LocalTime.of(0,0,0,5),t18);
-      cycPort.registerRiderResultsInStage(1, 1, t0,t1,t18);
-      cycPort.registerRiderResultsInStage(1, 2, t0,t2,t18);
-      cycPort.registerRiderResultsInStage(1, 3, t0,t3,t18);
-      cycPort.registerRiderResultsInStage(1, 4, t0,t4,t18);
-      cycPort.registerRiderResultsInStage(1, 16, t0,t5,t18);
-      cycPort.registerRiderResultsInStage(1, 6, t0,t6,t18);
-      cycPort.registerRiderResultsInStage(1, 7, t0,t7,t18);
-      cycPort.registerRiderResultsInStage(1, 8, t0,t8,t18);
-      cycPort.registerRiderResultsInStage(1, 9, t0,t9,t18);
-      cycPort.registerRiderResultsInStage(1, 10, t0,t10,t18);
-      cycPort.registerRiderResultsInStage(1, 11, t0,t11,t18);
-      cycPort.registerRiderResultsInStage(1, 12, t0,t12,t18);
-      cycPort.registerRiderResultsInStage(1, 13, t0,t13,t18);
-      cycPort.registerRiderResultsInStage(1, 14, t0,t14,t18);
-      cycPort.registerRiderResultsInStage(1, 15, t0,t15,t18);
-      cycPort.registerRiderResultsInStage(1, 5, t0,t17,t18);
+    // race with C1 climb with rider 5 coming last and rider 16 coming 5th
+    cycPort.addStageToRace(0, "Stage 0", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addIntermediateSprintToStage(0,6.0);
+    cycPort.concludeStagePreparation(0);
 
-      assert cycPort.getRidersPointClassificationRank(1)[0 ] ==  0;
-      assert cycPort.getRidersPointClassificationRank(1)[1 ] ==  1;
-      assert cycPort.getRidersPointClassificationRank(1)[2 ] ==  2;
-      assert cycPort.getRidersPointClassificationRank(1)[3 ] ==  3;
-      assert cycPort.getRidersPointClassificationRank(1)[4 ] ==  4;
-      assert cycPort.getRidersPointClassificationRank(1)[5 ] ==  16;
-      assert cycPort.getRidersPointClassificationRank(1)[6 ] ==  6;
-      assert cycPort.getRidersPointClassificationRank(1)[7 ] ==  7;
-      assert cycPort.getRidersPointClassificationRank(1)[8 ] ==  8;
-      assert cycPort.getRidersPointClassificationRank(1)[9 ] ==  9;
-      assert cycPort.getRidersPointClassificationRank(1)[10] == 10;
-      assert cycPort.getRidersPointClassificationRank(1)[11] == 11;
-      assert cycPort.getRidersPointClassificationRank(1)[12] == 12;
-      assert cycPort.getRidersPointClassificationRank(1)[13] == 13;
-      assert cycPort.getRidersPointClassificationRank(1)[14] == 14;
-      assert cycPort.getRidersPointClassificationRank(1)[15] == 15;
-      assert cycPort.getRidersPointClassificationRank(1)[16] == 5;
+    cycPort.registerRiderResultsInStage(0, 0, t0,LocalTime.of(0,0,0,5),t18);
+    cycPort.registerRiderResultsInStage(0, 1, t0,t1,t18);
+    cycPort.registerRiderResultsInStage(0, 2, t0,t2,t18);
+    cycPort.registerRiderResultsInStage(0, 3, t0,t3,t18);
+    cycPort.registerRiderResultsInStage(0, 4, t0,t4,t18);
+    cycPort.registerRiderResultsInStage(0, 16, t0,t5,t18);
+    cycPort.registerRiderResultsInStage(0, 6, t0,t6,t18);
+    cycPort.registerRiderResultsInStage(0, 7, t0,t7,t18);
+    cycPort.registerRiderResultsInStage(0, 8, t0,t8,t18);
+    cycPort.registerRiderResultsInStage(0, 9, t0,t9,t18);
+    cycPort.registerRiderResultsInStage(0, 10, t0,t10,t18);
+    cycPort.registerRiderResultsInStage(0, 11, t0,t11,t18);
+    cycPort.registerRiderResultsInStage(0, 12, t0,t12,t18);
+    cycPort.registerRiderResultsInStage(0, 13, t0,t13,t18);
+    cycPort.registerRiderResultsInStage(0, 14, t0,t14,t18);
+    cycPort.registerRiderResultsInStage(0, 15, t0,t15,t18);
+    cycPort.registerRiderResultsInStage(0, 5, t0,t17,t18);
+    cycPort.getRidersPointClassificationRank(0);
+    assert cycPort.getRidersPointClassificationRank(0)[0 ] ==  0;
+    assert cycPort.getRidersPointClassificationRank(0)[1 ] ==  1;
+    assert cycPort.getRidersPointClassificationRank(0)[2 ] ==  2;
+    assert cycPort.getRidersPointClassificationRank(0)[3 ] ==  3;
+    assert cycPort.getRidersPointClassificationRank(0)[4 ] ==  4;
+    assert cycPort.getRidersPointClassificationRank(0)[5 ] ==  16;
+    assert cycPort.getRidersPointClassificationRank(0)[6 ] ==  6;
+    assert cycPort.getRidersPointClassificationRank(0)[7 ] ==  7;
+    assert cycPort.getRidersPointClassificationRank(0)[8 ] ==  8;
+    assert cycPort.getRidersPointClassificationRank(0)[9 ] ==  9;
+    assert cycPort.getRidersPointClassificationRank(0)[10] == 10;
+    assert cycPort.getRidersPointClassificationRank(0)[11] == 11;
+    assert cycPort.getRidersPointClassificationRank(0)[12] == 12;
+    assert cycPort.getRidersPointClassificationRank(0)[13] == 13;
+    assert cycPort.getRidersPointClassificationRank(0)[14] == 14;
+    assert cycPort.getRidersPointClassificationRank(0)[15] == 15;
+    assert cycPort.getRidersPointClassificationRank(0)[16] == 5;
 
-      // race with C3 climb stage with rider 5 coming last and rider 16 coming 5th
-      cycPort.createRace("Race2", null);
-      cycPort.addStageToRace(2, "Stage 2", null, 10.0, LocalDateTime.now(), StageType.FLAT);
-      cycPort.addIntermediateSprintToStage(2,7.0);
-      cycPort.concludeStagePreparation(2);
+    // race with C2 climb stage with rider 5 coming last and rider 16 coming 5th
+    cycPort.createRace("Race1", null);
+    cycPort.addStageToRace(1, "Stage 1", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addIntermediateSprintToStage(1,8.0);
+    cycPort.concludeStagePreparation(1);
 
-      cycPort.registerRiderResultsInStage(2, 0, t0,LocalTime.of(0,0,0,5),t18);
-      cycPort.registerRiderResultsInStage(2, 1, t0,t1,t18);
-      cycPort.registerRiderResultsInStage(2, 2, t0,t2,t18);
-      cycPort.registerRiderResultsInStage(2, 3, t0,t3,t18);
-      cycPort.registerRiderResultsInStage(2, 4, t0,t4,t18);
-      cycPort.registerRiderResultsInStage(2, 16, t0,t5,t18);
-      cycPort.registerRiderResultsInStage(2, 6, t0,t6,t18);
-      cycPort.registerRiderResultsInStage(2, 7, t0,t7,t18);
-      cycPort.registerRiderResultsInStage(2, 8, t0,t8,t18);
-      cycPort.registerRiderResultsInStage(2, 9, t0,t9,t18);
-      cycPort.registerRiderResultsInStage(2, 10, t0,t10,t18);
-      cycPort.registerRiderResultsInStage(2, 11, t0,t11,t18);
-      cycPort.registerRiderResultsInStage(2, 12, t0,t12,t18);
-      cycPort.registerRiderResultsInStage(2, 13, t0,t13,t18);
-      cycPort.registerRiderResultsInStage(2, 14, t0,t14,t18);
-      cycPort.registerRiderResultsInStage(2, 15, t0,t15,t18);
-      cycPort.registerRiderResultsInStage(2, 5, t0,t17,t18);
+    cycPort.registerRiderResultsInStage(1, 0, t0,LocalTime.of(0,0,0,5),t18);
+    cycPort.registerRiderResultsInStage(1, 1, t0,t1,t18);
+    cycPort.registerRiderResultsInStage(1, 2, t0,t2,t18);
+    cycPort.registerRiderResultsInStage(1, 3, t0,t3,t18);
+    cycPort.registerRiderResultsInStage(1, 4, t0,t4,t18);
+    cycPort.registerRiderResultsInStage(1, 16, t0,t5,t18);
+    cycPort.registerRiderResultsInStage(1, 6, t0,t6,t18);
+    cycPort.registerRiderResultsInStage(1, 7, t0,t7,t18);
+    cycPort.registerRiderResultsInStage(1, 8, t0,t8,t18);
+    cycPort.registerRiderResultsInStage(1, 9, t0,t9,t18);
+    cycPort.registerRiderResultsInStage(1, 10, t0,t10,t18);
+    cycPort.registerRiderResultsInStage(1, 11, t0,t11,t18);
+    cycPort.registerRiderResultsInStage(1, 12, t0,t12,t18);
+    cycPort.registerRiderResultsInStage(1, 13, t0,t13,t18);
+    cycPort.registerRiderResultsInStage(1, 14, t0,t14,t18);
+    cycPort.registerRiderResultsInStage(1, 15, t0,t15,t18);
+    cycPort.registerRiderResultsInStage(1, 5, t0,t17,t18);
 
-      assert cycPort.getRidersPointClassificationRank(2)[0 ] ==  0;
-      assert cycPort.getRidersPointClassificationRank(2)[1 ] ==  1;
-      assert cycPort.getRidersPointClassificationRank(2)[2 ] ==  2;
-      assert cycPort.getRidersPointClassificationRank(2)[3 ] ==  3;
-      assert cycPort.getRidersPointClassificationRank(2)[4 ] ==  4;
-      assert cycPort.getRidersPointClassificationRank(2)[5 ] ==  16;
-      assert cycPort.getRidersPointClassificationRank(2)[6 ] ==  6;
-      assert cycPort.getRidersPointClassificationRank(2)[7 ] ==  7;
-      assert cycPort.getRidersPointClassificationRank(2)[8 ] ==  8;
-      assert cycPort.getRidersPointClassificationRank(2)[9 ] ==  9;
-      assert cycPort.getRidersPointClassificationRank(2)[10] == 10;
-      assert cycPort.getRidersPointClassificationRank(2)[11] == 11;
-      assert cycPort.getRidersPointClassificationRank(2)[12] == 12;
-      assert cycPort.getRidersPointClassificationRank(2)[13] == 13;
-      assert cycPort.getRidersPointClassificationRank(2)[14] == 14;
-      assert cycPort.getRidersPointClassificationRank(2)[15] == 15;
-      assert cycPort.getRidersPointClassificationRank(2)[16] == 5;
+    assert cycPort.getRidersPointClassificationRank(1)[0 ] ==  0;
+    assert cycPort.getRidersPointClassificationRank(1)[1 ] ==  1;
+    assert cycPort.getRidersPointClassificationRank(1)[2 ] ==  2;
+    assert cycPort.getRidersPointClassificationRank(1)[3 ] ==  3;
+    assert cycPort.getRidersPointClassificationRank(1)[4 ] ==  4;
+    assert cycPort.getRidersPointClassificationRank(1)[5 ] ==  16;
+    assert cycPort.getRidersPointClassificationRank(1)[6 ] ==  6;
+    assert cycPort.getRidersPointClassificationRank(1)[7 ] ==  7;
+    assert cycPort.getRidersPointClassificationRank(1)[8 ] ==  8;
+    assert cycPort.getRidersPointClassificationRank(1)[9 ] ==  9;
+    assert cycPort.getRidersPointClassificationRank(1)[10] == 10;
+    assert cycPort.getRidersPointClassificationRank(1)[11] == 11;
+    assert cycPort.getRidersPointClassificationRank(1)[12] == 12;
+    assert cycPort.getRidersPointClassificationRank(1)[13] == 13;
+    assert cycPort.getRidersPointClassificationRank(1)[14] == 14;
+    assert cycPort.getRidersPointClassificationRank(1)[15] == 15;
+    assert cycPort.getRidersPointClassificationRank(1)[16] == 5;
 
-      // race with C4 climb stage with rider 5 coming last and rider 16 coming 5th
-      cycPort.createRace("Race3", null);
-      cycPort.addStageToRace(3, "Stage 3", null, 10.0, LocalDateTime.now(), StageType.FLAT);
-      cycPort.addIntermediateSprintToStage(3,7.0);
-      cycPort.concludeStagePreparation(3);
+    // race with C3 climb stage with rider 5 coming last and rider 16 coming 5th
+    cycPort.createRace("Race2", null);
+    cycPort.addStageToRace(2, "Stage 2", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addIntermediateSprintToStage(2,7.0);
+    cycPort.concludeStagePreparation(2);
 
-      cycPort.registerRiderResultsInStage(3, 0, t0,LocalTime.of(0,0,0,5),t18);
-      cycPort.registerRiderResultsInStage(3, 1, t0,t1,t18);
-      cycPort.registerRiderResultsInStage(3, 2, t0,t2,t18);
-      cycPort.registerRiderResultsInStage(3, 3, t0,t3,t18);
-      cycPort.registerRiderResultsInStage(3, 4, t0,t4,t18);
-      cycPort.registerRiderResultsInStage(3, 16, t0,t5,t18);
-      cycPort.registerRiderResultsInStage(3, 6, t0,t6,t18);
-      cycPort.registerRiderResultsInStage(3, 7, t0,t7,t18);
-      cycPort.registerRiderResultsInStage(3, 8, t0,t8,t18);
-      cycPort.registerRiderResultsInStage(3, 9, t0,t9,t18);
-      cycPort.registerRiderResultsInStage(3, 10, t0,t10,t18);
-      cycPort.registerRiderResultsInStage(3, 11, t0,t11,t18);
-      cycPort.registerRiderResultsInStage(3, 12, t0,t12,t18);
-      cycPort.registerRiderResultsInStage(3, 13, t0,t13,t18);
-      cycPort.registerRiderResultsInStage(3, 14, t0,t14,t18);
-      cycPort.registerRiderResultsInStage(3, 15, t0,t15,t18);
-      cycPort.registerRiderResultsInStage(3, 5, t0,t17,t18);
+    cycPort.registerRiderResultsInStage(2, 0, t0,LocalTime.of(0,0,0,5),t18);
+    cycPort.registerRiderResultsInStage(2, 1, t0,t1,t18);
+    cycPort.registerRiderResultsInStage(2, 2, t0,t2,t18);
+    cycPort.registerRiderResultsInStage(2, 3, t0,t3,t18);
+    cycPort.registerRiderResultsInStage(2, 4, t0,t4,t18);
+    cycPort.registerRiderResultsInStage(2, 16, t0,t5,t18);
+    cycPort.registerRiderResultsInStage(2, 6, t0,t6,t18);
+    cycPort.registerRiderResultsInStage(2, 7, t0,t7,t18);
+    cycPort.registerRiderResultsInStage(2, 8, t0,t8,t18);
+    cycPort.registerRiderResultsInStage(2, 9, t0,t9,t18);
+    cycPort.registerRiderResultsInStage(2, 10, t0,t10,t18);
+    cycPort.registerRiderResultsInStage(2, 11, t0,t11,t18);
+    cycPort.registerRiderResultsInStage(2, 12, t0,t12,t18);
+    cycPort.registerRiderResultsInStage(2, 13, t0,t13,t18);
+    cycPort.registerRiderResultsInStage(2, 14, t0,t14,t18);
+    cycPort.registerRiderResultsInStage(2, 15, t0,t15,t18);
+    cycPort.registerRiderResultsInStage(2, 5, t0,t17,t18);
 
-      assert cycPort.getRidersPointClassificationRank(3)[0 ] ==  0;
-      assert cycPort.getRidersPointClassificationRank(3)[1 ] ==  1;
-      assert cycPort.getRidersPointClassificationRank(3)[2 ] ==  2;
-      assert cycPort.getRidersPointClassificationRank(3)[3 ] ==  3;
-      assert cycPort.getRidersPointClassificationRank(3)[4 ] ==  4;
-      assert cycPort.getRidersPointClassificationRank(3)[5 ] ==  16;
-      assert cycPort.getRidersPointClassificationRank(3)[6 ] ==  6;
-      assert cycPort.getRidersPointClassificationRank(3)[7 ] ==  7;
-      assert cycPort.getRidersPointClassificationRank(3)[8 ] ==  8;
-      assert cycPort.getRidersPointClassificationRank(3)[9 ] ==  9;
-      assert cycPort.getRidersPointClassificationRank(3)[10] == 10;
-      assert cycPort.getRidersPointClassificationRank(3)[11] == 11;
-      assert cycPort.getRidersPointClassificationRank(3)[12] == 12;
-      assert cycPort.getRidersPointClassificationRank(3)[13] == 13;
-      assert cycPort.getRidersPointClassificationRank(3)[14] == 14;
-      assert cycPort.getRidersPointClassificationRank(3)[15] == 15;
-      assert cycPort.getRidersPointClassificationRank(3)[16] == 5;
+    assert cycPort.getRidersPointClassificationRank(2)[0 ] ==  0;
+    assert cycPort.getRidersPointClassificationRank(2)[1 ] ==  1;
+    assert cycPort.getRidersPointClassificationRank(2)[2 ] ==  2;
+    assert cycPort.getRidersPointClassificationRank(2)[3 ] ==  3;
+    assert cycPort.getRidersPointClassificationRank(2)[4 ] ==  4;
+    assert cycPort.getRidersPointClassificationRank(2)[5 ] ==  16;
+    assert cycPort.getRidersPointClassificationRank(2)[6 ] ==  6;
+    assert cycPort.getRidersPointClassificationRank(2)[7 ] ==  7;
+    assert cycPort.getRidersPointClassificationRank(2)[8 ] ==  8;
+    assert cycPort.getRidersPointClassificationRank(2)[9 ] ==  9;
+    assert cycPort.getRidersPointClassificationRank(2)[10] == 10;
+    assert cycPort.getRidersPointClassificationRank(2)[11] == 11;
+    assert cycPort.getRidersPointClassificationRank(2)[12] == 12;
+    assert cycPort.getRidersPointClassificationRank(2)[13] == 13;
+    assert cycPort.getRidersPointClassificationRank(2)[14] == 14;
+    assert cycPort.getRidersPointClassificationRank(2)[15] == 15;
+    assert cycPort.getRidersPointClassificationRank(2)[16] == 5;
 
-      // race with HC climb stage with rider 5 coming last and rider 16 coming 5th
-      cycPort.createRace("Race4", null);
-      cycPort.addStageToRace(4, "Stage 4", null, 10.0, LocalDateTime.now(), StageType.FLAT);
-      cycPort.addIntermediateSprintToStage(4,5.0);
-      cycPort.concludeStagePreparation(4);
+    // race with C4 climb stage with rider 5 coming last and rider 16 coming 5th
+    cycPort.createRace("Race3", null);
+    cycPort.addStageToRace(3, "Stage 3", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addIntermediateSprintToStage(3,7.0);
+    cycPort.concludeStagePreparation(3);
 
-      cycPort.registerRiderResultsInStage(4, 0, t0,LocalTime.of(0,0,0,5),t18);
-      cycPort.registerRiderResultsInStage(4, 1, t0,t1,t18);
-      cycPort.registerRiderResultsInStage(4, 2, t0,t2,t18);
-      cycPort.registerRiderResultsInStage(4, 3, t0,t3,t18);
-      cycPort.registerRiderResultsInStage(4, 4, t0,t4,t18);
-      cycPort.registerRiderResultsInStage(4, 16, t0,t5,t18);
-      cycPort.registerRiderResultsInStage(4, 6, t0,t6,t18);
-      cycPort.registerRiderResultsInStage(4, 7, t0,t7,t18);
-      cycPort.registerRiderResultsInStage(4, 8, t0,t8,t18);
-      cycPort.registerRiderResultsInStage(4, 9, t0,t9,t18);
-      cycPort.registerRiderResultsInStage(4, 10, t0,t10,t18);
-      cycPort.registerRiderResultsInStage(4, 11, t0,t11,t18);
-      cycPort.registerRiderResultsInStage(4, 12, t0,t12,t18);
-      cycPort.registerRiderResultsInStage(4, 13, t0,t13,t18);
-      cycPort.registerRiderResultsInStage(4, 14, t0,t14,t18);
-      cycPort.registerRiderResultsInStage(4, 15, t0,t15,t18);
-      cycPort.registerRiderResultsInStage(4, 5, t0,t17,t18);
+    cycPort.registerRiderResultsInStage(3, 0, t0,LocalTime.of(0,0,0,5),t18);
+    cycPort.registerRiderResultsInStage(3, 1, t0,t1,t18);
+    cycPort.registerRiderResultsInStage(3, 2, t0,t2,t18);
+    cycPort.registerRiderResultsInStage(3, 3, t0,t3,t18);
+    cycPort.registerRiderResultsInStage(3, 4, t0,t4,t18);
+    cycPort.registerRiderResultsInStage(3, 16, t0,t5,t18);
+    cycPort.registerRiderResultsInStage(3, 6, t0,t6,t18);
+    cycPort.registerRiderResultsInStage(3, 7, t0,t7,t18);
+    cycPort.registerRiderResultsInStage(3, 8, t0,t8,t18);
+    cycPort.registerRiderResultsInStage(3, 9, t0,t9,t18);
+    cycPort.registerRiderResultsInStage(3, 10, t0,t10,t18);
+    cycPort.registerRiderResultsInStage(3, 11, t0,t11,t18);
+    cycPort.registerRiderResultsInStage(3, 12, t0,t12,t18);
+    cycPort.registerRiderResultsInStage(3, 13, t0,t13,t18);
+    cycPort.registerRiderResultsInStage(3, 14, t0,t14,t18);
+    cycPort.registerRiderResultsInStage(3, 15, t0,t15,t18);
+    cycPort.registerRiderResultsInStage(3, 5, t0,t17,t18);
 
-      assert cycPort.getRidersPointClassificationRank(4)[0 ] ==  0;
-      assert cycPort.getRidersPointClassificationRank(4)[1 ] ==  1;
-      assert cycPort.getRidersPointClassificationRank(4)[2 ] ==  2;
-      assert cycPort.getRidersPointClassificationRank(4)[3 ] ==  3;
-      assert cycPort.getRidersPointClassificationRank(4)[4 ] ==  4;
-      assert cycPort.getRidersPointClassificationRank(4)[5 ] ==  16;
-      assert cycPort.getRidersPointClassificationRank(4)[6 ] ==  6;
-      assert cycPort.getRidersPointClassificationRank(4)[7 ] ==  7;
-      assert cycPort.getRidersPointClassificationRank(4)[8 ] ==  8;
-      assert cycPort.getRidersPointClassificationRank(4)[9 ] ==  9;
-      assert cycPort.getRidersPointClassificationRank(4)[10] == 10;
-      assert cycPort.getRidersPointClassificationRank(4)[11] == 11;
-      assert cycPort.getRidersPointClassificationRank(4)[12] == 12;
-      assert cycPort.getRidersPointClassificationRank(4)[13] == 13;
-      assert cycPort.getRidersPointClassificationRank(4)[14] == 14;
-      assert cycPort.getRidersPointClassificationRank(4)[15] == 15;
-      assert cycPort.getRidersPointClassificationRank(4)[16] == 5;
+    assert cycPort.getRidersPointClassificationRank(3)[0 ] ==  0;
+    assert cycPort.getRidersPointClassificationRank(3)[1 ] ==  1;
+    assert cycPort.getRidersPointClassificationRank(3)[2 ] ==  2;
+    assert cycPort.getRidersPointClassificationRank(3)[3 ] ==  3;
+    assert cycPort.getRidersPointClassificationRank(3)[4 ] ==  4;
+    assert cycPort.getRidersPointClassificationRank(3)[5 ] ==  16;
+    assert cycPort.getRidersPointClassificationRank(3)[6 ] ==  6;
+    assert cycPort.getRidersPointClassificationRank(3)[7 ] ==  7;
+    assert cycPort.getRidersPointClassificationRank(3)[8 ] ==  8;
+    assert cycPort.getRidersPointClassificationRank(3)[9 ] ==  9;
+    assert cycPort.getRidersPointClassificationRank(3)[10] == 10;
+    assert cycPort.getRidersPointClassificationRank(3)[11] == 11;
+    assert cycPort.getRidersPointClassificationRank(3)[12] == 12;
+    assert cycPort.getRidersPointClassificationRank(3)[13] == 13;
+    assert cycPort.getRidersPointClassificationRank(3)[14] == 14;
+    assert cycPort.getRidersPointClassificationRank(3)[15] == 15;
+    assert cycPort.getRidersPointClassificationRank(3)[16] == 5;
 
-      // race with multiple stages of varying types with rider 5 coming last and rider 16 coming 5th
-      cycPort.createRace("Racey boy", null);
-      cycPort.addStageToRace(5, "Stage 5", null, 10.0, LocalDateTime.now(), StageType.FLAT);
-      cycPort.addStageToRace(5, "Stage 6", null, 10.0, LocalDateTime.now(), StageType.MEDIUM_MOUNTAIN);
-      cycPort.addStageToRace(5, "Stage 7", null, 10.0, LocalDateTime.now(), StageType.FLAT);
-      cycPort.addStageToRace(5, "Stage 8", null, 10.0, LocalDateTime.now(), StageType.HIGH_MOUNTAIN);
-      cycPort.addStageToRace(5, "Stage 9", null, 10.0, LocalDateTime.now(), StageType.MEDIUM_MOUNTAIN);
-      cycPort.addIntermediateSprintToStage(5,7.0);
-      cycPort.addIntermediateSprintToStage(5,7.0);
-      cycPort.addIntermediateSprintToStage(6,7.0);
-      cycPort.addIntermediateSprintToStage(7,7.0);
-      cycPort.addIntermediateSprintToStage(8,7.0);
-      cycPort.addIntermediateSprintToStage(9,7.0);
-      cycPort.addIntermediateSprintToStage(9,7.0);
-      cycPort.addIntermediateSprintToStage(9,7.0);
-      cycPort.concludeStagePreparation(5);
-      cycPort.concludeStagePreparation(6);
-      cycPort.concludeStagePreparation(7);
-      cycPort.concludeStagePreparation(8);
-      cycPort.concludeStagePreparation(9);
+    // race with HC climb stage with rider 5 coming last and rider 16 coming 5th
+    cycPort.createRace("Race4", null);
+    cycPort.addStageToRace(4, "Stage 4", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addIntermediateSprintToStage(4,5.0);
+    cycPort.concludeStagePreparation(4);
 
-      //stage 5 2 segments
-      cycPort.registerRiderResultsInStage(5, 0, t0,LocalTime.of(0,0,0,5),t1,t2);
-      cycPort.registerRiderResultsInStage(5, 1, t0,t1,t2,t3);
-      cycPort.registerRiderResultsInStage(5, 2, t0,t2,t3,t4);
-      cycPort.registerRiderResultsInStage(5, 3, t0,t3,t4,t5);
-      cycPort.registerRiderResultsInStage(5, 4, t0,t4,t5,t6);
-      cycPort.registerRiderResultsInStage(5, 5, t0,t17,t17,t17);
-      cycPort.registerRiderResultsInStage(5, 6, t0,t6,t7,t8);
-      cycPort.registerRiderResultsInStage(5, 7, t0,t7,t8,t9);
-      cycPort.registerRiderResultsInStage(5, 8, t0,t8,t9,t10);
-      cycPort.registerRiderResultsInStage(5, 9, t0,t9,t10,t11);
-      cycPort.registerRiderResultsInStage(5, 10, t0,t10,t11,t12);
-      cycPort.registerRiderResultsInStage(5, 11, t0,t11,t12,t13);
-      cycPort.registerRiderResultsInStage(5, 12, t0,t12,t13,t14);
-      cycPort.registerRiderResultsInStage(5, 13, t0,t13,t14,t15);
-      cycPort.registerRiderResultsInStage(5, 14, t0,t14,t15,t17);
-      cycPort.registerRiderResultsInStage(5, 15, t0,t15,t17,t18);
-      cycPort.registerRiderResultsInStage(5, 16, t0,t5,t18,t20);
+    cycPort.registerRiderResultsInStage(4, 0, t0,LocalTime.of(0,0,0,5),t18);
+    cycPort.registerRiderResultsInStage(4, 1, t0,t1,t18);
+    cycPort.registerRiderResultsInStage(4, 2, t0,t2,t18);
+    cycPort.registerRiderResultsInStage(4, 3, t0,t3,t18);
+    cycPort.registerRiderResultsInStage(4, 4, t0,t4,t18);
+    cycPort.registerRiderResultsInStage(4, 16, t0,t5,t18);
+    cycPort.registerRiderResultsInStage(4, 6, t0,t6,t18);
+    cycPort.registerRiderResultsInStage(4, 7, t0,t7,t18);
+    cycPort.registerRiderResultsInStage(4, 8, t0,t8,t18);
+    cycPort.registerRiderResultsInStage(4, 9, t0,t9,t18);
+    cycPort.registerRiderResultsInStage(4, 10, t0,t10,t18);
+    cycPort.registerRiderResultsInStage(4, 11, t0,t11,t18);
+    cycPort.registerRiderResultsInStage(4, 12, t0,t12,t18);
+    cycPort.registerRiderResultsInStage(4, 13, t0,t13,t18);
+    cycPort.registerRiderResultsInStage(4, 14, t0,t14,t18);
+    cycPort.registerRiderResultsInStage(4, 15, t0,t15,t18);
+    cycPort.registerRiderResultsInStage(4, 5, t0,t17,t18);
 
-      //stage 6 1 seg
-      cycPort.registerRiderResultsInStage(6, 0, t0,LocalTime.of(0,0,0,5),t1);
-      cycPort.registerRiderResultsInStage(6, 1, t0,t1,t2);
-      cycPort.registerRiderResultsInStage(6, 2, t0,t2,t3);
-      cycPort.registerRiderResultsInStage(6, 3, t0,t3,t4);
-      cycPort.registerRiderResultsInStage(6, 4, t0,t4,t5);
-      cycPort.registerRiderResultsInStage(6, 5, t0,t17,t17);
-      cycPort.registerRiderResultsInStage(6, 6, t0,t6,t7);
-      cycPort.registerRiderResultsInStage(6, 7, t0,t7,t8);
-      cycPort.registerRiderResultsInStage(6, 8, t0,t8,t9);
-      cycPort.registerRiderResultsInStage(6, 9, t0,t9,t10);
-      cycPort.registerRiderResultsInStage(6, 10, t0,t10,t11);
-      cycPort.registerRiderResultsInStage(6, 11, t0,t11,t12);
-      cycPort.registerRiderResultsInStage(6, 12, t0,t12,t13);
-      cycPort.registerRiderResultsInStage(6, 13, t0,t13,t14);
-      cycPort.registerRiderResultsInStage(6, 14, t0,t14,t15);
-      cycPort.registerRiderResultsInStage(6, 15, t0,t15,t17);
-      cycPort.registerRiderResultsInStage(6, 16, t0,t5,t18);
+    assert cycPort.getRidersPointClassificationRank(4)[0 ] ==  0;
+    assert cycPort.getRidersPointClassificationRank(4)[1 ] ==  1;
+    assert cycPort.getRidersPointClassificationRank(4)[2 ] ==  2;
+    assert cycPort.getRidersPointClassificationRank(4)[3 ] ==  3;
+    assert cycPort.getRidersPointClassificationRank(4)[4 ] ==  4;
+    assert cycPort.getRidersPointClassificationRank(4)[5 ] ==  16;
+    assert cycPort.getRidersPointClassificationRank(4)[6 ] ==  6;
+    assert cycPort.getRidersPointClassificationRank(4)[7 ] ==  7;
+    assert cycPort.getRidersPointClassificationRank(4)[8 ] ==  8;
+    assert cycPort.getRidersPointClassificationRank(4)[9 ] ==  9;
+    assert cycPort.getRidersPointClassificationRank(4)[10] == 10;
+    assert cycPort.getRidersPointClassificationRank(4)[11] == 11;
+    assert cycPort.getRidersPointClassificationRank(4)[12] == 12;
+    assert cycPort.getRidersPointClassificationRank(4)[13] == 13;
+    assert cycPort.getRidersPointClassificationRank(4)[14] == 14;
+    assert cycPort.getRidersPointClassificationRank(4)[15] == 15;
+    assert cycPort.getRidersPointClassificationRank(4)[16] == 5;
 
-      //stage 7 1 seg
-      cycPort.registerRiderResultsInStage(7, 0, t0,LocalTime.of(0,0,0,5),t1);
-      cycPort.registerRiderResultsInStage(7, 1, t0,t1,t2);
-      cycPort.registerRiderResultsInStage(7, 2, t0,t2,t3);
-      cycPort.registerRiderResultsInStage(7, 3, t0,t3,t4);
-      cycPort.registerRiderResultsInStage(7, 4, t0,t4,t5);
-      cycPort.registerRiderResultsInStage(7, 5, t0,t17,t17);
-      cycPort.registerRiderResultsInStage(7, 6, t0,t6,t7);
-      cycPort.registerRiderResultsInStage(7, 7, t0,t7,t8);
-      cycPort.registerRiderResultsInStage(7, 8, t0,t8,t9);
-      cycPort.registerRiderResultsInStage(7, 9, t0,t9,t10);
-      cycPort.registerRiderResultsInStage(7, 10, t0,t10,t11);
-      cycPort.registerRiderResultsInStage(7, 11, t0,t11,t12);
-      cycPort.registerRiderResultsInStage(7, 12, t0,t12,t13);
-      cycPort.registerRiderResultsInStage(7, 13, t0,t13,t14);
-      cycPort.registerRiderResultsInStage(7, 14, t0,t14,t15);
-      cycPort.registerRiderResultsInStage(7, 15, t0,t15,t17);
-      cycPort.registerRiderResultsInStage(7, 16, t0,t5,t18);
+    // race with multiple stages of varying types with rider 5 coming last and rider 16 coming 5th
+    cycPort.createRace("Racey boy", null);
+    cycPort.addStageToRace(5, "Stage 5", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addStageToRace(5, "Stage 6", null, 10.0, LocalDateTime.now(), StageType.MEDIUM_MOUNTAIN);
+    cycPort.addStageToRace(5, "Stage 7", null, 10.0, LocalDateTime.now(), StageType.FLAT);
+    cycPort.addStageToRace(5, "Stage 8", null, 10.0, LocalDateTime.now(), StageType.HIGH_MOUNTAIN);
+    cycPort.addStageToRace(5, "Stage 9", null, 10.0, LocalDateTime.now(), StageType.MEDIUM_MOUNTAIN);
+    cycPort.addIntermediateSprintToStage(5,7.0);
+    cycPort.addIntermediateSprintToStage(5,7.0);
+    cycPort.addIntermediateSprintToStage(6,7.0);
+    cycPort.addIntermediateSprintToStage(7,7.0);
+    cycPort.addIntermediateSprintToStage(8,7.0);
+    cycPort.addIntermediateSprintToStage(9,7.0);
+    cycPort.addIntermediateSprintToStage(9,7.0);
+    cycPort.addIntermediateSprintToStage(9,7.0);
+    cycPort.concludeStagePreparation(5);
+    cycPort.concludeStagePreparation(6);
+    cycPort.concludeStagePreparation(7);
+    cycPort.concludeStagePreparation(8);
+    cycPort.concludeStagePreparation(9);
 
-      //stage 8 1 seg
-      cycPort.registerRiderResultsInStage(8, 0, t0,LocalTime.of(0,0,0,5),t1);
-      cycPort.registerRiderResultsInStage(8, 1, t0,t1,t2);
-      cycPort.registerRiderResultsInStage(8, 2, t0,t2,t3);
-      cycPort.registerRiderResultsInStage(8, 3, t0,t3,t4);
-      cycPort.registerRiderResultsInStage(8, 4, t0,t4,t5);
-      cycPort.registerRiderResultsInStage(8, 5, t0,t17,t17);
-      cycPort.registerRiderResultsInStage(8, 6, t0,t6,t7);
-      cycPort.registerRiderResultsInStage(8, 7, t0,t7,t8);
-      cycPort.registerRiderResultsInStage(8, 8, t0,t8,t9);
-      cycPort.registerRiderResultsInStage(8, 9, t0,t9,t10);
-      cycPort.registerRiderResultsInStage(8, 10, t0,t10,t11);
-      cycPort.registerRiderResultsInStage(8, 11, t0,t11,t12);
-      cycPort.registerRiderResultsInStage(8, 12, t0,t12,t13);
-      cycPort.registerRiderResultsInStage(8, 13, t0,t13,t14);
-      cycPort.registerRiderResultsInStage(8, 14, t0,t14,t15);
-      cycPort.registerRiderResultsInStage(8, 15, t0,t15,t17);
-      cycPort.registerRiderResultsInStage(8, 16, t0,t5,t18);
+    //stage 5 2 segments
+    cycPort.registerRiderResultsInStage(5, 0, t0,LocalTime.of(0,0,0,5),t1,t2);
+    cycPort.registerRiderResultsInStage(5, 1, t0,t1,t2,t3);
+    cycPort.registerRiderResultsInStage(5, 2, t0,t2,t3,t4);
+    cycPort.registerRiderResultsInStage(5, 3, t0,t3,t4,t5);
+    cycPort.registerRiderResultsInStage(5, 4, t0,t4,t5,t6);
+    cycPort.registerRiderResultsInStage(5, 5, t0,t17,t17,t17);
+    cycPort.registerRiderResultsInStage(5, 6, t0,t6,t7,t8);
+    cycPort.registerRiderResultsInStage(5, 7, t0,t7,t8,t9);
+    cycPort.registerRiderResultsInStage(5, 8, t0,t8,t9,t10);
+    cycPort.registerRiderResultsInStage(5, 9, t0,t9,t10,t11);
+    cycPort.registerRiderResultsInStage(5, 10, t0,t10,t11,t12);
+    cycPort.registerRiderResultsInStage(5, 11, t0,t11,t12,t13);
+    cycPort.registerRiderResultsInStage(5, 12, t0,t12,t13,t14);
+    cycPort.registerRiderResultsInStage(5, 13, t0,t13,t14,t15);
+    cycPort.registerRiderResultsInStage(5, 14, t0,t14,t15,t17);
+    cycPort.registerRiderResultsInStage(5, 15, t0,t15,t17,t18);
+    cycPort.registerRiderResultsInStage(5, 16, t0,t17,t18,t20);
 
-      //stage 9 seg 3
-      cycPort.registerRiderResultsInStage(9, 0, t0,LocalTime.of(0,0,0,5),t1,t2,t3);
-      cycPort.registerRiderResultsInStage(9, 1, t0,t1,t2,t3,t4);
-      cycPort.registerRiderResultsInStage(9, 2, t0,t2,t3,t4,t5);
-      cycPort.registerRiderResultsInStage(9, 3, t0,t3,t4,t5,t6);
-      cycPort.registerRiderResultsInStage(9, 4, t0,t4,t5,t6,t7);
-      cycPort.registerRiderResultsInStage(9, 5, t0,t17,t17,t17,t17);
-      cycPort.registerRiderResultsInStage(9, 6, t0,t6,t7,t8,t9);
-      cycPort.registerRiderResultsInStage(9, 7, t0,t7,t8,t9,t10);
-      cycPort.registerRiderResultsInStage(9, 8, t0,t8,t9,t10,t11);
-      cycPort.registerRiderResultsInStage(9, 9, t0,t9,t10,t11,t12);
-      cycPort.registerRiderResultsInStage(9, 10, t0,t10,t11,t12,t13);
-      cycPort.registerRiderResultsInStage(9, 11, t0,t11,t12,t13,t14);
-      cycPort.registerRiderResultsInStage(9, 12, t0,t12,t13,t14,t15);
-      cycPort.registerRiderResultsInStage(9, 13, t0,t13,t14,t15,t17);
-      cycPort.registerRiderResultsInStage(9, 14, t0,t14,t15,t17,t18);
-      cycPort.registerRiderResultsInStage(9, 15, t0,t15,t17,t18,t20);
-      cycPort.registerRiderResultsInStage(9, 16, t0,t5,t18,t20,t21);
+    //stage 6 1 seg
+    cycPort.registerRiderResultsInStage(6, 0, t0,LocalTime.of(0,0,0,5),t1);
+    cycPort.registerRiderResultsInStage(6, 1, t0,t1,t2);
+    cycPort.registerRiderResultsInStage(6, 2, t0,t2,t3);
+    cycPort.registerRiderResultsInStage(6, 3, t0,t3,t4);
+    cycPort.registerRiderResultsInStage(6, 4, t0,t4,t5);
+    cycPort.registerRiderResultsInStage(6, 5, t0,t17,t17);
+    cycPort.registerRiderResultsInStage(6, 6, t0,t6,t7);
+    cycPort.registerRiderResultsInStage(6, 7, t0,t7,t8);
+    cycPort.registerRiderResultsInStage(6, 8, t0,t8,t9);
+    cycPort.registerRiderResultsInStage(6, 9, t0,t9,t10);
+    cycPort.registerRiderResultsInStage(6, 10, t0,t10,t11);
+    cycPort.registerRiderResultsInStage(6, 11, t0,t11,t12);
+    cycPort.registerRiderResultsInStage(6, 12, t0,t12,t13);
+    cycPort.registerRiderResultsInStage(6, 13, t0,t13,t14);
+    cycPort.registerRiderResultsInStage(6, 14, t0,t14,t15);
+    cycPort.registerRiderResultsInStage(6, 15, t0,t15,t17);
+    cycPort.registerRiderResultsInStage(6, 16, t0,t17,t18);
 
-      assert cycPort.getRidersPointClassificationRank(5)[0 ] ==  0;
-      assert cycPort.getRidersPointClassificationRank(5)[1 ] ==  1;
-      assert cycPort.getRidersPointClassificationRank(5)[2 ] ==  2;
-      assert cycPort.getRidersPointClassificationRank(5)[3 ] ==  3;
-      assert cycPort.getRidersPointClassificationRank(5)[4 ] ==  4;
-      assert cycPort.getRidersPointClassificationRank(5)[5 ] ==  6;
-      assert cycPort.getRidersPointClassificationRank(5)[6 ] ==  7;
-      assert cycPort.getRidersPointClassificationRank(5)[7 ] ==  8;
-      assert cycPort.getRidersPointClassificationRank(5)[8 ] ==  9;
-      assert cycPort.getRidersPointClassificationRank(5)[9 ] ==  10;
-      assert cycPort.getRidersPointClassificationRank(5)[10] == 11;
-      assert cycPort.getRidersPointClassificationRank(5)[11] == 12;
-      assert cycPort.getRidersPointClassificationRank(5)[12] == 13;
-      assert cycPort.getRidersPointClassificationRank(5)[13] == 5;
-      assert cycPort.getRidersPointClassificationRank(5)[14] == 14;
-      assert cycPort.getRidersPointClassificationRank(5)[15] == 15;
-      assert cycPort.getRidersPointClassificationRank(5)[16] == 16;
+    //stage 7 1 seg
+    cycPort.registerRiderResultsInStage(7, 0, t0,LocalTime.of(0,0,0,5),t1);
+    cycPort.registerRiderResultsInStage(7, 1, t0,t1,t2);
+    cycPort.registerRiderResultsInStage(7, 2, t0,t2,t3);
+    cycPort.registerRiderResultsInStage(7, 3, t0,t3,t4);
+    cycPort.registerRiderResultsInStage(7, 4, t0,t4,t5);
+    cycPort.registerRiderResultsInStage(7, 5, t0,t17,t17);
+    cycPort.registerRiderResultsInStage(7, 6, t0,t6,t7);
+    cycPort.registerRiderResultsInStage(7, 7, t0,t7,t8);
+    cycPort.registerRiderResultsInStage(7, 8, t0,t8,t9);
+    cycPort.registerRiderResultsInStage(7, 9, t0,t9,t10);
+    cycPort.registerRiderResultsInStage(7, 10, t0,t10,t11);
+    cycPort.registerRiderResultsInStage(7, 11, t0,t11,t12);
+    cycPort.registerRiderResultsInStage(7, 12, t0,t12,t13);
+    cycPort.registerRiderResultsInStage(7, 13, t0,t13,t14);
+    cycPort.registerRiderResultsInStage(7, 14, t0,t14,t15);
+    cycPort.registerRiderResultsInStage(7, 15, t0,t15,t17);
+    cycPort.registerRiderResultsInStage(7, 16, t0,t17,t18);
+
+    //stage 8 1 seg
+    cycPort.registerRiderResultsInStage(8, 0, t0,LocalTime.of(0,0,0,5),t1);
+    cycPort.registerRiderResultsInStage(8, 1, t0,t1,t2);
+    cycPort.registerRiderResultsInStage(8, 2, t0,t2,t3);
+    cycPort.registerRiderResultsInStage(8, 3, t0,t3,t4);
+    cycPort.registerRiderResultsInStage(8, 4, t0,t4,t5);
+    cycPort.registerRiderResultsInStage(8, 5, t0,t17,t17);
+    cycPort.registerRiderResultsInStage(8, 6, t0,t6,t7);
+    cycPort.registerRiderResultsInStage(8, 7, t0,t7,t8);
+    cycPort.registerRiderResultsInStage(8, 8, t0,t8,t9);
+    cycPort.registerRiderResultsInStage(8, 9, t0,t9,t10);
+    cycPort.registerRiderResultsInStage(8, 10, t0,t10,t11);
+    cycPort.registerRiderResultsInStage(8, 11, t0,t11,t12);
+    cycPort.registerRiderResultsInStage(8, 12, t0,t12,t13);
+    cycPort.registerRiderResultsInStage(8, 13, t0,t13,t14);
+    cycPort.registerRiderResultsInStage(8, 14, t0,t14,t15);
+    cycPort.registerRiderResultsInStage(8, 15, t0,t15,t17);
+    cycPort.registerRiderResultsInStage(8, 16, t0,t17,t18);
+
+    //stage 9 seg 3
+    cycPort.registerRiderResultsInStage(9, 0, t0,LocalTime.of(0,0,0,5),t1,t2,t3);
+    cycPort.registerRiderResultsInStage(9, 1, t0,t1,t2,t3,t4);
+    cycPort.registerRiderResultsInStage(9, 2, t0,t2,t3,t4,t5);
+    cycPort.registerRiderResultsInStage(9, 3, t0,t3,t4,t5,t6);
+    cycPort.registerRiderResultsInStage(9, 4, t0,t4,t5,t6,t7);
+    cycPort.registerRiderResultsInStage(9, 5, t0,t17,t17,t17,t17);
+    cycPort.registerRiderResultsInStage(9, 6, t0,t6,t7,t8,t9);
+    cycPort.registerRiderResultsInStage(9, 7, t0,t7,t8,t9,t10);
+    cycPort.registerRiderResultsInStage(9, 8, t0,t8,t9,t10,t11);
+    cycPort.registerRiderResultsInStage(9, 9, t0,t9,t10,t11,t12);
+    cycPort.registerRiderResultsInStage(9, 10, t0,t10,t11,t12,t13);
+    cycPort.registerRiderResultsInStage(9, 11, t0,t11,t12,t13,t14);
+    cycPort.registerRiderResultsInStage(9, 12, t0,t12,t13,t14,t15);
+    cycPort.registerRiderResultsInStage(9, 13, t0,t13,t14,t15,t17);
+    cycPort.registerRiderResultsInStage(9, 14, t0,t14,t15,t17,t18);
+    cycPort.registerRiderResultsInStage(9, 15, t0,t15,t17,t18,t20);
+    cycPort.registerRiderResultsInStage(9, 16, t0,t17,t18,t20,t21);
+
+    System.out.println(Arrays.toString(cycPort.getRidersPointClassificationRank(5)));
+    assert cycPort.getRidersPointClassificationRank(5)[0 ] ==  0;
+    assert cycPort.getRidersPointClassificationRank(5)[1 ] ==  1;
+    assert cycPort.getRidersPointClassificationRank(5)[2 ] ==  2;
+    assert cycPort.getRidersPointClassificationRank(5)[3 ] ==  3;
+    assert cycPort.getRidersPointClassificationRank(5)[4 ] ==  4;
+    assert cycPort.getRidersPointClassificationRank(5)[5 ] ==  6;
+    assert cycPort.getRidersPointClassificationRank(5)[6 ] ==  7;
+    assert cycPort.getRidersPointClassificationRank(5)[7 ] ==  8;
+    assert cycPort.getRidersPointClassificationRank(5)[8 ] ==  9;
+    assert cycPort.getRidersPointClassificationRank(5)[9 ] ==  10;
+    assert cycPort.getRidersPointClassificationRank(5)[10] == 11;
+    assert cycPort.getRidersPointClassificationRank(5)[11] == 12;
+    assert cycPort.getRidersPointClassificationRank(5)[12] == 13;
+    assert cycPort.getRidersPointClassificationRank(5)[13] == 14;
+    assert cycPort.getRidersPointClassificationRank(5)[14] == 5;
+    assert cycPort.getRidersPointClassificationRank(5)[15] == 15;
+    assert cycPort.getRidersPointClassificationRank(5)[16] == 16;
+
+    assert catches == intendedCatches;
   }
 
   public static void testGetGeneralClassificationTimesInRace() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, DuplicatedResultException, InvalidCheckpointsException, InvalidLocationException, InvalidStageTypeException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
     LocalTime t0 = LocalTime.of(0,0,0);
     LocalTime tnoughtpointfive = LocalTime.of(0,0,5);
@@ -2907,6 +3073,7 @@ public class CyclingPortalInterfaceTestApp {
       cycPort.getGeneralClassificationTimesInRace(0);
     } catch (IDNotRecognisedException ex) {
       System.out.println("Race doesn't exist failed successfully");
+      catches++;
     }
 
     // No stages in race
@@ -3080,6 +3247,8 @@ public class CyclingPortalInterfaceTestApp {
     assert cycPort.getGeneralClassificationTimesInRace(2)[14] .compareTo(SumLocalTimes.addLocalTimes(t14, t14, t14 ,t14,t18)) == 0;
     assert cycPort.getGeneralClassificationTimesInRace(2)[15] .compareTo(SumLocalTimes.addLocalTimes(t15, t15, t15 ,t15,t20)) == 0;
     assert cycPort.getGeneralClassificationTimesInRace(2)[16] .compareTo(SumLocalTimes.addLocalTimes(t17, t17, t17 ,t17,t21)) == 0;
+
+    assert catches == intendedCatches;
   }
 
   public static void testSaveCyclingPortal() throws IOException {
@@ -3105,6 +3274,8 @@ public class CyclingPortalInterfaceTestApp {
 
   public static void testEraseCyclingPortal() throws InvalidNameException, IllegalNameException, IDNotRecognisedException, InvalidLengthException {
     // Setup
+    final int intendedCatches = 1;
+    int catches = 0;
     CyclingPortal cycPort = new CyclingPortal();
 
     cycPort.createRace("Race 1", null);
@@ -3125,7 +3296,9 @@ public class CyclingPortalInterfaceTestApp {
       System.out.println(cycPort.getRiderIdsToRiders().get(0).getName());
     } catch (NullPointerException ex) {
       System.out.println("Tried to access erased cycling portal failed successfully");
+      catches++;
     }
+    assert catches == intendedCatches;
   }
 
   public static void main(String[] args) throws InvalidNameException, IllegalNameException, NameNotRecognisedException, IDNotRecognisedException, InvalidLengthException, InvalidStageStateException, InvalidLocationException, InvalidStageTypeException, DuplicatedResultException, InvalidCheckpointsException, IOException, ClassNotFoundException {

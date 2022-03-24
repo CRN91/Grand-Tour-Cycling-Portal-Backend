@@ -1,5 +1,7 @@
 package src.cycling;
 
+import java.io.Serializable;
+
 /**
  * Represents a categorised climb segment in a race. This is a subclass of Segment (which
  * represents an intermediate sprint) as they share common features.
@@ -7,7 +9,7 @@ package src.cycling;
  * @author Sam Barker, Adam Kaizra
  * @version 1.0
  */
-public class CategorisedClimb extends Segment {
+public class CategorisedClimb extends Segment implements Serializable {
 
   private static int latestId = 0;
   private final int id;

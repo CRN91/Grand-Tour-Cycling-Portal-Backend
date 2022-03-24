@@ -55,4 +55,27 @@ public class SumLocalTimes {
 
     return secondsToLocalTime(finalTimeSeconds);
   }
+
+  /**
+   * Subtract two LocalTime variables.
+   *
+   * @param t1 The time to have t2 taken away from.
+   * @param t2 The time to take away from t1
+   * @return t1 minus t2
+   */
+  public static LocalTime subtractLocalTimes(LocalTime t1, LocalTime t2) {
+    LocalTime finalTime;
+
+    // Convert times to seconds
+    double t1s = localTimeToSeconds(t1);
+    double t2s = localTimeToSeconds(t2);
+    // Subtract
+    double t3s = t1s - t2s;
+
+    assert t3s >= 0 : "LocalTime cannot represent negative values!";
+
+    // Convert back to LocalTime and return
+    return secondsToLocalTime(t3s);
+  }
+
 }

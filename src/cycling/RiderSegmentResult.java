@@ -1,5 +1,7 @@
 package src.cycling;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalTime;
 
 /**
@@ -10,7 +12,7 @@ import java.time.LocalTime;
  * @author Sam Barker, Adam Kaizra
  * @version 1.0
  */
-public class RiderSegmentResult implements Comparable<RiderSegmentResult> {
+public class RiderSegmentResult implements Comparable<RiderSegmentResult>, Serializable {
 
   private LocalTime time;
   private int riderId;

@@ -15,7 +15,7 @@ import java.util.Map;
  * @author Adam Kaizra, Sam Barker
  * @version 1.0
  */
-public class Stage implements Serializable {
+public class Stage implements Serializable, Comparable<Stage> {
 
   private static int latestId = 0; // Enumerates to get unique id, with 2^32 possible ids.
   private final Integer raceId;
@@ -48,6 +48,11 @@ public class Stage implements Serializable {
     this.startTime = startTime;
     this.stageType = stageType;
     this.id = latestId++;
+  }
+
+  public int compareTo(Stage stage) {
+    assert (stage instanceof Stage) : "Comparing incorrect types!";
+    return this.getStartTime().compareTo(stage.getStartTime());
   }
 
   /**
@@ -226,32 +231,40 @@ public class Stage implements Serializable {
    * second behind the rider in front of them) and sets the adjusted time of each applicable result
    * to the peloton leader's finish time.
    */
-  public void generateAdjustedResults() {
-    // Initialise previous time and peloton leader time to zero.
-    LocalTime previousTime = LocalTime.of(0, 0, 0, 0);
-    LocalTime pelotonLeader = LocalTime.of(0, 0, 0);
+  public void generateAdjustedFinishTimes() {
+    if (this.getStageType() != StageType.TT) {
 
-    for (RiderStageResult result : this.results) { // Iterates through results of the stage.
-      LocalTime currentTime = result.getFinishTime(); // The time of this rider to compare against.
-      double currentTimeSeconds =
-          (currentTime.getHour() * 3600) + (currentTime.getMinute() * 60) + currentTime.getSecond();
-      double previousTimeSeconds = (previousTime.getHour() * 3600) + (previousTime.getMinute() * 60
-          + previousTime.getSecond());
-      // Converts LocalTime into double to calculate whether there is a 1 second or less gap between
-      // riders.
-      if (((currentTimeSeconds - previousTimeSeconds) <= 1.0) && (previousTimeSeconds != 0)) {
-        result.setAdjustedFinishTime(pelotonLeader); // If there is a 1 second or less gap the
-        // adjusted time is set to the peloton leader.
-      } else {
-        pelotonLeader = currentTime; // If the rider is not in a peloton then they could be the next
-        // peloton's leader.
-        result.setAdjustedFinishTime(currentTime); // Adjusted time is set to their finish time.
+      // Initialise previous time and peloton leader time to zero.
+      LocalTime previousTime = LocalTime.of(0, 0, 0, 0);
+      LocalTime pelotonLeader = LocalTime.of(0, 0, 0);
+
+      for (RiderStageResult result : this.results) { // Iterates through results of the stage.
+        LocalTime currentTime = result.getFinishTime(); // The time of this rider to compare
+        // against.
+        double currentTimeSeconds =
+            (currentTime.getHour() * 3600) + (currentTime.getMinute() * 60) +
+                currentTime.getSecond();
+        double previousTimeSeconds = (previousTime.getHour() * 3600) + (previousTime.getMinute() *
+            60 + previousTime.getSecond());
+        // Converts LocalTime into double to calculate whether there is a 1 second or less gap
+        // between riders.
+        if (((currentTimeSeconds - previousTimeSeconds) <= 1.0) && (previousTimeSeconds != 0)) {
+          result.setAdjustedFinishTime(pelotonLeader); // If there is a 1 second or less gap the
+          // adjusted time is set to the peloton leader.
+        } else {
+          pelotonLeader = currentTime; // If the rider is not in a peloton then they could be the
+          // next peloton's leader.
+          result.setAdjustedFinishTime(currentTime); // Adjusted time is set to their finish time.
+        }
+        previousTime = currentTime; // A Peloton can consist of multiple riders so the one second
+        // gap accounts for between riders.
+
+        result.setAdjustedElapsedTime(SumLocalTimes.subtractLocalTimes(
+            result.getAdjustedFinishTime(), result.getTimes()[0]));
       }
-      previousTime = currentTime; // A Peloton can consist of multiple riders so the one second gap
-      // accounts for between riders.
+      Collections.sort(this.results); // The results are sorted by finishing times (same order as
+      // adjusted).
     }
-    Collections.sort(this.results); // The results are sorted by finishing times (same order as
-    // adjusted).
   }
 
   /**
@@ -281,6 +294,7 @@ public class Stage implements Serializable {
         result.setRank(rank);
         rank++;
       }
+      segmentCounter++;
     }
     assert (this.segmentsInStage.isEmpty()) || (results.isEmpty()) || !this.segmentsInStage.get(0)
         .getResults().isEmpty();
@@ -351,7 +365,7 @@ public class Stage implements Serializable {
     // include.
     if (!isMountain) {
       int pointsIndex = 0;
-      this.generateAdjustedResults(); // Sorts times in ascending order.
+      this.generateAdjustedFinishTimes(); // Sorts times in ascending order.
 
       for (RiderStageResult result : this.getResults()) { // Iterate through rider.
         int riderId = result.getRiderId();
@@ -399,6 +413,7 @@ public class Stage implements Serializable {
           if (riderRank < pointsLimit) {
             points = rowOfPointsConversion[riderRank]; // Points limit prevent index out of bounds
             // error.
+
             assert points >= 0 : "Negative point value assigned!";
           } else {
             points = 0;
@@ -408,16 +423,32 @@ public class Stage implements Serializable {
             // add them.
             riderIdsToPoints.put(riderId, points);
             if (!isMountain) {
-              this.getResults().get(i).setPoints(points);
+              for (RiderStageResult stageResult : this.getResults()) {
+                if (stageResult.getRiderId() == riderResult.getRiderId()) {
+                  stageResult.setPoints(points);
+                }
+              }
             } else {
-              this.getResults().get(i).setMountainPoints(points);
+              for (RiderStageResult stageResult : this.getResults()) {
+                if (stageResult.getRiderId() == riderResult.getRiderId()) {
+                  stageResult.setMountainPoints(points);
+                }
+              }
             }
           } else { // Else sum their points to their total points.
             riderIdsToPoints.merge(riderId, points, Integer::sum);
             if (!isMountain) {
-              this.getResults().get(i).addPoints(points);
+              for (RiderStageResult stageResult : this.getResults()) {
+                if (stageResult.getRiderId() == riderResult.getRiderId()) {
+                  stageResult.addPoints(points);
+                }
+              }
             } else {
-              this.getResults().get(i).addMountainPoints(points);
+              for (RiderStageResult stageResult : this.getResults()) {
+                if (stageResult.getRiderId() == riderResult.getRiderId()) {
+                  stageResult.addMountainPoints(points);
+                }
+              }
             }
           }
           i++;
@@ -437,7 +468,6 @@ public class Stage implements Serializable {
         }
         i++;
       }
-
       return pointsOrderedByRank;
     } else {
       return new int[0];

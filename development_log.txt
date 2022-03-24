@@ -35,3 +35,5 @@ Development log
 21/03/2022    19:00        3             Driver               Observer
 22/03/2022    13:40        2.5           Documentation        Documentation + jar
 23/03/2022    16:40        2.67          Polishing & assert   Jar file
+24/03/2022    14:00        13/6          Driving / Observing  Driving / Observing
+24/03/2022    17:00        4             Driving / Observing  Driving / Observing

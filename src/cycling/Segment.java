@@ -1,5 +1,6 @@
 package src.cycling;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * @author Sam Barker, Adam Kaizrea
  * @version 1.0
  */
-public class Segment implements Comparable<Segment> {
+public class Segment implements Comparable<Segment>, Serializable {
 
   private static int latestId = 0;
   private final Integer stageId;

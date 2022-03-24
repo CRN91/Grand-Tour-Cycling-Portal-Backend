@@ -79,7 +79,7 @@ public class StagedRace implements Serializable {
    * Sums all the riders stage results finish times and stores it as a race finish time in each
    * rider's race result object.
    */
-  public void generateRidersRaceFinishTimes() {
+  public void generateRidersRaceAdjustedElapsedTimes() {
     int sizeOfArrayOfTotalTimes;
     if (this.getStages().size() == 0) {
       return;
@@ -90,6 +90,8 @@ public class StagedRace implements Serializable {
     LocalTime[] arrayOfTotalTimes = new LocalTime[sizeOfArrayOfTotalTimes];
     for (Stage stage : this.getStages()) { // Iterates through all stages in a race.
       int i = 0;
+      stage.generateAdjustedFinishTimes();
+
       for (RiderStageResult riderStageResult : stage.getResults()) { // Iterates through all results
         // in a stage.
         int riderId = riderStageResult.getRiderId();
@@ -98,7 +100,7 @@ public class StagedRace implements Serializable {
           if (raceResult.getRiderId() == riderId) { // If the race result and stage result refer to
             // the same rider.
             arrayOfTotalTimes[i] = SumLocalTimes.addLocalTimes(arrayOfTotalTimes[i],
-                riderStageResult.getFinishTime());
+                riderStageResult.getAdjustedElapsedTime());
             // Sums race results finish time with new stages finish time.
             riderFound = true;
             break;
@@ -107,7 +109,7 @@ public class StagedRace implements Serializable {
         if (!riderFound) { // If no race result for rider one is made.
           RiderRaceResult raceResult = new RiderRaceResult(riderStageResult.getRiderId(),
               this.raceId);
-          arrayOfTotalTimes[i] = riderStageResult.getFinishTime();
+          arrayOfTotalTimes[i] = riderStageResult.getAdjustedElapsedTime();
           int raceResultsSize = this.raceResults.size();
           this.raceResults.add(raceResult);
           assert this.raceResults.size() == raceResultsSize + 1 : "Race result not added to array"
@@ -118,7 +120,7 @@ public class StagedRace implements Serializable {
     }
     int i = 0;
     for (RiderRaceResult result : this.raceResults) {
-      result.setFinishTime(arrayOfTotalTimes[i]);
+      result.setElapsedTime(arrayOfTotalTimes[i]);
       i++;
     }
     Collections.sort(this.raceResults); // Sorts race results by total time.
@@ -135,7 +137,7 @@ public class StagedRace implements Serializable {
    * @return An array of rider's total points respective of given classification.
    */
   public int[] generateRidersPointsInRace(boolean isMountain) {
-    this.generateRidersRaceFinishTimes();
+    this.generateRidersRaceAdjustedElapsedTimes();
 
     int[] points = new int[this.raceResults.size()]; // Points for the entire race.
     for (Stage stage : this.getStages()) { // Iterate through stages.
@@ -204,6 +206,12 @@ public class StagedRace implements Serializable {
       i++;
     }
     Collections.sort(raceResults); // Sorts race results back to its order by finishing times.
+    System.out.println();
+    System.out.println("start");
+    for (RiderRaceResult result : raceResults) {
+      System.out.println("ID "+result.getRiderId()+" points "+result.getMountainPoints());
+    }
+
     return racePoints;
   }
 

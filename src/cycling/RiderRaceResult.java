@@ -17,6 +17,7 @@ public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializabl
   private int points = 0;
   private int mountainPoints = 0;
   private int rank;
+  private LocalTime elapsedTime;
 
   private LocalTime finishTime; // The sum of all stage finish times (the GC time)
 
@@ -42,7 +43,7 @@ public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializabl
    */
   public int compareTo(RiderRaceResult result) {
     assert (result instanceof RiderRaceResult) : "Comparing incorrect types!";
-    return this.getFinishTime().compareTo(result.getFinishTime());
+    return this.getElapsedTime().compareTo(result.getElapsedTime());
   }
 
   /**
@@ -93,6 +94,14 @@ public class RiderRaceResult implements Comparable<RiderRaceResult>, Serializabl
    */
   public void setRank(int rank) {
     this.rank = rank;
+  }
+
+  public LocalTime getElapsedTime() {
+    return elapsedTime;
+  }
+
+  public void setElapsedTime(LocalTime elapsedTime) {
+    this.elapsedTime = elapsedTime;
   }
 
   /**

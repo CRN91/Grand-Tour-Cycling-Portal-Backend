@@ -21,6 +21,8 @@ public class RiderStageResult implements Comparable<RiderStageResult>, Serializa
   private LocalTime adjustedFinishTime; // Adjusted to take the peloton leader's time if applicable.
   private int points; // Points classification points for this stage.
   private int mountainPoints; // Mountain classification points for this stage.
+  private LocalTime elapsedTime;
+  private LocalTime adjustedElapsedTime;
 
   /**
    * Constructor.
@@ -35,6 +37,8 @@ public class RiderStageResult implements Comparable<RiderStageResult>, Serializa
     this.stageId = stageId;
     this.times = times; // Times the rider crossed each checkpoint.
     this.finishTime = times[times.length - 1]; // Final time in the array is the finish time.
+    this.elapsedTime = SumLocalTimes.subtractLocalTimes(this.finishTime, times[0]);
+    this.adjustedElapsedTime = this.elapsedTime;
     this.adjustedFinishTime = this.finishTime; // Adjusted time initialised to finish time in case
     // the rider is not in a peloton so their time is not changed.
   }
@@ -136,5 +140,21 @@ public class RiderStageResult implements Comparable<RiderStageResult>, Serializa
    */
   public void setAdjustedFinishTime(LocalTime newAdjustedFinishTime) {
     this.adjustedFinishTime = newAdjustedFinishTime;
+  }
+
+  public LocalTime getElapsedTime() {
+    return elapsedTime;
+  }
+
+  public void setElapsedTime(LocalTime elapsedTime) {
+    this.elapsedTime = elapsedTime;
+  }
+
+  public LocalTime getAdjustedElapsedTime() {
+    return adjustedElapsedTime;
+  }
+
+  public void setAdjustedElapsedTime(LocalTime adjustedElapsedTime) {
+    this.adjustedElapsedTime = adjustedElapsedTime;
   }
 }
