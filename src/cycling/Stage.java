@@ -309,7 +309,7 @@ public class Stage implements Serializable, Comparable<Stage> {
    */
   public int[] generatePointsInStage(boolean isMountain) {
 
-    Map<Enum, int[]> pointsConversion;
+    HashMap<Enum, int[]> pointsConversion = new HashMap<>();
 
     if (isMountain) {
       // Table of rank to points for each segment type in mountain classification.
@@ -318,24 +318,21 @@ public class Stage implements Serializable, Comparable<Stage> {
       int[] pointsC2 = {5, 3, 2, 1, 0, 0, 0, 0}; // TOP 4 ONLY.
       int[] pointsC3 = {2, 1, 0, 0, 0, 0, 0, 0}; // TOP 2 ONLY.
       int[] pointsC4 = {1, 0, 0, 0, 0, 0, 0, 0}; // TOP 1 ONLY.
-      pointsConversion = Map.of(
-          SegmentType.HC, pointsHC,
-          SegmentType.C1, pointsC1,
-          SegmentType.C2, pointsC2,
-          SegmentType.C3, pointsC3,
-          SegmentType.C4, pointsC4);
+      pointsConversion.put(SegmentType.HC, pointsHC);
+      pointsConversion.put(SegmentType.C1, pointsC1);
+      pointsConversion.put(SegmentType.C2, pointsC2);
+      pointsConversion.put(SegmentType.C3, pointsC3);
+      pointsConversion.put(SegmentType.C4, pointsC4);
     } else {
       // Table of rank to points for each stage type in point classification.
       int[] flatPointsConversion = {50, 30, 20, 18, 16, 14, 12, 10, 8, 7, 6, 5, 4, 3, 2};
       int[] hillyPointsConversion = {30, 25, 22, 19, 17, 15, 13, 11, 9, 7, 6, 5, 4, 3, 2};
       int[] mountainPointsConversion = {20, 17, 15, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-      pointsConversion = Map.of(
-          StageType.FLAT, flatPointsConversion,
-          StageType.MEDIUM_MOUNTAIN, hillyPointsConversion,
-          StageType.HIGH_MOUNTAIN, mountainPointsConversion,
-          StageType.TT, mountainPointsConversion // Time trials are awarded the same points as high
-          // mountain stages.
-      );
+      pointsConversion.put( StageType.FLAT, flatPointsConversion);
+      pointsConversion.put( StageType.HIGH_MOUNTAIN, mountainPointsConversion);
+      pointsConversion.put( StageType.MEDIUM_MOUNTAIN, hillyPointsConversion);
+      // Time trials are awarded the same points as high mountain stages.
+      pointsConversion.put( StageType.TT, mountainPointsConversion);
     }
 
     if (isMountain) {

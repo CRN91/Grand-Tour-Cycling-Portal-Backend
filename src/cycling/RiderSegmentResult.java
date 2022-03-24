@@ -1,6 +1,5 @@
 package src.cycling;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalTime;
 
