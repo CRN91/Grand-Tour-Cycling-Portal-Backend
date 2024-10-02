@@ -1,5 +1,7 @@
 # Grand Tour Cycling Portal Backend
 
+<img src="res/ECM1410.svg" height="28"> <img src="res/Pair.svg" height="28">
+
 > Development has ended
 
 This code was jointly developed by Adam Kaizra and Sam Barker for the continuous assessment of the first year module Object-Orientated Programming taught by Prof. Diogo Pacheco.
